@@ -10,13 +10,13 @@ const removePreviewButton = document.getElementById('removePreview');
 // API Configuration - Changed back to original endpoints
 const API_CONFIG = {
     faceRecognition: {
-        url: 'http://127.0.0.1:5000/recognize',
+        url: 'https://facerecognition.mpanel.app/recognize',
         headers: {
             'Authorization': 'd9OLEFYdx18bUTGkIpaKyDFCcko1jYu0Ha1'
         }
     },
     objectDetection: {
-        url: 'http://127.0.0.1:5000/upload-for-detection',
+        url: 'https://facerecognition.mpanel.app/upload-for-detection',
         headers: {
             'Authorization': 'd9OLEFYdx18bUTGkIpaKyDFCcko1jYu0Ha1'
         }
