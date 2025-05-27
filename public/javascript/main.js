@@ -23,6 +23,7 @@ const API_CONFIG = {
     }
 };
 
+
 // Validate image file
 function validateImageFile(file) {
     // Check if file exists
