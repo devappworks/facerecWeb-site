@@ -61,4 +61,299 @@
 #imagePreview {
     border: 2px solid #dee2e6;
     border-radius: 0.5rem;
+}
+
+/* Login Section Styles */
+#loginSection {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    transition: all 0.1s ease-in-out;
+    opacity: 0;
+    /* transform: scale(1); */
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100vh !important;
+    z-index: 10 !important;
+    display: none !important; /* Hidden by default */
+    visibility: hidden !important; /* Hidden by default */
+    pointer-events: none !important; /* No interaction by default */
+}
+
+/* When login section needs to be shown */
+#loginSection.show {
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}
+
+/* When login section needs to be hidden */
+#loginSection.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    z-index: -1 !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+#loginSection .card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#loginSection .card-body {
+    position: relative;
+}
+
+#loginSection .text-primary {
+    color: #667eea !important;
+}
+
+#loginSection .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#loginSection .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+#loginSection .btn-primary:active {
+    transform: translateY(0);
+}
+
+#loginSection .form-control-lg {
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    padding: 15px 20px;
+    transition: all 0.3s ease;
+}
+
+#loginSection .form-control-lg:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.1);
+}
+
+#loginSection .input-group-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px 0 0 12px;
+}
+
+/* Login alert animations */
+#loginAlert {
+    animation: fadeInDown 0.4s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header user info styles */
+#userEmail {
+    font-weight: 500;
+}
+
+/* Logout button hover effect */
+#logoutButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* Logout button disabled state */
+#logoutButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#logoutButton:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Responsive design for login */
+@media (max-width: 768px) {
+    #loginSection .card-body {
+        padding: 2rem !important;
+    }
+    
+    #loginSection h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Smooth transitions for section switching */
+#loginSection, #mainApplication {
+    transition: all 0.1s ease-in-out;
+}
+
+/* Main Application Styles */
+#mainApplication {
+    min-height: 100vh;
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    background: #f8f9fa;
+    pointer-events: auto !important;
+}
+
+/* Ensure all interactive elements are clickable */
+#mainApplication button,
+#mainApplication input,
+#mainApplication .upload-zone,
+#mainApplication .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Login section interactive elements */
+#loginSection button,
+#loginSection input,
+#loginSection .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 11 !important;
+}
+
+/* Loading button animation */
+#loginButton:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+#loginSpinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Transition Loader Styles */
+#transitionLoader {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+}
+
+#transitionLoader .spinner-border {
+    color: white !important;
+    border-width: 0.25em;
+}
+
+#transitionLoader h4 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+#transitionLoader .text-white-50 {
+    opacity: 0.8;
+}
+
+/* Base body styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Ensure sections don't stack */
+.section-hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+.section-visible {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Force proper layering and prevent blocking */
+#loginSection.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+#mainApplication.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+#transitionLoader.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+/* Ensure clickable elements remain clickable */
+#mainApplication button,
+#mainApplication input,
+#mainApplication .upload-zone,
+#mainApplication .form-control,
+#mainApplication .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+#loginSection button,
+#loginSection input,
+#loginSection .form-control,
+#loginSection .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 11 !important;
 } 

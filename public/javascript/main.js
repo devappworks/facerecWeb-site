@@ -1,28 +1,108 @@
-// DOM Elements
-const uploadZone = document.querySelector('.upload-zone');
-const fileInput = document.getElementById('fileInput');
-const uploadForm = document.getElementById('uploadForm');
-const previewContainer = document.getElementById('previewContainer');
-const uploadPrompt = document.getElementById('uploadPrompt');
-const imagePreview = document.getElementById('imagePreview');
-const removePreviewButton = document.getElementById('removePreview');
+// DOM Elements - Initialize with checks
+let uploadZone, fileInput, uploadForm, previewContainer, uploadPrompt, imagePreview, removePreviewButton;
 
-// API Configuration - Changed back to original endpoints
+// Initialize DOM elements when page loads
+function initializeDOMElements() {
+    uploadZone = document.querySelector('.upload-zone');
+    fileInput = document.getElementById('fileInput');
+    uploadForm = document.getElementById('uploadForm');
+    previewContainer = document.getElementById('previewContainer');
+    uploadPrompt = document.getElementById('uploadPrompt');
+    imagePreview = document.getElementById('imagePreview');
+    removePreviewButton = document.getElementById('removePreview');
+    
+    console.log('DOM Elements initialized:', {
+        uploadZone: !!uploadZone,
+        fileInput: !!fileInput,
+        uploadForm: !!uploadForm,
+        previewContainer: !!previewContainer,
+        uploadPrompt: !!uploadPrompt,
+        imagePreview: !!imagePreview,
+        removePreviewButton: !!removePreviewButton
+    });
+    
+    // Attach event listeners if elements exist
+    if (uploadForm) {
+        attachEventListeners();
+    }
+}
+
+// Attach all event listeners
+function attachEventListeners() {
+    console.log('Attaching event listeners...');
+    
+    // Upload form event listener
+    if (uploadForm) {
+        uploadForm.removeEventListener('submit', handleUploadSubmit);
+        uploadForm.addEventListener('submit', handleUploadSubmit);
+    }
+    
+    // File input event listener
+    if (fileInput) {
+        fileInput.removeEventListener('change', handleFileChange);
+        fileInput.addEventListener('change', handleFileChange);
+    }
+    
+    // Remove preview event listener
+    if (removePreviewButton) {
+        removePreviewButton.removeEventListener('click', handleRemovePreview);
+        removePreviewButton.addEventListener('click', handleRemovePreview);
+    }
+    
+    // Drag and drop event listeners
+    if (uploadZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.removeEventListener(eventName, preventDefaults);
+            uploadZone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        uploadZone.removeEventListener('dragenter', handleDragEnter);
+        uploadZone.removeEventListener('dragleave', handleDragLeave);
+        uploadZone.removeEventListener('drop', handleDrop);
+        uploadZone.removeEventListener('click', handleZoneClick);
+        
+        uploadZone.addEventListener('dragenter', handleDragEnter);
+        uploadZone.addEventListener('dragleave', handleDragLeave);
+        uploadZone.addEventListener('drop', handleDrop);
+        uploadZone.addEventListener('click', handleZoneClick);
+    }
+}
+
+// API Configuration - Updated to use dynamic token
 const API_CONFIG = {
     faceRecognition: {
-        url: 'https://facerecognition.mpanel.app/recognize',
-        headers: {
-            'Authorization': 'd9OLEFYdx18bUTGkIpaKyDFCcko1jYu0Ha1'
-        }
+        url: 'https://facerecognition.mpanel.app/recognize'
     },
     objectDetection: {
-        url: 'https://facerecognition.mpanel.app/upload-for-detection',
-        headers: {
-            'Authorization': 'd9OLEFYdx18bUTGkIpaKyDFCcko1jYu0Ha1'
-        }
+        url: 'https://facerecognition.mpanel.app/upload-for-detection'
     }
 };
 
+// Get authentication token from localStorage
+function getAuthToken() {
+    if (window.authManager) {
+        return window.authManager.getToken();
+    }
+    return localStorage.getItem('photolytics_auth_token');
+}
+
+// Check if user is authenticated
+function isAuthenticated() {
+    const token = getAuthToken();
+    return !!token;
+}
+
+// Create headers with authentication token
+function getAuthHeaders() {
+    const token = getAuthToken();
+    if (!token) {
+        throw new Error('Authentication token not found. Please login again.');
+    }
+    
+    return {
+        'Authorization': token
+    };
+}
 
 // Validate image file
 function validateImageFile(file) {
@@ -51,6 +131,11 @@ function validateImageFile(file) {
 
 // Alternative API call method for debugging
 async function makeApiCallDebug(url, file) {
+    // Check authentication before making API call
+    if (!isAuthenticated()) {
+        throw new Error('Authentication required. Please login first.');
+    }
+    
     // Method 1: Try with FormData (current approach)
     try {
         const formData = new FormData();
@@ -58,9 +143,7 @@ async function makeApiCallDebug(url, file) {
         
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Authorization': 'd9OLEFYdx18bUTGkIpaKyDFCcko1jYu0Ha1'
-            },
+            headers: getAuthHeaders(),
             body: formData
         });
 
@@ -68,11 +151,25 @@ async function makeApiCallDebug(url, file) {
         
         if (response.ok) {
             return JSON.parse(text);
+        } else if (response.status === 401 || response.status === 403) {
+            // Authentication failed - redirect to login
+            throw new Error('Authentication failed. Please login again.');
+        } else {
+            throw new Error(`API call failed: ${response.status} ${response.statusText}`);
         }
     } catch (error) {
-        console.log('Method 1 failed:', error.message);
+        console.log('API call failed:', error.message);
+        
+        // If authentication error, trigger logout
+        if (error.message.includes('Authentication') || error.message.includes('login')) {
+            if (window.authManager) {
+                window.authManager.clearAuthData();
+                window.authManager.showLoginSection();
+            }
+        }
+        
+        throw error;
     }
-    
 }
 
 // Modified handleFileUploadDebug to handle responses independently
@@ -272,8 +369,20 @@ function displayObjectDetectionResult(objectData) {
 }
 
 // Event Handlers
-uploadForm.addEventListener('submit', async (e) => {
+// Upload form handler
+async function handleUploadSubmit(e) {
     e.preventDefault();
+    
+    console.log('Upload form submitted');
+    
+    // Check authentication first
+    if (!isAuthenticated()) {
+        alert('Please login first to upload images');
+        if (window.authManager) {
+            window.authManager.showLoginSection();
+        }
+        return;
+    }
     
     const file = fileInput.files[0];
     if (!file) {
@@ -289,13 +398,20 @@ uploadForm.addEventListener('submit', async (e) => {
         await handleFileUploadDebug(file);
     } catch (error) {
         console.error('Error:', error);
-        document.getElementById('result1').innerHTML = `<div class="alert alert-danger"><strong>Error:</strong><br>${error.message}</div>`;
-        document.getElementById('result2').innerHTML = `<div class="alert alert-danger"><strong>Error:</strong><br>${error.message}</div>`;
+        
+        // Check if it's an authentication error
+        if (error.message.includes('Authentication') || error.message.includes('login')) {
+            document.getElementById('result1').innerHTML = `<div class="alert alert-warning"><strong>Authentication Required:</strong><br>Please login again to continue.</div>`;
+            document.getElementById('result2').innerHTML = `<div class="alert alert-warning"><strong>Authentication Required:</strong><br>Please login again to continue.</div>`;
+        } else {
+            document.getElementById('result1').innerHTML = `<div class="alert alert-danger"><strong>Error:</strong><br>${error.message}</div>`;
+            document.getElementById('result2').innerHTML = `<div class="alert alert-danger"><strong>Error:</strong><br>${error.message}</div>`;
+        }
     }
-});
+}
 
-// File Preview Handler
-fileInput.addEventListener('change', (e) => {
+// File input change handler
+function handleFileChange(e) {
     const file = e.target.files[0];
     if (file) {
         try {
@@ -316,10 +432,10 @@ fileInput.addEventListener('change', (e) => {
             fileInput.value = ''; // Clear the input
         }
     }
-});
+}
 
-// Remove Preview Handler
-removePreviewButton.addEventListener('click', () => {
+// Remove preview handler
+function handleRemovePreview() {
     previewContainer.style.display = 'none';
     uploadPrompt.style.display = 'block';
     fileInput.value = '';
@@ -328,31 +444,21 @@ removePreviewButton.addEventListener('click', () => {
     // Clear any existing results
     document.getElementById('result1').innerHTML = '<p class="text-muted">Results will be displayed after upload...</p>';
     document.getElementById('result2').innerHTML = '<p class="text-muted">Results will be displayed after upload...</p>';
-});
-
-// Drag and Drop Handlers
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    uploadZone.addEventListener(eventName, preventDefaults, false);
-});
-
-function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
 }
 
-// Add visual feedback for drag and drop
-uploadZone.addEventListener('dragenter', () => {
+// Drag handlers
+function handleDragEnter() {
     uploadZone.classList.add('drag-over');
-});
+}
 
-uploadZone.addEventListener('dragleave', (e) => {
+function handleDragLeave(e) {
     // Only remove drag-over class if we're leaving the upload zone entirely
     if (!uploadZone.contains(e.relatedTarget)) {
         uploadZone.classList.remove('drag-over');
     }
-});
+}
 
-uploadZone.addEventListener('drop', (e) => {
+function handleDrop(e) {
     uploadZone.classList.remove('drag-over');
     
     const dt = e.dataTransfer;
@@ -382,16 +488,36 @@ uploadZone.addEventListener('drop', (e) => {
             alert(error.message);
         }
     }
-});
+}
 
-// Add click handler to upload zone
-uploadZone.addEventListener('click', (e) => {
+function handleZoneClick(e) {
     // Don't trigger if clicking on the file input or buttons
     if (e.target === fileInput || e.target.tagName === 'BUTTON') {
         return;
     }
     fileInput.click();
+}
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Main.js: DOM loaded, initializing...');
+    setTimeout(() => {
+        initializeDOMElements();
+    }, 200);
 });
+
+// Re-initialize when called from auth manager
+window.reinitializeMainApp = function() {
+    console.log('Re-initializing main app...');
+    setTimeout(() => {
+        initializeDOMElements();
+    }, 100);
+};
 
 // Utility function to convert Python dictionary format to JSON
 function convertPythonDictToJson(pythonDictString) {
