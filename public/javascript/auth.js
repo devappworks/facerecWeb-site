@@ -3,7 +3,7 @@ class AuthManager {
     constructor() {
         this.tokenKey = 'photolytics_auth_token';
         this.emailKey = 'photolytics_user_email';
-        this.loginApiUrl = 'https://facerecognition.mpanel.app/api/auth/token-by-email';
+        this.loginApiUrl = 'http://localhost:5000/api/auth/token-by-email';
         
         // Debounce flags
         this.isLoggingOut = false;
@@ -102,8 +102,6 @@ class AuthManager {
             console.log('User is authenticated, showing main app');
             // Hide login immediately and show main app (no animation on page load)
             if (this.loginSection) {
-                this.loginSection.classList.remove('show');
-                this.loginSection.classList.add('hidden');
                 this.loginSection.style.display = 'none';
                 this.loginSection.style.opacity = '0';
                 this.loginSection.style.visibility = 'hidden';
@@ -142,10 +140,12 @@ class AuthManager {
             }
             
             if (this.loginSection) {
-                this.loginSection.classList.remove('hidden');
-                this.loginSection.classList.add('show');
+                this.loginSection.style.display = 'flex';
                 this.loginSection.style.opacity = '1';
                 this.loginSection.style.transform = 'scale(1)';
+                this.loginSection.style.visibility = 'visible';
+                this.loginSection.style.pointerEvents = 'auto';
+                this.loginSection.style.zIndex = '10';
             }
         }
     }
@@ -190,11 +190,10 @@ class AuthManager {
     // Helper method to show login with animation
     showLoginWithAnimation() {
         if (this.loginSection) {
-            // Remove any existing classes and add show class
-            this.loginSection.classList.remove('hidden');
-            this.loginSection.classList.add('show');
-            
-            // Set initial animation state
+            this.loginSection.style.display = 'flex';
+            this.loginSection.style.visibility = 'visible';
+            this.loginSection.style.pointerEvents = 'auto';
+            this.loginSection.style.zIndex = '10';
             this.loginSection.style.opacity = '0';
             this.loginSection.style.transform = 'scale(0.95)';
             
@@ -221,7 +220,6 @@ class AuthManager {
         
         // Step 1: Fade out login section
         if (this.loginSection) {
-            console.log('Fading out login section');
             this.loginSection.style.opacity = '0';
             this.loginSection.style.transform = 'scale(0.95)';
         }
@@ -229,13 +227,13 @@ class AuthManager {
         setTimeout(() => {
             // Step 2: Completely hide login and show loader immediately (no fade)
             if (this.loginSection) {
-                console.log('Hiding login section with CSS classes');
-                this.loginSection.classList.remove('show');
-                this.loginSection.classList.add('hidden');
+                this.loginSection.style.display = 'none';
+                this.loginSection.style.visibility = 'hidden';
+                this.loginSection.style.pointerEvents = 'none';
+                this.loginSection.style.zIndex = '-1';
             }
             
             if (this.transitionLoader) {
-                console.log('Showing transition loader');
                 this.transitionLoader.style.display = 'flex';
                 this.transitionLoader.style.visibility = 'visible';
                 this.transitionLoader.style.pointerEvents = 'auto';
@@ -244,7 +242,6 @@ class AuthManager {
             }
             
             setTimeout(() => {
-                console.log('Hiding loader and showing main app');
                 // Step 3: Hide loader and show main application
                 if (this.transitionLoader) {
                     this.transitionLoader.style.display = 'none';
@@ -255,7 +252,6 @@ class AuthManager {
                 
                 // Show main application
                 if (this.mainApplication) {
-                    console.log('Setting up main application');
                     this.mainApplication.style.display = 'block';
                     this.mainApplication.style.visibility = 'visible';
                     this.mainApplication.style.pointerEvents = 'auto';
@@ -281,14 +277,6 @@ class AuthManager {
                     this.reattachEventListeners();
                 }
                 
-                // Ensure login section stays hidden
-                if (this.loginSection) {
-                    console.log('Double-checking login section is hidden');
-                    this.loginSection.classList.remove('show');
-                    this.loginSection.classList.add('hidden');
-                    console.log('Login section classes:', this.loginSection.classList.toString());
-                }
-                
             }, 800); // Reduced from 1200ms to 800ms - shorter welcome screen time
             
         }, 300); // Wait for login section to fade out
@@ -297,13 +285,6 @@ class AuthManager {
     // Re-attach event listeners to ensure they work after transitions
     reattachEventListeners() {
         console.log('Reattaching event listeners...');
-        
-        // Ensure login section is still hidden
-        if (this.loginSection) {
-            this.loginSection.classList.remove('show');
-            this.loginSection.classList.add('hidden');
-            console.log('Login section forced hidden during reattach');
-        }
         
         // Re-attach logout button listener with proper cleanup
         const logoutBtn = document.getElementById('logoutButton');
@@ -557,14 +538,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     mainApplication.style.zIndex = '1';
                 }
                 if (loginSection) {
-                    loginSection.classList.remove('show');
-                    loginSection.classList.add('hidden');
+                    loginSection.style.display = 'none';
+                    loginSection.style.visibility = 'hidden';
+                    loginSection.style.pointerEvents = 'none';
+                    loginSection.style.zIndex = '-1';
                 }
             } else {
                 // Show login
                 if (loginSection) {
-                    loginSection.classList.remove('hidden');
-                    loginSection.classList.add('show');
+                    loginSection.style.display = 'flex';
+                    loginSection.style.opacity = '1';
+                    loginSection.style.visibility = 'visible';
+                    loginSection.style.pointerEvents = 'auto';
+                    loginSection.style.zIndex = '10';
                 }
                 if (mainApplication) {
                     mainApplication.style.display = 'none';
@@ -598,12 +584,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainApplication.style.pointerEvents = 'auto';
                 mainApplication.style.zIndex = '1';
                 if (loginSection) {
-                    loginSection.classList.remove('show');
-                    loginSection.classList.add('hidden');
+                    loginSection.style.display = 'none';
+                    loginSection.style.visibility = 'hidden';
+                    loginSection.style.pointerEvents = 'none';
+                    loginSection.style.zIndex = '-1';
                 }
             } else if (loginSection) {
-                loginSection.classList.remove('hidden');
-                loginSection.classList.add('show');
+                loginSection.style.display = 'flex';
+                loginSection.style.opacity = '1';
+                loginSection.style.visibility = 'visible';
+                loginSection.style.pointerEvents = 'auto';
+                loginSection.style.zIndex = '10';
                 if (mainApplication) {
                     mainApplication.style.display = 'none';
                     mainApplication.style.visibility = 'hidden';

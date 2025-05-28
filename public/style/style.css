@@ -67,38 +67,15 @@
 #loginSection {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    transition: all 0.1s ease-in-out;
-    opacity: 0;
-    /* transform: scale(1); */
+    transition: all 0.4s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
     position: absolute !important;
     top: 0;
     left: 0;
     width: 100% !important;
     height: 100vh !important;
     z-index: 10 !important;
-    display: none !important; /* Hidden by default */
-    visibility: hidden !important; /* Hidden by default */
-    pointer-events: none !important; /* No interaction by default */
-}
-
-/* When login section needs to be shown */
-#loginSection.show {
-    display: flex !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-}
-
-/* When login section needs to be hidden */
-#loginSection.hidden {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-    z-index: -1 !important;
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
 }
 
 #loginSection .card {

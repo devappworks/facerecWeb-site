@@ -10,8 +10,8 @@
     <link href="public/style/style.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <!-- Login Section (hidden by default) -->
-    <div id="loginSection" class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="display: none !important; opacity: 0; visibility: hidden;">
+    <!-- Login Section (shown by default) -->
+    <div id="loginSection" class="container-fluid vh-100 d-flex align-items-center justify-content-center">
         <div class="row w-100">
             <div class="col-12 col-md-6 col-lg-4 mx-auto">
                 <div class="card shadow-lg border-0">
@@ -157,8 +157,10 @@
             if (token && email) {
                 console.log('User authenticated, showing main app');
                 if (loginSection) {
-                    loginSection.classList.remove('show');
-                    loginSection.classList.add('hidden');
+                    loginSection.style.display = 'none';
+                    loginSection.style.visibility = 'hidden';
+                    loginSection.style.pointerEvents = 'none';
+                    loginSection.style.zIndex = '-1';
                 }
                 if (mainApp) {
                     mainApp.style.display = 'block';
@@ -182,8 +184,11 @@
                     mainApp.style.zIndex = '-1';
                 }
                 if (loginSection) {
-                    loginSection.classList.remove('hidden');
-                    loginSection.classList.add('show');
+                    loginSection.style.display = 'flex';
+                    loginSection.style.opacity = '1';
+                    loginSection.style.visibility = 'visible';
+                    loginSection.style.pointerEvents = 'auto';
+                    loginSection.style.zIndex = '10';
                 }
             }
         });
