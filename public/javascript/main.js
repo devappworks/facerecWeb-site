@@ -78,7 +78,7 @@ const API_CONFIG = {
     }
 };
 
-// Get authentication token from localStorage
+// Get authentication https://facerecognition.mpanel.appge
 function getAuthToken() {
     if (window.authManager) {
         return window.authManager.getToken();
