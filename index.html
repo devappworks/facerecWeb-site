@@ -10,8 +10,19 @@
     <link href="public/style/style.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <!-- Login Section (shown by default) -->
-    <div id="loginSection" class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+    <!-- Initial Loading Screen (shown while checking auth) -->
+    <div id="initialLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 10000;">
+        <div class="text-center text-white">
+            <div class="spinner-border mb-3" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h4 class="mb-2">Photolytics</h4>
+            <p class="text-white-50">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Login Section (hidden by default until auth check) -->
+    <div id="loginSection" class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="display: none !important; opacity: 0;">
         <div class="row w-100">
             <div class="col-12 col-md-6 col-lg-4 mx-auto">
                 <div class="card shadow-lg border-0">
@@ -134,7 +145,13 @@
         window.addEventListener('load', () => {
             console.log('Window loaded');
             
-            // Force hide loader if it's visible
+            // Hide initial loader
+            const initialLoader = document.getElementById('initialLoader');
+            if (initialLoader) {
+                initialLoader.style.display = 'none';
+            }
+            
+            // Force hide transition loader if it's visible
             const loader = document.getElementById('transitionLoader');
             if (loader) {
                 console.log('Loader found, hiding it');
@@ -189,6 +206,31 @@
                     loginSection.style.visibility = 'visible';
                     loginSection.style.pointerEvents = 'auto';
                     loginSection.style.zIndex = '10';
+                }
+            }
+        });
+        
+        // Even faster check on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded - quick auth check');
+            
+            const token = localStorage.getItem('photolytics_auth_token');
+            const email = localStorage.getItem('photolytics_user_email');
+            
+            if (token && email) {
+                // User is authenticated - hide initial loader faster
+                const initialLoader = document.getElementById('initialLoader');
+                if (initialLoader) {
+                    initialLoader.style.display = 'none';
+                }
+                
+                const mainApp = document.getElementById('mainApplication');
+                if (mainApp) {
+                    mainApp.style.display = 'block';
+                    mainApp.style.opacity = '1';
+                    mainApp.style.visibility = 'visible';
+                    mainApp.style.pointerEvents = 'auto';
+                    mainApp.style.zIndex = '1';
                 }
             }
         });

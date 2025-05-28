@@ -3,7 +3,7 @@ class AuthManager {
     constructor() {
         this.tokenKey = 'photolytics_auth_token';
         this.emailKey = 'photolytics_user_email';
-        this.loginApiUrl = 'http://localhost:5000/api/auth/token-by-email';
+        this.loginApiUrl = 'https://facerecognition.mpanel.app/api/auth/token-by-email';
         
         // Debounce flags
         this.isLoggingOut = false;
@@ -13,6 +13,7 @@ class AuthManager {
         this.loginSection = document.getElementById('loginSection');
         this.mainApplication = document.getElementById('mainApplication');
         this.transitionLoader = document.getElementById('transitionLoader');
+        this.initialLoader = document.getElementById('initialLoader');
         this.loginForm = document.getElementById('loginForm');
         this.emailInput = document.getElementById('emailInput');
         this.loginButton = document.getElementById('loginButton');
@@ -89,7 +90,15 @@ class AuthManager {
         console.log('Token:', this.getToken());
         console.log('Email:', this.getEmail());
         
-        // Force hide transition loader first
+        // Hide initial loader first
+        if (this.initialLoader) {
+            this.initialLoader.style.display = 'none';
+            this.initialLoader.style.visibility = 'hidden';
+            this.initialLoader.style.pointerEvents = 'none';
+            this.initialLoader.style.zIndex = '-1';
+        }
+        
+        // Force hide transition loader
         if (this.transitionLoader) {
             this.transitionLoader.style.display = 'none';
             this.transitionLoader.style.opacity = '0';
@@ -515,9 +524,17 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error initializing AuthManager:', error);
             
             // Fallback: hide loader and show login
+            const initialLoader = document.getElementById('initialLoader');
             const transitionLoader = document.getElementById('transitionLoader');
             const loginSection = document.getElementById('loginSection');
             const mainApplication = document.getElementById('mainApplication');
+            
+            if (initialLoader) {
+                initialLoader.style.display = 'none';
+                initialLoader.style.visibility = 'hidden';
+                initialLoader.style.pointerEvents = 'none';
+                initialLoader.style.zIndex = '-1';
+            }
             
             if (transitionLoader) {
                 transitionLoader.style.display = 'none';
@@ -564,9 +581,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Additional fallback after 3 seconds
     setTimeout(() => {
+        const initialLoader = document.getElementById('initialLoader');
         const transitionLoader = document.getElementById('transitionLoader');
+        
+        // Hide any visible loaders
+        if (initialLoader && initialLoader.style.display !== 'none') {
+            console.warn('Initial loader still visible after 3 seconds, forcing hide...');
+            initialLoader.style.display = 'none';
+            initialLoader.style.visibility = 'hidden';
+            initialLoader.style.pointerEvents = 'none';
+            initialLoader.style.zIndex = '-1';
+        }
+        
         if (transitionLoader && transitionLoader.style.display !== 'none') {
-            console.warn('Loader still visible after 3 seconds, forcing hide...');
+            console.warn('Transition loader still visible after 3 seconds, forcing hide...');
             transitionLoader.style.display = 'none';
             transitionLoader.style.visibility = 'hidden';
             transitionLoader.style.pointerEvents = 'none';
