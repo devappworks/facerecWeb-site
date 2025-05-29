@@ -3,7 +3,7 @@ class AuthManager {
     constructor() {
         this.tokenKey = 'photolytics_auth_token';
         this.emailKey = 'photolytics_user_email';
-        this.loginApiUrl = 'https://facerecognition.mpanel.app/api/auth/token-by-email';
+        this.loginApiUrl = 'http://127.0.0.1:5000/api/auth/token-by-email';
         
         // Debounce flags
         this.isLoggingOut = false;
@@ -89,6 +89,9 @@ class AuthManager {
         console.log('Is authenticated:', isAuth);
         console.log('Token:', this.getToken());
         console.log('Email:', this.getEmail());
+        
+        // Hide domain selection modal if it's open
+        this.hideDomainSelectionModal();
         
         // Hide initial loader first
         if (this.initialLoader) {
@@ -374,18 +377,27 @@ class AuthManager {
             const data = await response.json();
             
             if (data.success && data.data) {
-                // Successful login
-                const { email: userEmail, token } = data.data;
-                this.saveAuthData(userEmail, token);
-                this.showLoginAlert('Login successful! Redirecting...', 'success');
-                
-                // Small delay before showing main app for better UX
-                setTimeout(() => {
-                    this.showMainApplication();
-                    this.resetLoginForm();
+                // Check if data is an array (multiple domains) or object (single domain)
+                if (Array.isArray(data.data)) {
+                    // Multiple domains - show domain selection modal
+                    console.log('Multiple domains received:', data.data);
+                    this.showLoginAlert('Multiple domains available. Please select one...', 'info');
+                    this.showDomainSelection(data.data, email);
                     this.isLoggingIn = false;
-                }, 1000);
-                
+                } else {
+                    // Single domain - proceed as before
+                    console.log('Single domain received:', data.data);
+                    const { email: userEmail, token } = data.data;
+                    this.saveAuthData(userEmail, token);
+                    this.showLoginAlert('Login successful! Redirecting...', 'success');
+                    
+                    // Small delay before showing main app for better UX
+                    setTimeout(() => {
+                        this.showMainApplication();
+                        this.resetLoginForm();
+                        this.isLoggingIn = false;
+                    }, 1000);
+                }
             } else {
                 // Failed login
                 const errorMessage = data.error || 'Login failed. Please try again.';
@@ -402,6 +414,109 @@ class AuthManager {
         }
     }
     
+    // Show domain selection modal
+    showDomainSelection(domains, email) {
+        console.log('Showing domain selection for domains:', domains);
+        
+        const modal = document.getElementById('domainSelectionModal');
+        const domainList = document.getElementById('domainList');
+        
+        if (!modal || !domainList) {
+            console.error('Domain selection modal elements not found');
+            this.showLoginAlert('Error loading domain selection. Please try again.', 'danger');
+            return;
+        }
+        
+        // Clear previous domain options
+        domainList.innerHTML = '';
+        
+        // Create domain options
+        domains.forEach((domainData, index) => {
+            const domainButton = document.createElement('button');
+            domainButton.className = 'domain-option';
+            domainButton.innerHTML = `
+                <div class="domain-name">${domainData.domain}</div>
+                <div class="domain-icon">
+                    <i class="bi bi-arrow-right-circle"></i>
+                </div>
+            `;
+            
+            domainButton.addEventListener('click', () => {
+                this.selectDomain(domainData, email);
+            });
+            
+            domainList.appendChild(domainButton);
+        });
+        
+        // Show the modal
+        const modalInstance = new bootstrap.Modal(modal, {
+            backdrop: 'static',
+            keyboard: false
+        });
+        modalInstance.show();
+        
+        // Store modal instance for later use
+        this.domainModalInstance = modalInstance;
+    }
+    
+    // Handle domain selection
+    selectDomain(selectedDomainData, email) {
+        console.log('Domain selected:', selectedDomainData);
+        
+        try {
+            // Save the selected domain's data
+            this.saveAuthData(selectedDomainData.email, selectedDomainData.token);
+            
+            // Show success message
+            this.showLoginAlert('Domain selected! Logging in...', 'success');
+            
+            // Close the modal
+            if (this.domainModalInstance) {
+                this.domainModalInstance.hide();
+            }
+            
+            // Small delay before showing main app
+            setTimeout(() => {
+                this.showMainApplication();
+                this.resetLoginForm();
+            }, 1000);
+            
+        } catch (error) {
+            console.error('Error selecting domain:', error);
+            this.showLoginAlert('Error selecting domain. Please try again.', 'danger');
+        }
+    }
+    
+    // Hide domain selection modal
+    hideDomainSelectionModal() {
+        if (this.domainModalInstance) {
+            try {
+                this.domainModalInstance.hide();
+                this.domainModalInstance = null;
+            } catch (error) {
+                console.log('Modal already disposed or hidden');
+            }
+        }
+        
+        // Also hide via direct DOM manipulation as fallback
+        const modal = document.getElementById('domainSelectionModal');
+        if (modal) {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            
+            // Remove backdrop if it exists
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
+            
+            // Restore body scroll
+            document.body.classList.remove('modal-open');
+            document.body.style.paddingRight = '';
+        }
+    }
+    
     // Handle logout
     handleLogout() {
         // Prevent multiple simultaneous logout operations
@@ -412,6 +527,9 @@ class AuthManager {
         
         console.log('Logout initiated');
         this.isLoggingOut = true;
+        
+        // Hide domain selection modal if it's open
+        this.hideDomainSelectionModal();
         
         // Prevent multiple clicks
         if (this.logoutButton) {
