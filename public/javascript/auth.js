@@ -3,7 +3,7 @@ class AuthManager {
     constructor() {
         this.tokenKey = 'photolytics_auth_token';
         this.emailKey = 'photolytics_user_email';
-        this.loginApiUrl = 'http://127.0.0.1:5000/api/auth/token-by-email';
+        this.loginApiUrl = 'https://facerecognition.mpanel.app/api/auth/token-by-email';
         
         // Debounce flags
         this.isLoggingOut = false;
