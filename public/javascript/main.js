@@ -230,9 +230,21 @@ function displayFaceRecognitionResult(faceData) {
         result1.innerHTML = `<div class="alert alert-danger"><strong>Face Recognition Error:</strong><br>${faceData.error}</div>`;
     } else if (faceData.status == 'error') {
         result1.innerHTML = `<div class="alert alert-danger"><strong>Face Recognition Error:</strong><br>${faceData.message}</div>`;
-    } else if (faceData.status === 'success' && faceData.person) {
+    } else if (faceData.status === 'success' && (faceData.person || faceData.recognized_persons)) {
         // Successful face recognition
         const confidence = faceData.best_match?.confidence_metrics?.confidence_percentage || 0;
+        
+        // Handle multiple recognized persons
+        let recognizedPersonsText = '';
+        if (faceData.recognized_persons && Array.isArray(faceData.recognized_persons) && faceData.recognized_persons.length > 0) {
+            const personNames = faceData.recognized_persons.map(person => person.name);
+            recognizedPersonsText = personNames.join(', ');
+        } else if (faceData.person) {
+            recognizedPersonsText = faceData.person;
+        }
+        
+        const personCount = faceData.recognized_persons ? faceData.recognized_persons.length : 1;
+        const personLabel = personCount > 1 ? 'Recognized persons' : 'Recognized person';
         
         result1.innerHTML = `
             <div class="alert alert-success">
@@ -240,8 +252,8 @@ function displayFaceRecognitionResult(faceData) {
                     <i class="bi bi-person-check-fill me-2 fs-4"></i>
                     <div>
                         <h6 class="mb-1"><strong>Face Recognition Successful!</strong></h6>
-                        <p class="mb-1">Recognized person: <strong>${faceData.person}</strong></p>
-                        <small class="text-muted">Confidence: ${confidence.toFixed(2)}%</small>
+                        <p class="mb-1">${personLabel}: <strong>${recognizedPersonsText}</strong></p>
+                        ${personCount > 1 ? `<small class="text-muted">${personCount} persons recognized</small>` : `<small class="text-muted">Confidence: ${confidence.toFixed(2)}%</small>`}
                     </div>
                 </div>
                 
@@ -256,7 +268,7 @@ function displayFaceRecognitionResult(faceData) {
                 </div>
             </div>
         `;
-    } else if (faceData.status === 'success' && !faceData.person) {
+    } else if (faceData.status === 'success' && !faceData.person && (!faceData.recognized_persons || faceData.recognized_persons.length === 0)) {
         // No person recognized
         result1.innerHTML = `
             <div class="alert alert-warning">
