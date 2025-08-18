@@ -281,6 +281,20 @@ function displayFaceRecognitionResult(faceData) {
                 </div>
             </div>
         `;
+    } else if (faceData.status === 'no_faces') {
+        // No valid faces found after validation checks
+        result1.innerHTML = `
+            <div class="alert alert-warning">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                    <div>
+                        <h6 class="mb-1"><strong>No Valid Faces Found</strong></h6>
+                        <p class="mb-0">${faceData.message}</p>
+                        <small class="text-muted">Detected: ${faceData.total_faces_detected}, Valid after filtering: ${faceData.valid_faces_after_filtering}</small>
+                    </div>
+                </div>
+            </div>
+        `;
     } else {
         // Fallback to JSON display for unexpected format
         result1.innerHTML = `<pre class="bg-light p-3 rounded">${JSON.stringify(faceData, null, 2)}</pre>`;
