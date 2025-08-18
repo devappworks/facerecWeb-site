@@ -289,7 +289,7 @@ function displayFaceRecognitionResult(faceData) {
                     <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
                     <div>
                         <h6 class="mb-1"><strong>No Valid Faces Found</strong></h6>
-                        <p class="mb-0">${faceData.message}</p>
+                        <p class="mb-0">${faceData.message}.</p>
                     </div>
                 </div>
             </div>
