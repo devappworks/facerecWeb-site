@@ -290,7 +290,6 @@ function displayFaceRecognitionResult(faceData) {
                     <div>
                         <h6 class="mb-1"><strong>No Valid Faces Found</strong></h6>
                         <p class="mb-0">${faceData.message}</p>
-                        <small class="text-muted">Detected: ${faceData.total_faces_detected}, Valid after filtering: ${faceData.valid_faces_after_filtering}</small>
                     </div>
                 </div>
             </div>
