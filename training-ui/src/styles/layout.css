@@ -69,6 +69,24 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.btn-theme-toggle {
+  background: transparent;
+  color: var(--sidebar-text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-theme-toggle:hover {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
 .main-content {
   margin-left: 260px;
   flex: 1;
@@ -116,7 +134,13 @@
     padding: 1rem;
   }
 
-  .sidebar-footer .btn-logout span:not(.nav-icon) {
+  .sidebar-footer .btn-logout span:not(.nav-icon),
+  .sidebar-footer .btn-theme-toggle span:not(.nav-icon) {
     display: none;
+  }
+
+  .btn-theme-toggle,
+  .btn-logout {
+    padding: 0.75rem 0.5rem;
   }
 }

@@ -16,6 +16,19 @@
   --success-color: #10b981;
   --error-color: #ef4444;
   --warning-color: #f59e0b;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #e4e4e7;
+  --border-color: #3f3f46;
+  --sidebar-bg: #18181b;
+  --sidebar-text: #e4e4e7;
+  --card-bg: #27272a;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 body {
@@ -138,10 +151,16 @@ body {
 }
 
 .card {
-  background: white;
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
 }
 
 .button-group {
@@ -168,10 +187,11 @@ body {
 }
 
 .result-box {
-  background: #f9fafb;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 8px;
   border-left: 4px solid var(--primary-color);
+  border: 1px solid var(--border-color);
 }
 
 .result-box h3 {
@@ -182,23 +202,24 @@ body {
 .result-box p {
   margin: 0.5rem 0;
   line-height: 1.6;
+  color: var(--text-color);
 }
 
 .info-box {
-  background: #eff6ff;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 8px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--border-color);
 }
 
 .info-box h4 {
   margin: 0 0 0.5rem 0;
-  color: #1e40af;
+  color: var(--primary-color);
 }
 
 .info-box ul {
   margin: 0;
-  color: #1e3a8a;
+  color: var(--text-color);
   line-height: 1.8;
 }
 

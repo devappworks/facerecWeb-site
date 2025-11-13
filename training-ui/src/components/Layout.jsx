@@ -1,9 +1,11 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { useTheme } from '../hooks/useTheme'
 import '../styles/layout.css'
 
 export default function Layout() {
   const { user, logout } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -75,6 +77,14 @@ export default function Layout() {
             <span className="nav-icon">🏠</span>
             Main App
           </a>
+          <button
+            onClick={toggleTheme}
+            className="btn btn-theme-toggle"
+            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          >
+            <span className="nav-icon">{theme === 'light' ? '🌙' : '☀️'}</span>
+            {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+          </button>
           <button onClick={handleLogout} className="btn btn-logout">
             <span className="nav-icon">🚪</span>
             Logout
