@@ -96,4 +96,18 @@ export const trainingService = {
     const response = await api.post('/manage-image', formData)
     return response.data
   },
+
+  // Get folder images (for gallery view)
+  async getFolderImages(folderName) {
+    // TODO: Backend needs to implement this endpoint
+    // For now, return mock data
+    return {
+      success: true,
+      data: {
+        folderName,
+        images: [],
+        totalCount: 0,
+      },
+    }
+  },
 }

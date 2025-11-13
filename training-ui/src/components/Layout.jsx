@@ -45,6 +45,12 @@ export default function Layout() {
             </Link>
           </li>
           <li>
+            <Link to="/gallery" className="nav-link">
+              <span className="nav-icon">🖼️</span>
+              Image Gallery
+            </Link>
+          </li>
+          <li>
             <Link to="/sync" className="nav-link">
               <span className="nav-icon">🔄</span>
               Sync Manager

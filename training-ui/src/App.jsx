@@ -12,6 +12,7 @@ import ProgressMonitor from './pages/ProgressMonitor'
 import SyncManager from './pages/SyncManager'
 import Testing from './pages/Testing'
 import ABTesting from './pages/ABTesting'
+import ImageGallery from './pages/ImageGallery'
 
 import './styles/global.css'
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/generate" element={<GenerateNames />} />
             <Route path="/queue" element={<QueueManager />} />
             <Route path="/progress" element={<ProgressMonitor />} />
+            <Route path="/gallery" element={<ImageGallery />} />
             <Route path="/sync" element={<SyncManager />} />
             <Route path="/test" element={<Testing />} />
             <Route path="/ab-test" element={<ABTesting />} />
