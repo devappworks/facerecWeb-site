@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useTheme } from '../hooks/useTheme'
@@ -7,6 +8,7 @@ export default function Layout() {
   const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
+  const [abTestingOpen, setAbTestingOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -64,11 +66,48 @@ export default function Layout() {
               Testing
             </Link>
           </li>
+
+          {/* A/B Testing Section */}
           <li>
-            <Link to="/ab-test" className="nav-link">
+            <div
+              className="nav-link nav-section-toggle"
+              onClick={() => setAbTestingOpen(!abTestingOpen)}
+              style={{ cursor: 'pointer' }}
+            >
               <span className="nav-icon">⚖️</span>
               A/B Testing
-            </Link>
+              <span style={{ marginLeft: 'auto', fontSize: '0.8rem' }}>
+                {abTestingOpen ? '▼' : '▶'}
+              </span>
+            </div>
+            {abTestingOpen && (
+              <ul className="nav-submenu">
+                <li>
+                  <Link to="/ab-testing/live" className="nav-link nav-sublink">
+                    <span className="nav-icon">🔬</span>
+                    Live Comparison
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ab-testing/metrics" className="nav-link nav-sublink">
+                    <span className="nav-icon">📊</span>
+                    Metrics
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ab-testing/decision" className="nav-link nav-sublink">
+                    <span className="nav-icon">🎯</span>
+                    Decision Support
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ab-testing/history" className="nav-link nav-sublink">
+                    <span className="nav-icon">📜</span>
+                    History
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
 

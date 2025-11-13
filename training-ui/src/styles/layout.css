@@ -64,6 +64,34 @@
   font-size: 1.25rem;
 }
 
+.nav-section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.nav-submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 2px solid rgba(102, 126, 234, 0.3);
+}
+
+.nav-submenu li {
+  margin: 0;
+}
+
+.nav-sublink {
+  padding: 0.75rem 1.5rem 0.75rem 2.5rem;
+  font-size: 0.9rem;
+}
+
+.nav-sublink:hover {
+  padding-left: 3rem;
+}
+
 .sidebar-footer {
   padding: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -132,6 +160,10 @@
   .nav-link {
     justify-content: center;
     padding: 1rem;
+  }
+
+  .nav-submenu {
+    display: none; /* Hide submenu on mobile */
   }
 
   .sidebar-footer .btn-logout span:not(.nav-icon),

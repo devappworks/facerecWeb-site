@@ -15,6 +15,12 @@ import Testing from './pages/Testing'
 import ABTesting from './pages/ABTesting'
 import ImageGallery from './pages/ImageGallery'
 
+// A/B Testing Pages
+import LiveComparison from './pages/ab-testing/LiveComparison'
+import MetricsDashboard from './pages/ab-testing/MetricsDashboard'
+import DecisionSupport from './pages/ab-testing/DecisionSupport'
+import TestHistory from './pages/ab-testing/TestHistory'
+
 import './styles/global.css'
 
 function App() {
@@ -42,6 +48,13 @@ function App() {
               <Route path="/sync" element={<SyncManager />} />
               <Route path="/test" element={<Testing />} />
               <Route path="/ab-test" element={<ABTesting />} />
+
+              {/* A/B Testing Routes */}
+              <Route path="/ab-testing/live" element={<LiveComparison />} />
+              <Route path="/ab-testing/metrics" element={<MetricsDashboard />} />
+              <Route path="/ab-testing/decision" element={<DecisionSupport />} />
+              <Route path="/ab-testing/history" element={<TestHistory />} />
+
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
             </Route>
 
