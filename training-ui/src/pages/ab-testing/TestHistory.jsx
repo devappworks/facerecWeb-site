@@ -26,7 +26,7 @@ export default function TestHistory() {
       setError(null)
       const response = await abTestingService.getTestHistory()
       if (response.success) {
-        setHistory(response.tests)
+        setHistory(response.data.tests)
       } else {
         throw new Error(response.message || 'Failed to fetch history')
       }
