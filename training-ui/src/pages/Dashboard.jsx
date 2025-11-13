@@ -1,40 +1,62 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { trainingService } from '../services/training'
+import { usePolling } from '../hooks/usePolling'
 import '../styles/dashboard.css'
 
 export default function Dashboard() {
-  const [stats, setStats] = useState({
-    queueSize: 0,
-    processed: 0,
-    remaining: 0,
-  })
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    fetchStats()
-  }, [])
+  const [pollingEnabled, setPollingEnabled] = useState(true)
 
   const fetchStats = async () => {
-    try {
-      setLoading(true)
-      const response = await trainingService.getQueueStatus()
-      if (response.success) {
-        setStats(response.data)
-      }
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
+    const response = await trainingService.getQueueStatus()
+    if (response.success) {
+      return response.data
+    }
+    throw new Error(response.message || 'Failed to fetch stats')
+  }
+
+  const { data: stats, loading, error, isPolling, startPolling, stopPolling } = usePolling(
+    fetchStats,
+    10000, // Poll every 10 seconds
+    pollingEnabled
+  )
+
+  const togglePolling = () => {
+    if (isPolling) {
+      stopPolling()
+      setPollingEnabled(false)
+    } else {
+      startPolling()
+      setPollingEnabled(true)
     }
   }
 
   return (
     <div className="page-container">
       <div className="dashboard-header">
-        <h1>Training Dashboard</h1>
-        <p className="subtitle">Overview of face recognition training status</p>
+        <div>
+          <h1>Training Dashboard</h1>
+          <p className="subtitle">Overview of face recognition training status</p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {isPolling && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', fontSize: '0.875rem' }}>
+              <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }}></span>
+              Auto-updating
+            </div>
+          )}
+          <button
+            className="btn"
+            onClick={togglePolling}
+            style={{
+              background: isPolling ? '#ef4444' : '#10b981',
+              color: 'white',
+              border: 'none',
+            }}
+          >
+            {isPolling ? '⏸️ Pause Updates' : '▶️ Resume Updates'}
+          </button>
+        </div>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
@@ -46,7 +68,7 @@ export default function Dashboard() {
           <div className="stat-content">
             <div className="stat-label">Queue Size</div>
             <div className="stat-value">
-              {loading ? '...' : stats.queueSize}
+              {loading ? '...' : (stats?.queueSize ?? 0)}
             </div>
           </div>
         </div>
@@ -56,7 +78,7 @@ export default function Dashboard() {
           <div className="stat-content">
             <div className="stat-label">Processed</div>
             <div className="stat-value">
-              {loading ? '...' : stats.processed}
+              {loading ? '...' : (stats?.processed ?? 0)}
             </div>
           </div>
         </div>
@@ -66,7 +88,7 @@ export default function Dashboard() {
           <div className="stat-content">
             <div className="stat-label">Remaining</div>
             <div className="stat-value">
-              {loading ? '...' : stats.remaining}
+              {loading ? '...' : (stats?.remaining ?? 0)}
             </div>
           </div>
         </div>

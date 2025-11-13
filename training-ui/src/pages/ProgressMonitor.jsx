@@ -1,36 +1,45 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { trainingService } from '../services/training'
+import { usePolling } from '../hooks/usePolling'
 import '../styles/progress.css'
 
 export default function ProgressMonitor() {
-  const [folders, setFolders] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [refreshing, setRefreshing] = useState(false)
-
-  useEffect(() => {
-    fetchProgress()
-  }, [])
+  const [pollingEnabled, setPollingEnabled] = useState(true)
 
   const fetchProgress = async () => {
-    try {
-      setLoading(true)
-      const response = await trainingService.getTrainingProgress()
-
-      if (response.success) {
-        setFolders(response.data.folders || [])
-      }
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
+    const response = await trainingService.getTrainingProgress()
+    if (response.success) {
+      return response.data.folders || []
     }
+    throw new Error(response.message || 'Failed to fetch progress')
   }
 
+  const {
+    data: folders,
+    loading,
+    error,
+    refetch,
+    isPolling,
+    startPolling,
+    stopPolling
+  } = usePolling(
+    fetchProgress,
+    15000, // Poll every 15 seconds
+    pollingEnabled
+  )
+
   const handleRefresh = async () => {
-    setRefreshing(true)
-    await fetchProgress()
-    setRefreshing(false)
+    await refetch()
+  }
+
+  const togglePolling = () => {
+    if (isPolling) {
+      stopPolling()
+      setPollingEnabled(false)
+    } else {
+      startPolling()
+      setPollingEnabled(true)
+    }
   }
 
   const getStatusBadge = (imageCount) => {
@@ -49,20 +58,32 @@ export default function ProgressMonitor() {
             Monitor training folders and image counts. Minimum 20 images recommended per person.
           </p>
         </div>
-        <button
-          className="btn btn-primary"
-          onClick={handleRefresh}
-          disabled={refreshing}
-        >
-          {refreshing ? (
-            <>
-              <span className="spinner"></span>
-              Refreshing...
-            </>
-          ) : (
-            <>🔄 Refresh</>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          {isPolling && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', fontSize: '0.875rem' }}>
+              <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }}></span>
+              Auto-updating
+            </div>
           )}
-        </button>
+          <button
+            className="btn"
+            onClick={togglePolling}
+            style={{
+              background: isPolling ? '#ef4444' : '#10b981',
+              color: 'white',
+              border: 'none',
+            }}
+          >
+            {isPolling ? '⏸️ Pause' : '▶️ Resume'}
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={handleRefresh}
+            disabled={loading}
+          >
+            🔄 Refresh
+          </button>
+        </div>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
@@ -72,7 +93,7 @@ export default function ProgressMonitor() {
           <span className="spinner" style={{ width: '2rem', height: '2rem' }}></span>
           <p>Loading training data...</p>
         </div>
-      ) : folders.length === 0 ? (
+      ) : !folders || folders.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📂</div>
           <h3>No Training Data Yet</h3>
