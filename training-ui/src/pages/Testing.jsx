@@ -2,37 +2,64 @@ import { useState } from 'react'
 import { trainingService } from '../services/training'
 
 export default function Testing() {
-  const [file, setFile] = useState(null)
-  const [preview, setPreview] = useState(null)
+  const [files, setFiles] = useState([])
   const [testing, setTesting] = useState(false)
-  const [result, setResult] = useState(null)
+  const [results, setResults] = useState([])
   const [error, setError] = useState(null)
   const [dragActive, setDragActive] = useState(false)
+  const [batchMode, setBatchMode] = useState(false)
 
-  const handleFile = (selectedFile) => {
-    if (!selectedFile) return
+  const handleFiles = (selectedFiles) => {
+    if (!selectedFiles || selectedFiles.length === 0) return
 
-    // Validate file
-    if (!selectedFile.type.startsWith('image/')) {
-      setError('Please select an image file')
-      return
+    const validFiles = []
+    const errors = []
+
+    Array.from(selectedFiles).forEach((file, index) => {
+      // Validate file
+      if (!file.type.startsWith('image/')) {
+        errors.push(`${file.name}: Not an image file`)
+        return
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        errors.push(`${file.name}: File size must be less than 10MB`)
+        return
+      }
+
+      validFiles.push(file)
+    })
+
+    if (errors.length > 0) {
+      setError(errors.join(', '))
+      if (validFiles.length === 0) return
+    } else {
+      setError(null)
     }
 
-    if (selectedFile.size > 10 * 1024 * 1024) {
-      setError('File size must be less than 10MB')
-      return
-    }
+    // Create previews
+    const fileObjects = validFiles.map((file) => ({
+      file,
+      preview: null,
+      result: null,
+      loading: false,
+    }))
 
-    setFile(selectedFile)
-    setError(null)
-    setResult(null)
+    fileObjects.forEach((fileObj, index) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        fileObj.preview = reader.result
+        if (index === fileObjects.length - 1) {
+          setFiles([...files, ...fileObjects])
+          setResults([])
+        }
+      }
+      reader.readAsDataURL(fileObj.file)
+    })
 
-    // Create preview
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setPreview(reader.result)
+    if (fileObjects.length === 0) {
+      setFiles([...files, ...fileObjects])
     }
-    reader.readAsDataURL(selectedFile)
   }
 
   const handleDrag = (e) => {
@@ -50,107 +77,117 @@ export default function Testing() {
     e.stopPropagation()
     setDragActive(false)
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0])
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files)
     }
   }
 
   const handleChange = (e) => {
     e.preventDefault()
-    if (e.target.files && e.target.files[0]) {
-      handleFile(e.target.files[0])
+    if (e.target.files && e.target.files.length > 0) {
+      handleFiles(e.target.files)
     }
   }
 
-  const handleTest = async () => {
-    if (!file) return
+  const handleTestAll = async () => {
+    if (files.length === 0) return
 
     setTesting(true)
     setError(null)
-    setResult(null)
+    const newResults = []
 
-    try {
-      const response = await trainingService.testRecognition(file)
-      setResult(response)
-    } catch (err) {
-      setError(err.message || 'Failed to test recognition')
-    } finally {
-      setTesting(false)
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const response = await trainingService.testRecognition(files[i].file)
+        newResults.push({
+          fileName: files[i].file.name,
+          ...response,
+        })
+      } catch (err) {
+        newResults.push({
+          fileName: files[i].file.name,
+          status: 'error',
+          message: err.message || 'Failed to test recognition',
+        })
+      }
     }
+
+    setResults(newResults)
+    setTesting(false)
   }
 
   const handleClear = () => {
-    setFile(null)
-    setPreview(null)
-    setResult(null)
+    setFiles([])
+    setResults([])
     setError(null)
+  }
+
+  const removeFile = (index) => {
+    const newFiles = files.filter((_, i) => i !== index)
+    setFiles(newFiles)
+    if (results.length > 0) {
+      const newResults = results.filter((_, i) => i !== index)
+      setResults(newResults)
+    }
   }
 
   return (
     <div className="page-container">
       <h1>Test Recognition</h1>
       <p className="subtitle">
-        Upload an image to test face recognition accuracy.
+        Upload one or multiple images to test face recognition accuracy.
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
-        {/* Upload Section */}
-        <div className="card">
-          <h3 style={{ marginTop: 0 }}>Upload Image</h3>
+      {/* Upload Section */}
+      <div className="card" style={{ marginTop: '2rem' }}>
+        <h3 style={{ marginTop: 0 }}>Upload Images</h3>
 
-          <div
-            className={`upload-zone ${dragActive ? 'drag-active' : ''}`}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-            style={{
-              border: `2px dashed ${dragActive ? '#667eea' : '#d1d5db'}`,
-              borderRadius: '12px',
-              padding: '2rem',
-              textAlign: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              background: dragActive ? '#f0f4ff' : '#f9fafb'
-            }}
-          >
-            <input
-              type="file"
-              id="file-upload"
-              accept="image/*"
-              onChange={handleChange}
-              style={{ display: 'none' }}
-            />
-            <label htmlFor="file-upload" style={{ cursor: 'pointer', display: 'block' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📸</div>
-              <p style={{ margin: '0 0 0.5rem 0', fontWeight: 500 }}>
-                Drop image here or click to browse
-              </p>
-              <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
-                Supports JPG, PNG, GIF (max 10MB)
-              </p>
-            </label>
-          </div>
+        <div
+          className={`upload-zone ${dragActive ? 'drag-active' : ''}`}
+          onDragEnter={handleDrag}
+          onDragLeave={handleDrag}
+          onDragOver={handleDrag}
+          onDrop={handleDrop}
+          style={{
+            border: `2px dashed ${dragActive ? '#667eea' : '#d1d5db'}`,
+            borderRadius: '12px',
+            padding: '2rem',
+            textAlign: 'center',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            background: dragActive ? '#f0f4ff' : '#f9fafb'
+          }}
+        >
+          <input
+            type="file"
+            id="file-upload"
+            accept="image/*"
+            multiple
+            onChange={handleChange}
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="file-upload" style={{ cursor: 'pointer', display: 'block' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📸</div>
+            <p style={{ margin: '0 0 0.5rem 0', fontWeight: 500 }}>
+              Drop images here or click to browse
+            </p>
+            <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
+              Supports JPG, PNG, GIF (max 10MB per file) - Multiple files supported
+            </p>
+          </label>
+        </div>
 
-          {preview && (
-            <div style={{ marginTop: '1rem' }}>
-              <img
-                src={preview}
-                alt="Preview"
-                style={{
-                  width: '100%',
-                  maxHeight: '300px',
-                  objectFit: 'contain',
-                  borderRadius: '8px',
-                  border: '1px solid #e5e7eb'
-                }}
-              />
-              <div className="button-group" style={{ marginTop: '1rem' }}>
+        {error && <div className="alert alert-error" style={{ marginTop: '1rem' }}>{error}</div>}
+
+        {files.length > 0 && (
+          <div style={{ marginTop: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h4 style={{ margin: 0 }}>{files.length} image{files.length > 1 ? 's' : ''} selected</h4>
+              <div className="button-group">
                 <button
                   className="btn btn-primary"
-                  onClick={handleTest}
-                  disabled={testing || !file}
-                  style={{ flex: 1 }}
+                  onClick={handleTestAll}
+                  disabled={testing || files.length === 0}
                 >
                   {testing ? (
                     <>
@@ -158,7 +195,7 @@ export default function Testing() {
                       Testing...
                     </>
                   ) : (
-                    '🧪 Test Recognition'
+                    `🧪 Test All (${files.length})`
                   )}
                 </button>
                 <button
@@ -167,74 +204,116 @@ export default function Testing() {
                   disabled={testing}
                   style={{ background: '#ef4444', color: 'white', border: 'none' }}
                 >
-                  Clear
+                  Clear All
                 </button>
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Result Section */}
-        <div className="card">
-          <h3 style={{ marginTop: 0 }}>Recognition Result</h3>
-
-          {error && <div className="alert alert-error">{error}</div>}
-
-          {result ? (
-            <div>
-              {result.status === 'success' && result.person ? (
-                <div className="result-box" style={{ border: '2px solid #10b981' }}>
-                  <h4 style={{ margin: '0 0 1rem 0', color: '#10b981' }}>
-                    ✅ Person Recognized
-                  </h4>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
-                    {result.person}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' }}>
+              {files.map((fileObj, index) => (
+                <div key={index} style={{ position: 'relative', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+                  {fileObj.preview && (
+                    <img
+                      src={fileObj.preview}
+                      alt={`Preview ${index + 1}`}
+                      style={{
+                        width: '100%',
+                        height: '150px',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  )}
+                  <div style={{ padding: '0.5rem', fontSize: '0.75rem', wordBreak: 'break-all' }}>
+                    {fileObj.file.name}
                   </div>
-                  {result.best_match?.confidence_metrics?.confidence_percentage && (
-                    <div style={{ marginTop: '1rem' }}>
-                      <div style={{ marginBottom: '0.5rem', fontWeight: 500 }}>
-                        Confidence: {result.best_match.confidence_metrics.confidence_percentage.toFixed(2)}%
-                      </div>
-                      <div className="progress-bar" style={{ height: '8px' }}>
-                        <div
-                          className="progress-fill"
-                          style={{
-                            width: `${result.best_match.confidence_metrics.confidence_percentage}%`,
-                            backgroundColor: '#10b981'
-                          }}
-                        ></div>
-                      </div>
-                    </div>
+                  {!testing && (
+                    <button
+                      onClick={() => removeFile(index)}
+                      style={{
+                        position: 'absolute',
+                        top: '4px',
+                        right: '4px',
+                        background: 'rgba(239, 68, 68, 0.9)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '24px',
+                        height: '24px',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                        lineHeight: '1',
+                        padding: 0
+                      }}
+                    >
+                      ×
+                    </button>
                   )}
                 </div>
-              ) : result.status === 'no_faces' || result.status === 'error' ? (
-                <div className="result-box" style={{ border: '2px solid #f59e0b' }}>
-                  <h4 style={{ margin: '0 0 0.5rem 0', color: '#f59e0b' }}>
-                    ⚠️ No Face Detected
-                  </h4>
-                  <p style={{ margin: 0 }}>
-                    {result.message || 'No valid faces found in the image'}
-                  </p>
-                </div>
-              ) : (
-                <div className="result-box" style={{ border: '2px solid #6b7280' }}>
-                  <h4 style={{ margin: '0 0 0.5rem 0', color: '#6b7280' }}>
-                    ❓ Unknown Person
-                  </h4>
-                  <p style={{ margin: 0 }}>
-                    No matching person found in the database
-                  </p>
-                </div>
-              )}
+              ))}
             </div>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '2rem', color: '#9ca3af' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
-              <p>Upload an image to see recognition results</p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Results Section */}
+      {results.length > 0 && (
+        <div style={{ marginTop: '2rem' }}>
+          <h2>Recognition Results</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem', marginTop: '1rem' }}>
+            {results.map((result, index) => (
+              <div key={index} className="card">
+                <h4 style={{ marginTop: 0, fontSize: '0.875rem', color: '#6b7280', wordBreak: 'break-all' }}>
+                  {result.fileName}
+                </h4>
+                {result.status === 'success' && result.person ? (
+                  <div className="result-box" style={{ border: '2px solid #10b981' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#10b981' }}>
+                      ✅ Recognized
+                    </h4>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                      {result.person}
+                    </div>
+                    {result.best_match?.confidence_metrics?.confidence_percentage && (
+                      <div style={{ marginTop: '0.75rem' }}>
+                        <div style={{ marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                          Confidence: {result.best_match.confidence_metrics.confidence_percentage.toFixed(2)}%
+                        </div>
+                        <div className="progress-bar" style={{ height: '6px' }}>
+                          <div
+                            className="progress-fill"
+                            style={{
+                              width: `${result.best_match.confidence_metrics.confidence_percentage}%`,
+                              backgroundColor: '#10b981'
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : result.status === 'no_faces' || result.status === 'error' ? (
+                  <div className="result-box" style={{ border: '2px solid #f59e0b' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#f59e0b' }}>
+                      ⚠️ No Face Detected
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.875rem' }}>
+                      {result.message || 'No valid faces found in the image'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="result-box" style={{ border: '2px solid #6b7280' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#6b7280' }}>
+                      ❓ Unknown Person
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.875rem' }}>
+                      No matching person found
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="info-box" style={{ marginTop: '2rem' }}>
         <h4>ℹ️ Testing Tips</h4>
