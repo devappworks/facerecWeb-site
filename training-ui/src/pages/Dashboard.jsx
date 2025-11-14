@@ -44,9 +44,15 @@ export default function Dashboard() {
           {isPolling && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', fontSize: '0.875rem' }}>
               <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }}></span>
-              <span title="Dashboard refreshes every 10 seconds to show latest queue statistics">
-                Auto-updating every 10s
+              <span title="Dashboard automatically refreshes queue statistics every 10 seconds to show real-time progress">
+                Auto-refresh: ON
               </span>
+            </div>
+          )}
+          {!isPolling && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
+              <span>⏸️</span>
+              <span>Auto-refresh: OFF</span>
             </div>
           )}
           <button

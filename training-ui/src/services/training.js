@@ -13,7 +13,7 @@ export const trainingService = {
   // Process next person in queue
   async processNext() {
     const response = await api.get('/api/excel/process', {
-      timeout: 20000, // 20 seconds for image download
+      timeout: 40000, // 40 seconds for image download and processing
     })
     return response.data
   },
