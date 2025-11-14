@@ -79,7 +79,7 @@ export default function Dashboard() {
           <div className="stat-content">
             <div className="stat-label">Queue Size</div>
             <div className="stat-value">
-              {loading ? '...' : (stats?.queueSize ?? 0)}
+              {loading ? '...' : (stats?.queue?.total_in_queue ?? 0)}
             </div>
           </div>
         </div>
@@ -87,9 +87,9 @@ export default function Dashboard() {
         <div className="stat-card">
           <div className="stat-icon">✅</div>
           <div className="stat-content">
-            <div className="stat-label">Processed</div>
+            <div className="stat-label">Processed Today</div>
             <div className="stat-value">
-              {loading ? '...' : (stats?.processed ?? 0)}
+              {loading ? '...' : (stats?.queue?.processed_today ?? 0)}
             </div>
           </div>
         </div>
@@ -99,10 +99,22 @@ export default function Dashboard() {
           <div className="stat-content">
             <div className="stat-label">Remaining</div>
             <div className="stat-value">
-              {loading ? '...' : (stats?.remaining ?? 0)}
+              {loading ? '...' : (stats?.queue?.remaining ?? 0)}
             </div>
           </div>
         </div>
+
+        {stats?.queue?.failed_today > 0 && (
+          <div className="stat-card">
+            <div className="stat-icon">❌</div>
+            <div className="stat-content">
+              <div className="stat-label">Failed Today</div>
+              <div className="stat-value">
+                {stats.queue.failed_today}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Two-column layout for larger screens */}

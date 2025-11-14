@@ -458,35 +458,37 @@ export default function TrainingWorkflow() {
                     <span>Folders</span>
                   </div>
                   <div className="summary-item-compact">
-                    <strong>{folders.reduce((sum, f) => sum + (f.imageCount || 0), 0)}</strong>
+                    <strong>{folders.reduce((sum, f) => sum + (f.image_count || 0), 0)}</strong>
                     <span>Images</span>
                   </div>
                   <div className="summary-item-compact">
-                    <strong>{folders.filter(f => (f.imageCount || 0) >= 20).length}</strong>
+                    <strong>{folders.filter(f => (f.image_count || 0) >= 20).length}</strong>
                     <span>Ready</span>
                   </div>
                 </div>
 
                 <div className="folders-list">
                   {folders.slice(0, 10).map((folder, index) => {
-                    const status = getStatusBadge(folder.imageCount || 0)
+                    const status = getStatusBadge(folder.image_count || 0)
                     return (
                       <div key={index} className="folder-item">
                         <div className="folder-item-header">
-                          <span className="folder-name-short">{folder.name || 'Unknown'}</span>
+                          <span className="folder-name-short" title={folder.display_name}>
+                            {folder.display_name || folder.name || 'Unknown'}
+                          </span>
                           <span className={`status-badge-sm ${status.className}`}>
                             {status.label}
                           </span>
                         </div>
                         <div className="folder-item-stats">
-                          <span>{folder.imageCount || 0} images</span>
-                          {folder.imageCount > 0 && (
+                          <span>{folder.image_count || 0} images</span>
+                          {folder.image_count > 0 && (
                             <div className="progress-bar-sm">
                               <div
                                 className="progress-fill"
                                 style={{
-                                  width: `${Math.min((folder.imageCount / 40) * 100, 100)}%`,
-                                  backgroundColor: folder.imageCount >= 20 ? '#10b981' : '#f59e0b'
+                                  width: `${Math.min((folder.image_count / 40) * 100, 100)}%`,
+                                  backgroundColor: folder.image_count >= 20 ? '#10b981' : '#f59e0b'
                                 }}
                               ></div>
                             </div>
