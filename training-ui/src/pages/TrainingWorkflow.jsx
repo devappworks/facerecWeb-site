@@ -7,6 +7,8 @@ import '../styles/training-workflow.css'
 export default function TrainingWorkflow() {
   // Generate Names State
   const [country, setCountry] = useState('Serbia')
+  const [selectedCategories, setSelectedCategories] = useState(['Actor', 'Musician', 'Athlete'])
+  const [customCategory, setCustomCategory] = useState('')
   const [generating, setGenerating] = useState(false)
   const [generateError, setGenerateError] = useState(null)
   const [generateSuccess, setGenerateSuccess] = useState(null)
@@ -25,6 +27,24 @@ export default function TrainingWorkflow() {
     'Serbia', 'United States', 'United Kingdom', 'France', 'Germany',
     'Italy', 'Spain', 'Canada', 'Australia', 'Japan',
     'South Korea', 'India', 'Brazil', 'Argentina', 'Mexico'
+  ]
+
+  const celebrityCategories = [
+    'Actor',
+    'Musician',
+    'Athlete',
+    'Politician',
+    'Director',
+    'Writer',
+    'Comedian',
+    'TV Host',
+    'Model',
+    'Chef',
+    'Scientist',
+    'Business Leader',
+    'Artist',
+    'Dancer',
+    'Singer',
   ]
 
   // Progress Monitor Data
@@ -46,18 +66,45 @@ export default function TrainingWorkflow() {
     stopPolling
   } = usePolling(fetchProgress, 15000, pollingEnabled)
 
+  // Category Selection Handlers
+  const toggleCategory = (category) => {
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    )
+  }
+
+  const addCustomCategory = () => {
+    if (customCategory.trim() && !selectedCategories.includes(customCategory.trim())) {
+      setSelectedCategories(prev => [...prev, customCategory.trim()])
+      setCustomCategory('')
+    }
+  }
+
   // Generate Names Handler
   const handleGenerate = async (e) => {
     e.preventDefault()
     setGenerateError(null)
     setGenerateSuccess(null)
+
+    // Validation
+    if (selectedCategories.length === 0) {
+      setGenerateError('Please select at least one category')
+      return
+    }
+
     setGenerating(true)
 
     try {
-      const response = await trainingService.generateNames(country)
+      // Combine selected and custom categories
+      const categories = [...selectedCategories]
+
+      const response = await trainingService.generateNames(country, categories)
 
       if (response.success) {
-        setGenerateSuccess(`Successfully generated names for ${country}!`)
+        const count = categories.length * 20 // ~20 names per category
+        setGenerateSuccess(`Successfully generated ~${count} names for ${country} (${categories.join(', ')})!`)
         // Auto-refresh progress after 2 seconds
         setTimeout(() => refetch(), 2000)
       } else {
@@ -79,16 +126,36 @@ export default function TrainingWorkflow() {
     try {
       const response = await trainingService.processNext()
 
-      if (response.success) {
+      if (response.success && response.data) {
+        // Check if we actually got person data
+        const personName = response.data.name && response.data.last_name
+          ? `${response.data.name} ${response.data.last_name}`
+          : response.data.person
+
+        if (!personName || personName === 'N/A' || !response.images?.count) {
+          setQueueError('Queue is empty. Generate names first to add people to the queue.')
+          setCurrentPerson(null)
+          return
+        }
+
         setCurrentPerson(response.data)
-        setQueueSuccess(`Processed: ${response.data?.person || 'Unknown'}`)
+        setQueueSuccess(`Processed: ${personName} (${response.images?.count || 0} images downloaded)`)
         // Refresh progress
         refetch()
       } else {
-        setQueueError(response.message || 'Failed to process')
+        // Handle empty queue or failure
+        const errorMsg = response.message || 'Queue is empty. Generate names first.'
+        setQueueError(errorMsg)
+        setCurrentPerson(null)
       }
     } catch (err) {
-      setQueueError(err.message || 'An error occurred while processing')
+      // Check if it's a "no data" error
+      if (err.message?.toLowerCase().includes('no data') || err.message?.toLowerCase().includes('not found')) {
+        setQueueError('Queue is empty. Click "Generate Names" to add people to the queue.')
+      } else {
+        setQueueError(err.message || 'An error occurred while processing')
+      }
+      setCurrentPerson(null)
     } finally {
       setProcessing(false)
     }
@@ -191,13 +258,61 @@ export default function TrainingWorkflow() {
                 </select>
               </div>
 
+              <div className="form-group">
+                <label>
+                  Select Categories ({selectedCategories.length} selected)
+                  <small style={{ marginLeft: '0.5rem', color: '#6b7280', fontWeight: 'normal' }}>
+                    ~20 names per category
+                  </small>
+                </label>
+                <div className="category-grid">
+                  {celebrityCategories.map((category) => (
+                    <label
+                      key={category}
+                      className={`category-checkbox ${selectedCategories.includes(category) ? 'checked' : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(category)}
+                        onChange={() => toggleCategory(category)}
+                        disabled={generating}
+                      />
+                      <span>{category}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Custom Category Input */}
+                <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="Add custom category (e.g., 'Basketball Players')"
+                    value={customCategory}
+                    onChange={(e) => setCustomCategory(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomCategory())}
+                    disabled={generating}
+                    style={{ flex: 1 }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={addCustomCategory}
+                    disabled={generating || !customCategory.trim()}
+                    style={{ whiteSpace: 'nowrap' }}
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+
               {generateError && <div className="alert alert-error">{generateError}</div>}
               {generateSuccess && <div className="alert alert-success">{generateSuccess}</div>}
 
               <button
                 type="submit"
                 className="btn btn-primary btn-block"
-                disabled={generating || !country.trim()}
+                disabled={generating || !country.trim() || selectedCategories.length === 0}
               >
                 {generating ? (
                   <>
@@ -205,7 +320,7 @@ export default function TrainingWorkflow() {
                     Generating... (30-60s)
                   </>
                 ) : (
-                  <>✨ Generate ~50 Names</>
+                  <>✨ Generate ~{selectedCategories.length * 20} Names</>
                 )}
               </button>
             </form>

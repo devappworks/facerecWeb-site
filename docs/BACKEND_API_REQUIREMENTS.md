@@ -93,67 +93,107 @@ Content-Type: application/json
 
 ---
 
-## 2. Occupation/Type Filtering
+## 2. Category-Based Generation (IMPORTANT CHANGE)
 
-**Feature Request**: Allow users to select which celebrity types/occupations to generate (Actor, Politician, Athlete, etc.)
+**Feature Request**: Remove Excel file dependency and allow frontend-driven category selection
 
-### Option A: Modify Existing Endpoint
+### ✅ Recommended Approach: Frontend-Driven Categories
+
+**Problem with Current System**:
+- Requires `occupation.xlsx` file on backend
+- Inflexible - can't customize per generation
+- Backend file changes needed to add categories
+- Not user-friendly
+
+**Better Solution**: Frontend sends categories directly to backend
+
+### Modified Endpoint
 
 **Endpoint**: `GET /api/excel/check-excel`
 
-**Add Query Parameter**: `occupation` (optional)
+**Add Query Parameter**: `categories` (optional, comma-separated)
 
 **Examples**:
 ```bash
-# Generate all occupations (current behavior)
+# Generate with specific categories
+GET /api/excel/check-excel?country=Serbia&categories=Actor,Musician,Athlete
+
+# Generate with custom category
+GET /api/excel/check-excel?country=Serbia&categories=Basketball Players,Jazz Musicians
+
+# Default behavior (if parameter not provided, use predefined list)
 GET /api/excel/check-excel?country=Serbia
-
-# Generate only actors
-GET /api/excel/check-excel?country=Serbia&occupation=Actor
-
-# Generate multiple (comma-separated)
-GET /api/excel/check-excel?country=Serbia&occupation=Actor,Athlete,Musician
 ```
 
-**Response** (same as current):
-```json
-{
-  "success": true,
-  "message": "Excel file exists and contains 20 rows. Processing started...",
-  "row_count": 20,
-  "occupations_processed": ["Actor"],
-  "country": "Serbia"
-}
+**Backend Implementation**:
+```python
+@app.route('/api/excel/check-excel', methods=['GET'])
+def check_excel():
+    country = request.args.get('country')
+    categories_param = request.args.get('categories', None)
+
+    # If categories provided, use them
+    if categories_param:
+        categories = [cat.strip() for cat in categories_param.split(',')]
+    else:
+        # Default categories if none specified
+        categories = ['Actor', 'Musician', 'Athlete', 'Politician']
+
+    # Generate names using AI
+    for category in categories:
+        prompt = f"Generate 20 famous {category} from {country}"
+        # ... rest of AI generation logic
+
+    return jsonify({
+        "success": True,
+        "message": f"Generated names for {len(categories)} categories",
+        "categories": categories,
+        "country": country,
+        "estimated_count": len(categories) * 20
+    })
 ```
-
-### Option B: New Endpoint to List Available Occupations
-
-**Endpoint**: `GET /api/training/occupations` or `GET /api/excel/occupations`
-
-**Purpose**: Get list of available occupations from `occupation.xlsx`
 
 **Response**:
 ```json
 {
   "success": true,
-  "data": {
-    "occupations": [
-      "Actor",
-      "Politician",
-      "Athlete",
-      "Musician",
-      "Writer",
-      "Director"
-    ],
-    "total": 6
-  }
+  "message": "Generated names for 3 categories",
+  "categories": ["Actor", "Musician", "Athlete"],
+  "country": "Serbia",
+  "estimated_count": 60,
+  "thread_started": true
 }
 ```
 
-**What It Should Do**:
-1. Read all rows from `storage/excel/occupation.xlsx`
-2. Return unique list of occupation values
-3. Frontend can use this for dropdown selection
+**Benefits**:
+- ✅ No Excel file dependency
+- ✅ User can customize categories per generation
+- ✅ Supports custom categories (e.g., "Basketball Players from 1990s")
+- ✅ More flexible and user-friendly
+- ✅ AI can interpret any category description
+
+**Frontend Categories** (predefined in UI):
+```javascript
+const categories = [
+  'Actor', 'Musician', 'Athlete', 'Politician',
+  'Director', 'Writer', 'Comedian', 'TV Host',
+  'Model', 'Chef', 'Scientist', 'Business Leader',
+  'Artist', 'Dancer', 'Singer'
+]
+```
+
+Plus custom input field for user-defined categories.
+
+### Migration Path
+
+**Phase 1** (Immediate):
+- Backend accepts `categories` parameter
+- If not provided, reads from `occupation.xlsx` (backward compatible)
+- Frontend sends selected categories
+
+**Phase 2** (Later):
+- Remove `occupation.xlsx` dependency
+- Backend uses categories from request only
 
 ---
 

@@ -1,10 +1,17 @@
 import api from './api'
 
 export const trainingService = {
-  // Generate celebrity names by country
-  async generateNames(country) {
+  // Generate celebrity names by country and categories
+  async generateNames(country, categories = []) {
+    const params = { country }
+
+    // Add categories if provided (comma-separated)
+    if (categories && categories.length > 0) {
+      params.categories = categories.join(',')
+    }
+
     const response = await api.get('/api/excel/check-excel', {
-      params: { country },
+      params,
       timeout: 60000, // 60 seconds for AI generation
     })
     return response.data
