@@ -44,12 +44,15 @@ export default function Dashboard() {
           {isPolling && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', fontSize: '0.875rem' }}>
               <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }}></span>
-              Auto-updating
+              <span title="Dashboard refreshes every 10 seconds to show latest queue statistics">
+                Auto-updating every 10s
+              </span>
             </div>
           )}
           <button
             className="btn"
             onClick={togglePolling}
+            title={isPolling ? 'Stop automatic refresh of dashboard data' : 'Start automatic refresh of dashboard data'}
             style={{
               background: isPolling ? '#ef4444' : '#10b981',
               color: 'white',
@@ -96,55 +99,70 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="section">
-        <h2>Quick Actions</h2>
-        <div className="actions-grid">
-          <Link to="/generate" className="action-card">
-            <div className="action-icon">✨</div>
-            <h3>Generate Names</h3>
-            <p>Generate celebrity lists by country</p>
-          </Link>
+      {/* Two-column layout for larger screens */}
+      <div className="dashboard-columns">
+        {/* Quick Actions */}
+        <div className="section">
+          <h2>Quick Actions</h2>
+          <div className="actions-grid-compact">
+            <Link to="/generate" className="action-card-compact">
+              <div className="action-icon">✨</div>
+              <div>
+                <h3>Generate Names</h3>
+                <p>Generate celebrity lists by country</p>
+              </div>
+            </Link>
 
-          <Link to="/queue" className="action-card">
-            <div className="action-icon">▶️</div>
-            <h3>Process Queue</h3>
-            <p>Download images for people in queue</p>
-          </Link>
+            <Link to="/queue" className="action-card-compact">
+              <div className="action-icon">▶️</div>
+              <div>
+                <h3>Process Queue</h3>
+                <p>Download images for people in queue</p>
+              </div>
+            </Link>
 
-          <Link to="/progress" className="action-card">
-            <div className="action-icon">📊</div>
-            <h3>Monitor Progress</h3>
-            <p>View training folders and image counts</p>
-          </Link>
+            <Link to="/progress" className="action-card-compact">
+              <div className="action-icon">📊</div>
+              <div>
+                <h3>Monitor Progress</h3>
+                <p>View training folders and image counts</p>
+              </div>
+            </Link>
 
-          <Link to="/sync" className="action-card">
-            <div className="action-icon">🔄</div>
-            <h3>Sync to Production</h3>
-            <p>Move validated data to production</p>
-          </Link>
+            <Link to="/sync" className="action-card-compact">
+              <div className="action-icon">🔄</div>
+              <div>
+                <h3>Sync to Production</h3>
+                <p>Move validated data to production</p>
+              </div>
+            </Link>
 
-          <Link to="/test" className="action-card">
-            <div className="action-icon">🧪</div>
-            <h3>Test Recognition</h3>
-            <p>Upload images to test face recognition</p>
-          </Link>
+            <Link to="/test" className="action-card-compact">
+              <div className="action-icon">🧪</div>
+              <div>
+                <h3>Test Recognition</h3>
+                <p>Upload images to test face recognition</p>
+              </div>
+            </Link>
 
-          <Link to="/ab-test" className="action-card">
-            <div className="action-icon">⚖️</div>
-            <h3>A/B Testing</h3>
-            <p>Compare recognition system versions</p>
-          </Link>
+            <Link to="/ab-test" className="action-card-compact">
+              <div className="action-icon">⚖️</div>
+              <div>
+                <h3>A/B Testing</h3>
+                <p>Compare recognition system versions</p>
+              </div>
+            </Link>
+          </div>
         </div>
-      </div>
 
-      {/* Recent Activity */}
-      <div className="section">
-        <h2>Recent Activity</h2>
-        <div className="activity-log">
-          <p className="text-muted">
-            Activity log will be displayed here once processing begins.
-          </p>
+        {/* Recent Activity */}
+        <div className="section">
+          <h2>Recent Activity</h2>
+          <div className="activity-log">
+            <p className="text-muted">
+              Activity log will be displayed here once processing begins.
+            </p>
+          </div>
         </div>
       </div>
     </div>
