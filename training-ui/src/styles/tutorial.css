@@ -1,18 +1,118 @@
-.tutorial-overlay {
+/* Spotlight Overlay - Dark background with cutout for highlighted element */
+.tutorial-spotlight-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.85);
   z-index: 10001;
   animation: fadeIn 0.3s ease-in-out;
+  pointer-events: none;
 }
 
+/* Spotlight Highlight - Bright overlay showing highlighted element */
+.tutorial-spotlight-highlight {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid #3b82f6;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85),
+              0 0 20px rgba(59, 130, 246, 0.6),
+              inset 0 0 20px rgba(59, 130, 246, 0.2);
+  z-index: 10002;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: pulseSpotlight 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseSpotlight {
+  0%, 100% {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85),
+                0 0 20px rgba(59, 130, 246, 0.6),
+                inset 0 0 20px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85),
+                0 0 30px rgba(59, 130, 246, 0.8),
+                inset 0 0 30px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Pointing Arrows */
+.tutorial-arrow {
+  position: fixed;
+  font-size: 40px;
+  z-index: 10003;
+  animation: bounce 1s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -10px);
+  }
+}
+
+.tutorial-arrow-left {
+  animation: bounceLeft 1s ease-in-out infinite;
+}
+
+.tutorial-arrow-right {
+  animation: bounceRight 1s ease-in-out infinite;
+}
+
+.tutorial-arrow-top {
+  animation: bounceTop 1s ease-in-out infinite;
+}
+
+.tutorial-arrow-bottom {
+  animation: bounceBottom 1s ease-in-out infinite;
+}
+
+@keyframes bounceLeft {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-10px, 0);
+  }
+}
+
+@keyframes bounceRight {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, 0);
+  }
+}
+
+@keyframes bounceTop {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -10px);
+  }
+}
+
+@keyframes bounceBottom {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 10px);
+  }
+}
+
+/* Tutorial Modal */
 .tutorial-modal {
+  position: fixed;
   background: white;
   border-radius: 16px;
   width: 90%;
@@ -20,6 +120,11 @@
   padding: 32px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
   animation: scaleIn 0.4s ease-out;
+  z-index: 10004;
+  pointer-events: all;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .tutorial-progress {
@@ -51,7 +156,7 @@
 .tutorial-content {
   text-align: center;
   margin-bottom: 32px;
-  min-height: 240px;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,16 +248,27 @@
 
 @keyframes scaleIn {
   from {
-    transform: scale(0.9);
+    transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
 }
 
 /* Dark theme */
+[data-theme='dark'] .tutorial-spotlight-overlay {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme='dark'] .tutorial-spotlight-highlight {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.9),
+              0 0 20px rgba(96, 165, 250, 0.6),
+              inset 0 0 20px rgba(96, 165, 250, 0.2);
+}
+
 [data-theme='dark'] .tutorial-modal {
   background: #1f2937;
 }
@@ -194,10 +310,11 @@
 @media (max-width: 768px) {
   .tutorial-modal {
     padding: 24px;
+    max-width: 95%;
   }
 
   .tutorial-content {
-    min-height: 200px;
+    min-height: 180px;
   }
 
   .tutorial-image {
@@ -227,5 +344,9 @@
 
   .tutorial-btn-skip {
     align-self: center;
+  }
+
+  .tutorial-arrow {
+    font-size: 32px;
   }
 }
