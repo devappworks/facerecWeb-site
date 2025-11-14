@@ -9,6 +9,7 @@ export default function Layout() {
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
   const [abTestingOpen, setAbTestingOpen] = useState(false)
+  const [automatedTrainingOpen, setAutomatedTrainingOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -104,6 +105,37 @@ export default function Layout() {
                   <Link to="/ab-testing/history" className="nav-link nav-sublink">
                     <span className="nav-icon">📜</span>
                     History
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* Automated Training Section */}
+          <li>
+            <div
+              className="nav-link nav-section-toggle"
+              onClick={() => setAutomatedTrainingOpen(!automatedTrainingOpen)}
+              style={{ cursor: 'pointer' }}
+            >
+              <span className="nav-icon">🤖</span>
+              Automated Training
+              <span style={{ marginLeft: 'auto', fontSize: '0.8rem' }}>
+                {automatedTrainingOpen ? '▼' : '▶'}
+              </span>
+            </div>
+            {automatedTrainingOpen && (
+              <ul className="nav-submenu">
+                <li>
+                  <Link to="/training/automated/generate" className="nav-link nav-sublink">
+                    <span className="nav-icon">✨</span>
+                    Generate Candidates
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/training/automated/review" className="nav-link nav-sublink">
+                    <span className="nav-icon">📋</span>
+                    Review & Deploy
                   </Link>
                 </li>
               </ul>

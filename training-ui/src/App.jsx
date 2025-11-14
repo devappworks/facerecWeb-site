@@ -21,6 +21,11 @@ import MetricsDashboard from './pages/ab-testing/MetricsDashboard'
 import DecisionSupport from './pages/ab-testing/DecisionSupport'
 import TestHistory from './pages/ab-testing/TestHistory'
 
+// Automated Training Pages
+import GenerateCandidates from './pages/automated-training/GenerateCandidates'
+import BatchProgress from './pages/automated-training/BatchProgress'
+import ReviewDeploy from './pages/automated-training/ReviewDeploy'
+
 import './styles/global.css'
 
 function App() {
@@ -54,6 +59,11 @@ function App() {
               <Route path="/ab-testing/metrics" element={<MetricsDashboard />} />
               <Route path="/ab-testing/decision" element={<DecisionSupport />} />
               <Route path="/ab-testing/history" element={<TestHistory />} />
+
+              {/* Automated Training Routes */}
+              <Route path="/training/automated/generate" element={<GenerateCandidates />} />
+              <Route path="/training/automated/batch/:batchId" element={<BatchProgress />} />
+              <Route path="/training/automated/review" element={<ReviewDeploy />} />
 
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
             </Route>
