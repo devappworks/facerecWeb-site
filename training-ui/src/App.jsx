@@ -30,6 +30,9 @@ import GenerateCandidates from './pages/automated-training/GenerateCandidates'
 import BatchProgress from './pages/automated-training/BatchProgress'
 import ReviewDeploy from './pages/automated-training/ReviewDeploy'
 
+// Video Recognition
+import VideoRecognition from './pages/VideoRecognition'
+
 import './styles/global.css'
 
 function App() {
@@ -72,6 +75,9 @@ function App() {
                 <Route path="/training/automated/generate" element={<GenerateCandidates />} />
                 <Route path="/training/automated/batch/:batchId" element={<BatchProgress />} />
                 <Route path="/training/automated/review" element={<ReviewDeploy />} />
+
+                {/* Video Recognition */}
+                <Route path="/video-recognition" element={<VideoRecognition />} />
 
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
               </Route>

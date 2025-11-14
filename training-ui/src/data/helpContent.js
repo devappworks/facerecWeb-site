@@ -317,4 +317,50 @@ export const helpContent = {
       },
     ],
   },
+
+  'video-recognition': {
+    title: 'Video Face Recognition',
+    sections: [
+      {
+        heading: 'What is This?',
+        content:
+          'Upload videos to automatically extract frames and recognize faces in each frame. Perfect for analyzing video footage, surveillance videos, or batch processing multiple faces at once.',
+      },
+      {
+        heading: 'How It Works',
+        content:
+          '1. Upload a video file (MP4, AVI, MOV, MKV, WebM, FLV, or WMV). 2. Configure frame extraction interval (default: 3 seconds). 3. Select recognition domain (Serbia, Croatia, Bosnia). 4. Click "Upload and Process". 5. Wait for processing to complete. 6. View results with statistics and frame-by-frame recognition.',
+      },
+      {
+        heading: 'Frame Extraction Interval',
+        content:
+          'The interval determines how often frames are extracted from the video. Lower interval = more frames = longer processing time. Default is 3 seconds (1 frame every 3 seconds). Range: 0.1 to 60 seconds.',
+      },
+      {
+        heading: 'Processing Time',
+        content:
+          'Processing is done asynchronously in the background. A 30-second video with 3-second interval extracts ~10 frames. Processing typically takes 1-3 minutes depending on video length and frame count.',
+      },
+      {
+        heading: 'Results Overview',
+        content:
+          'After processing, you\'ll see: 1. Recognition Statistics (total frames, recognized frames, recognition rate, unique persons). 2. System Performance (processing time, FPS, CPU usage, memory usage). 3. Frame-by-Frame Results (timestamp, person identified, confidence level).',
+      },
+      {
+        heading: 'Recognition Rate',
+        content:
+          'Recognition Rate = (Recognized Frames / Total Frames) × 100%. Green (≥70%) = Excellent, Yellow (40-69%) = Moderate, Red (<40%) = Poor. Low rates may indicate poor video quality or unknown persons.',
+      },
+      {
+        heading: 'File Requirements',
+        content:
+          'Maximum file size: 100 MB. Supported formats: MP4, AVI, MOV, MKV, WebM, FLV, WMV. Videos must contain visible faces for recognition to work.',
+      },
+      {
+        heading: 'Best Practices',
+        content:
+          'Use high-quality videos with clear face visibility. Set appropriate interval (shorter for fast-moving videos). Choose the correct recognition domain for your use case. Review frame-by-frame results to identify any issues.',
+      },
+    ],
+  },
 }

@@ -67,6 +67,12 @@ export default function Layout() {
               Testing
             </Link>
           </li>
+          <li>
+            <Link to="/video-recognition" className="nav-link">
+              <span className="nav-icon">🎬</span>
+              Video Recognition
+            </Link>
+          </li>
 
           {/* A/B Testing Section */}
           <li>

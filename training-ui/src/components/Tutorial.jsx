@@ -59,6 +59,16 @@ const tutorialSteps = [
     arrowPosition: 'right',
   },
   {
+    title: 'Video Recognition (NEW!)',
+    content:
+      'Upload videos to automatically extract frames and recognize faces in each frame. Perfect for analyzing video footage!',
+    image: '🎬',
+    route: '/dashboard',
+    target: 'a[href="/video-recognition"]',
+    fallbackTarget: '.sidebar',
+    arrowPosition: 'right',
+  },
+  {
     title: 'Getting Help',
     content:
       'See the blue ? button? Click it on any page to get detailed help. Hover over UI elements for quick tips.',
