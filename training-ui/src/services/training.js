@@ -1,10 +1,18 @@
 import api from './api'
 
 export const trainingService = {
-  // Generate celebrity names by country
-  async generateNames(country) {
+  // Generate celebrity names by country and categories
+  async generateNames(country, categories = []) {
+    const params = { country }
+
+    // Add categories if provided (comma-separated)
+    // Backend expects 'occupation' parameter
+    if (categories && categories.length > 0) {
+      params.occupation = categories.join(',')
+    }
+
     const response = await api.get('/api/excel/check-excel', {
-      params: { country },
+      params,
       timeout: 60000, // 60 seconds for AI generation
     })
     return response.data
@@ -18,30 +26,38 @@ export const trainingService = {
     return response.data
   },
 
-  // Get queue status (placeholder - backend endpoint needed)
+  // Get queue status
   async getQueueStatus() {
-    // TODO: Backend needs to implement this endpoint
-    // For now, return mock data
-    return {
-      success: true,
-      data: {
-        queueSize: 0,
-        processed: 0,
-        remaining: 0,
-      },
-    }
+    const response = await api.get('/api/training/queue-status')
+    return response.data
   },
 
-  // Get training progress (placeholder - backend endpoint needed)
-  async getTrainingProgress() {
-    // TODO: Backend needs to implement this endpoint
-    return {
-      success: true,
-      data: {
-        folders: [],
-        totalImages: 0,
-      },
-    }
+  // Get training progress
+  async getTrainingProgress(domain = 'serbia') {
+    const response = await api.get('/api/training/progress', {
+      params: { domain },
+    })
+    return response.data
+  },
+
+  // Get queue list
+  async getQueueList() {
+    const response = await api.get('/api/training/queue-list')
+    return response.data
+  },
+
+  // Remove from queue
+  async removeFromQueue(id) {
+    const response = await api.delete('/api/training/queue', {
+      data: { id },
+    })
+    return response.data
+  },
+
+  // Get available occupations/categories
+  async getOccupations() {
+    const response = await api.get('/api/excel/occupations')
+    return response.data
   },
 
   // Sync faces to production

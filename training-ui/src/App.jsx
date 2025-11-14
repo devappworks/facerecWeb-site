@@ -12,6 +12,7 @@ import TutorialTrigger from './components/TutorialTrigger'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import TrainingWorkflow from './pages/TrainingWorkflow'
+import QueueManagement from './pages/QueueManagement'
 import GenerateNames from './pages/GenerateNames'
 import QueueManager from './pages/QueueManager'
 import ProgressMonitor from './pages/ProgressMonitor'
@@ -61,6 +62,9 @@ function App() {
 
                 {/* Unified Training Workflow */}
                 <Route path="/workflow" element={<TrainingWorkflow />} />
+
+                {/* Queue Management */}
+                <Route path="/queue-management" element={<QueueManagement />} />
 
                 {/* Redirect old individual pages to unified workflow */}
                 <Route path="/generate" element={<Navigate to="/workflow" replace />} />
