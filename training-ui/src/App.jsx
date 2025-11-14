@@ -11,6 +11,7 @@ import TutorialTrigger from './components/TutorialTrigger'
 // Pages
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import TrainingWorkflow from './pages/TrainingWorkflow'
 import GenerateNames from './pages/GenerateNames'
 import QueueManager from './pages/QueueManager'
 import ProgressMonitor from './pages/ProgressMonitor'
@@ -57,9 +58,15 @@ function App() {
                 }
               >
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/generate" element={<GenerateNames />} />
-                <Route path="/queue" element={<QueueManager />} />
-                <Route path="/progress" element={<ProgressMonitor />} />
+
+                {/* Unified Training Workflow */}
+                <Route path="/workflow" element={<TrainingWorkflow />} />
+
+                {/* Redirect old individual pages to unified workflow */}
+                <Route path="/generate" element={<Navigate to="/workflow" replace />} />
+                <Route path="/queue" element={<Navigate to="/workflow" replace />} />
+                <Route path="/progress" element={<Navigate to="/workflow" replace />} />
+
                 <Route path="/gallery" element={<ImageGallery />} />
                 <Route path="/sync" element={<SyncManager />} />
                 <Route path="/test" element={<Testing />} />
