@@ -38,6 +38,12 @@ export default function Layout() {
             </Link>
           </li>
           <li>
+            <Link to="/queue-management" className="nav-link">
+              <span className="nav-icon">📋</span>
+              Queue Management
+            </Link>
+          </li>
+          <li>
             <Link to="/gallery" className="nav-link">
               <span className="nav-icon">🖼️</span>
               Image Gallery
