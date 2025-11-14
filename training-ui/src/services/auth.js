@@ -1,30 +1,65 @@
 // Auth service - shares localStorage with main app
 const TOKEN_KEY = 'photolytics_auth_token'
 const EMAIL_KEY = 'photolytics_user_email'
+const TOKEN_TIMESTAMP_KEY = 'photolytics_token_timestamp'
+const TOKEN_EXPIRY_HOURS = 24 // Tokens expire after 24 hours
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://facerecognition.mpanel.app'
 
 export const authService = {
   // Get token (shared with main app)
   getToken() {
-    return localStorage.getItem(TOKEN_KEY)
+    const token = localStorage.getItem(TOKEN_KEY)
+    if (!token) return null
+
+    // Check if token is expired
+    if (this.isTokenExpired()) {
+      this.clearToken()
+      return null
+    }
+
+    return token
   },
 
   // Save token (shared with main app)
   saveToken(token, email) {
     localStorage.setItem(TOKEN_KEY, token)
     localStorage.setItem(EMAIL_KEY, email)
+    localStorage.setItem(TOKEN_TIMESTAMP_KEY, Date.now().toString())
   },
 
   // Clear token (shared with main app)
   clearToken() {
     localStorage.removeItem(TOKEN_KEY)
     localStorage.removeItem(EMAIL_KEY)
+    localStorage.removeItem(TOKEN_TIMESTAMP_KEY)
+  },
+
+  // Check if token is expired
+  isTokenExpired() {
+    const timestamp = localStorage.getItem(TOKEN_TIMESTAMP_KEY)
+    if (!timestamp) return true
+
+    const tokenAge = Date.now() - parseInt(timestamp, 10)
+    const expiryTime = TOKEN_EXPIRY_HOURS * 60 * 60 * 1000 // Convert to milliseconds
+    return tokenAge > expiryTime
+  },
+
+  // Get time until token expires (in minutes)
+  getTokenTimeRemaining() {
+    const timestamp = localStorage.getItem(TOKEN_TIMESTAMP_KEY)
+    if (!timestamp) return 0
+
+    const tokenAge = Date.now() - parseInt(timestamp, 10)
+    const expiryTime = TOKEN_EXPIRY_HOURS * 60 * 60 * 1000
+    const remaining = expiryTime - tokenAge
+
+    return Math.max(0, Math.floor(remaining / (60 * 1000))) // Return minutes
   },
 
   // Check if authenticated
   isAuthenticated() {
-    return !!this.getToken()
+    return !!this.getToken() && !this.isTokenExpired()
   },
 
   // Get user email

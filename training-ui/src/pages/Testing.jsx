@@ -105,10 +105,25 @@ export default function Testing() {
           ...response,
         })
       } catch (err) {
+        // Provide helpful error messages
+        let errorMessage = 'Failed to test recognition'
+
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          errorMessage = 'Session expired - please log in again'
+        } else if (err.response?.status === 404) {
+          errorMessage = 'Recognition service not available'
+        } else if (err.response?.status >= 500) {
+          errorMessage = 'Server error - please try again later'
+        } else if (err.code === 'ECONNABORTED') {
+          errorMessage = 'Request timeout - file may be too large'
+        } else if (err.message) {
+          errorMessage = err.message
+        }
+
         newResults.push({
           fileName: files[i].file.name,
           status: 'error',
-          message: err.message || 'Failed to test recognition',
+          message: errorMessage,
         })
       }
     }

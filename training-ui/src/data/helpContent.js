@@ -318,6 +318,42 @@ export const helpContent = {
     ],
   },
 
+  'training-workflow': {
+    title: 'Training Workflow',
+    sections: [
+      {
+        heading: 'Complete Pipeline',
+        content:
+          'The unified Training Workflow combines three steps into one page: Generate Names → Process Queue → Monitor Progress. This eliminates page navigation and shows the entire pipeline at once.',
+      },
+      {
+        heading: 'Step 1: Generate Names',
+        content:
+          'AI generates ~50 celebrity names for the selected country. This takes 30-60 seconds. Generated names are automatically added to the processing queue.',
+      },
+      {
+        heading: 'Step 2: Process Queue',
+        content:
+          '"Process Next" downloads images for one person (5-15s). "Process All" processes the entire queue sequentially. Background validation runs automatically after download.',
+      },
+      {
+        heading: 'Step 3: Monitor Progress',
+        content:
+          'Real-time monitoring shows all training folders with image counts and readiness status. Auto-updates every 15 seconds. Minimum 20 images recommended per person, 40+ is optimal.',
+      },
+      {
+        heading: 'Status Indicators',
+        content:
+          'Empty (0 images), Insufficient (<20), Adequate (20-39), Ready (40+). Ready status means optimal for high-quality training.',
+      },
+      {
+        heading: 'Workflow Tips',
+        content:
+          'Start by generating names, then process them one-by-one or in batch. Monitor progress in real-time on the right side. The progress monitor automatically refreshes as you process.',
+      },
+    ],
+  },
+
   'video-recognition': {
     title: 'Video Face Recognition',
     sections: [

@@ -17,8 +17,8 @@ const tutorialSteps = [
       'The Dashboard shows your training system status, including queue statistics and recent activity. It\'s your home base for monitoring everything.',
     image: '📊',
     route: '/dashboard',
-    target: '.dashboard-header h1',
-    arrowPosition: 'bottom',
+    target: 'a[href="/dashboard"]',
+    arrowPosition: 'right',
   },
   {
     title: 'Sidebar Navigation',
@@ -30,22 +30,12 @@ const tutorialSteps = [
     arrowPosition: 'right',
   },
   {
-    title: 'Manual Training',
+    title: 'Training Workflow',
     content:
-      'Use "Generate Names" to manually add people to the training queue. Click here to start!',
-    image: '✨',
-    route: '/dashboard',
-    target: 'a[href="/training/generate"]',
-    arrowPosition: 'right',
-  },
-  {
-    title: 'Automated Training (NEW!)',
-    content:
-      'Our newest feature! Automatically find celebrities from Wikipedia/Wikidata. This is the Automated Training section in the sidebar.',
+      'Add people to train manually via "Generate Names" or use AI-powered Automated Training to find celebrities from Wikipedia/Wikidata automatically. The workflow is semi-automated and uses AI to increase speed!',
     image: '🤖',
     route: '/dashboard',
-    target: '.nav-menu li:has(.nav-icon:contains("🤖"))',
-    fallbackTarget: '.sidebar',
+    target: 'a[href="/generate"]',
     arrowPosition: 'right',
   },
   {
@@ -54,8 +44,7 @@ const tutorialSteps = [
       'Compare different face recognition models side-by-side. Find it in the A/B Testing section of the sidebar.',
     image: '⚖️',
     route: '/dashboard',
-    target: '.nav-menu li:has(.nav-icon:contains("⚖️"))',
-    fallbackTarget: '.sidebar',
+    target: '.nav-section-toggle',
     arrowPosition: 'right',
   },
   {
@@ -65,7 +54,6 @@ const tutorialSteps = [
     image: '🎬',
     route: '/dashboard',
     target: 'a[href="/video-recognition"]',
-    fallbackTarget: '.sidebar',
     arrowPosition: 'right',
   },
   {

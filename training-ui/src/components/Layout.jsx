@@ -32,21 +32,9 @@ export default function Layout() {
             </Link>
           </li>
           <li>
-            <Link to="/generate" className="nav-link">
-              <span className="nav-icon">✨</span>
-              Generate Names
-            </Link>
-          </li>
-          <li>
-            <Link to="/queue" className="nav-link">
-              <span className="nav-icon">📋</span>
-              Queue Manager
-            </Link>
-          </li>
-          <li>
-            <Link to="/progress" className="nav-link">
-              <span className="nav-icon">📈</span>
-              Progress Monitor
+            <Link to="/workflow" className="nav-link">
+              <span className="nav-icon">⚡</span>
+              Training Workflow
             </Link>
           </li>
           <li>
