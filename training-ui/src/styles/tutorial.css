@@ -1,0 +1,352 @@
+/* Spotlight Overlay - Dark background with cutout for highlighted element */
+.tutorial-spotlight-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 10001;
+  animation: fadeIn 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+/* Spotlight Highlight - Bright overlay showing highlighted element */
+.tutorial-spotlight-highlight {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid #3b82f6;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85),
+              0 0 20px rgba(59, 130, 246, 0.6),
+              inset 0 0 20px rgba(59, 130, 246, 0.2);
+  z-index: 10002;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: pulseSpotlight 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseSpotlight {
+  0%, 100% {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85),
+                0 0 20px rgba(59, 130, 246, 0.6),
+                inset 0 0 20px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85),
+                0 0 30px rgba(59, 130, 246, 0.8),
+                inset 0 0 30px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Pointing Arrows */
+.tutorial-arrow {
+  position: fixed;
+  font-size: 40px;
+  z-index: 10003;
+  animation: bounce 1s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -10px);
+  }
+}
+
+.tutorial-arrow-left {
+  animation: bounceLeft 1s ease-in-out infinite;
+}
+
+.tutorial-arrow-right {
+  animation: bounceRight 1s ease-in-out infinite;
+}
+
+.tutorial-arrow-top {
+  animation: bounceTop 1s ease-in-out infinite;
+}
+
+.tutorial-arrow-bottom {
+  animation: bounceBottom 1s ease-in-out infinite;
+}
+
+@keyframes bounceLeft {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-10px, 0);
+  }
+}
+
+@keyframes bounceRight {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, 0);
+  }
+}
+
+@keyframes bounceTop {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -10px);
+  }
+}
+
+@keyframes bounceBottom {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 10px);
+  }
+}
+
+/* Tutorial Modal */
+.tutorial-modal {
+  position: fixed;
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  padding: 32px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  animation: scaleIn 0.4s ease-out;
+  z-index: 10004;
+  pointer-events: all;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tutorial-progress {
+  margin-bottom: 28px;
+}
+
+.tutorial-progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.tutorial-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+  transition: width 0.4s ease;
+  border-radius: 3px;
+}
+
+.tutorial-progress-text {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.tutorial-content {
+  text-align: center;
+  margin-bottom: 32px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tutorial-image {
+  font-size: 72px;
+  margin-bottom: 20px;
+}
+
+.tutorial-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 16px 0;
+}
+
+.tutorial-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tutorial-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.tutorial-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.tutorial-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.tutorial-btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.tutorial-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.tutorial-btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.tutorial-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.tutorial-btn-skip {
+  background: transparent;
+  color: #6b7280;
+  padding: 12px 16px;
+  text-decoration: underline;
+}
+
+.tutorial-btn-skip:hover {
+  color: #374151;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Dark theme */
+[data-theme='dark'] .tutorial-spotlight-overlay {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme='dark'] .tutorial-spotlight-highlight {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.9),
+              0 0 20px rgba(96, 165, 250, 0.6),
+              inset 0 0 20px rgba(96, 165, 250, 0.2);
+}
+
+[data-theme='dark'] .tutorial-modal {
+  background: #1f2937;
+}
+
+[data-theme='dark'] .tutorial-progress-bar {
+  background-color: #374151;
+}
+
+[data-theme='dark'] .tutorial-progress-text {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .tutorial-title {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .tutorial-text {
+  color: #d1d5db;
+}
+
+[data-theme='dark'] .tutorial-btn-secondary {
+  background: #374151;
+  color: #d1d5db;
+}
+
+[data-theme='dark'] .tutorial-btn-secondary:hover {
+  background: #4b5563;
+}
+
+[data-theme='dark'] .tutorial-btn-skip {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .tutorial-btn-skip:hover {
+  color: #d1d5db;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .tutorial-modal {
+    padding: 24px;
+    max-width: 95%;
+  }
+
+  .tutorial-content {
+    min-height: 180px;
+  }
+
+  .tutorial-image {
+    font-size: 56px;
+  }
+
+  .tutorial-title {
+    font-size: 24px;
+  }
+
+  .tutorial-text {
+    font-size: 15px;
+  }
+
+  .tutorial-actions {
+    flex-direction: column-reverse;
+  }
+
+  .tutorial-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tutorial-btn {
+    flex: 1;
+  }
+
+  .tutorial-btn-skip {
+    align-self: center;
+  }
+
+  .tutorial-arrow {
+    font-size: 32px;
+  }
+}
