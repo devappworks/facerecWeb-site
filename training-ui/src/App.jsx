@@ -1,8 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
 import { ThemeProvider } from './hooks/useTheme'
+import { HelpProvider } from './contexts/HelpContext'
 import AuthGuard from './components/AuthGuard'
 import Layout from './components/Layout'
+import HelpModal from './components/HelpModal'
+import Tutorial from './components/Tutorial'
+import TutorialTrigger from './components/TutorialTrigger'
 
 // Pages
 import Login from './pages/Login'
@@ -32,46 +36,51 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter basename="/training">
-          <Routes>
-            {/* Public route */}
-            <Route path="/login" element={<Login />} />
+        <HelpProvider>
+          <BrowserRouter basename="/training">
+            <TutorialTrigger />
+            <HelpModal />
+            <Tutorial />
+            <Routes>
+              {/* Public route */}
+              <Route path="/login" element={<Login />} />
 
-            {/* Protected routes with layout */}
-            <Route
-              element={
-                <AuthGuard>
-                  <Layout />
-                </AuthGuard>
-              }
-            >
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/generate" element={<GenerateNames />} />
-              <Route path="/queue" element={<QueueManager />} />
-              <Route path="/progress" element={<ProgressMonitor />} />
-              <Route path="/gallery" element={<ImageGallery />} />
-              <Route path="/sync" element={<SyncManager />} />
-              <Route path="/test" element={<Testing />} />
-              <Route path="/ab-test" element={<ABTesting />} />
+              {/* Protected routes with layout */}
+              <Route
+                element={
+                  <AuthGuard>
+                    <Layout />
+                  </AuthGuard>
+                }
+              >
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/generate" element={<GenerateNames />} />
+                <Route path="/queue" element={<QueueManager />} />
+                <Route path="/progress" element={<ProgressMonitor />} />
+                <Route path="/gallery" element={<ImageGallery />} />
+                <Route path="/sync" element={<SyncManager />} />
+                <Route path="/test" element={<Testing />} />
+                <Route path="/ab-test" element={<ABTesting />} />
 
-              {/* A/B Testing Routes */}
-              <Route path="/ab-testing/live" element={<LiveComparison />} />
-              <Route path="/ab-testing/metrics" element={<MetricsDashboard />} />
-              <Route path="/ab-testing/decision" element={<DecisionSupport />} />
-              <Route path="/ab-testing/history" element={<TestHistory />} />
+                {/* A/B Testing Routes */}
+                <Route path="/ab-testing/live" element={<LiveComparison />} />
+                <Route path="/ab-testing/metrics" element={<MetricsDashboard />} />
+                <Route path="/ab-testing/decision" element={<DecisionSupport />} />
+                <Route path="/ab-testing/history" element={<TestHistory />} />
 
-              {/* Automated Training Routes */}
-              <Route path="/training/automated/generate" element={<GenerateCandidates />} />
-              <Route path="/training/automated/batch/:batchId" element={<BatchProgress />} />
-              <Route path="/training/automated/review" element={<ReviewDeploy />} />
+                {/* Automated Training Routes */}
+                <Route path="/training/automated/generate" element={<GenerateCandidates />} />
+                <Route path="/training/automated/batch/:batchId" element={<BatchProgress />} />
+                <Route path="/training/automated/review" element={<ReviewDeploy />} />
 
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            </Route>
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              </Route>
 
-            {/* Catch all */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </BrowserRouter>
+              {/* Catch all */}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </HelpProvider>
       </AuthProvider>
     </ThemeProvider>
   )

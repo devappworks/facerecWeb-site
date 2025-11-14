@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { trainingService } from '../services/training'
 import { usePolling } from '../hooks/usePolling'
+import HelpButton from '../components/HelpButton'
 import '../styles/dashboard.css'
 
 export default function Dashboard() {
@@ -33,6 +34,7 @@ export default function Dashboard() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="dashboard" />
       <div className="dashboard-header">
         <div>
           <h1>Training Dashboard</h1>

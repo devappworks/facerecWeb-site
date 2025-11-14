@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCandidates } from '../../hooks/useCandidates'
 import { automatedTrainingService } from '../../services/automatedTraining'
+import HelpButton from '../../components/HelpButton'
+import Tooltip from '../../components/Tooltip'
 
 export default function GenerateCandidates() {
   const navigate = useNavigate()
@@ -88,6 +90,7 @@ export default function GenerateCandidates() {
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
+      <HelpButton pageName="automated-generate" />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900">
           Generate Training Candidates
@@ -137,13 +140,15 @@ export default function GenerateCandidates() {
           </div>
 
           <div className="flex items-end">
-            <button
-              onClick={handleGenerate}
-              disabled={isGenerating || loading}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {isGenerating ? 'Generating...' : 'Generate from Wikidata'}
-            </button>
+            <Tooltip content="Query Wikidata to find celebrities from the selected country and occupation" position="top">
+              <button
+                onClick={handleGenerate}
+                disabled={isGenerating || loading}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              >
+                {isGenerating ? 'Generating...' : 'Generate from Wikidata'}
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>

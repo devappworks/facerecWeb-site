@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMetrics } from '../../hooks/useMetrics'
+import HelpButton from '../../components/HelpButton'
 
 export default function MetricsDashboard() {
   const [period, setPeriod] = useState('daily')
@@ -33,6 +34,7 @@ export default function MetricsDashboard() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="ab-testing-metrics" />
       <h1>A/B Testing - Metrics Dashboard</h1>
       <p className="subtitle">
         View statistics and performance metrics for both recognition systems.

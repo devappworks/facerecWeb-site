@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { trainingService } from '../services/training'
+import HelpButton from '../components/HelpButton'
 
 export default function Testing() {
   const [files, setFiles] = useState([])
@@ -133,6 +134,7 @@ export default function Testing() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="testing" />
       <h1>Test Recognition</h1>
       <p className="subtitle">
         Upload one or multiple images to test face recognition accuracy.

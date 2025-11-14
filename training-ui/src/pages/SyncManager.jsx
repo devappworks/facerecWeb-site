@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { trainingService } from '../services/training'
+import HelpButton from '../components/HelpButton'
 
 export default function SyncManager() {
   const [syncing, setSyncing] = useState(false)
@@ -31,6 +32,7 @@ export default function SyncManager() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="sync" />
       <h1>Sync to Production</h1>
       <p className="subtitle">
         Move validated training data from staging to production database.

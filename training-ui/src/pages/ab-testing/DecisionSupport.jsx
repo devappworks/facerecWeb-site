@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMetrics } from '../../hooks/useMetrics'
+import HelpButton from '../../components/HelpButton'
 
 export default function DecisionSupport() {
   const [period] = useState('weekly')
@@ -128,6 +129,7 @@ export default function DecisionSupport() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="ab-testing-decision" />
       <h1>A/B Testing - Decision Support</h1>
       <p className="subtitle">
         Analyze metrics and get recommendations for migration decision.

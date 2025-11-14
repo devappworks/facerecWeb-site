@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { trainingService } from '../services/training'
+import HelpButton from '../components/HelpButton'
 
 export default function GenerateNames() {
   const [country, setCountry] = useState('Serbia')
@@ -36,6 +37,7 @@ export default function GenerateNames() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="generate" />
       <h1>Generate Celebrity Names</h1>
       <p className="subtitle">
         Generate lists of celebrities by country using AI. This process typically takes 30-60 seconds.

@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useBatchStatus } from '../../hooks/useBatchStatus'
+import HelpButton from '../../components/HelpButton'
+import Tooltip from '../../components/Tooltip'
 
 const STATUS_ICONS = {
   pending: '⏳',
@@ -90,6 +92,7 @@ export default function BatchProgress() {
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
+      <HelpButton pageName="automated-batch" />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Batch Training Progress</h1>
         <p className="text-gray-600 mt-2">

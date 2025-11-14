@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { trainingService } from '../services/training'
+import HelpButton from '../components/HelpButton'
 
 export default function QueueManager() {
   const [processing, setProcessing] = useState(false)
@@ -47,6 +48,7 @@ export default function QueueManager() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="queue" />
       <h1>Queue Manager</h1>
       <p className="subtitle">
         Process people in the queue to download training images. Each person takes 5-15 seconds.

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useComparison } from '../../hooks/useComparison'
+import HelpButton from '../../components/HelpButton'
 
 export default function LiveComparison() {
   const { runComparison, clearResult, testing, result, error } = useComparison()
@@ -90,6 +91,7 @@ export default function LiveComparison() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="ab-testing-live" />
       <h1>A/B Testing - Live Comparison</h1>
       <p className="subtitle">
         Upload an image to compare both face recognition systems side-by-side.

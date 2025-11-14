@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { abTestingService } from '../../services/abTesting'
+import HelpButton from '../../components/HelpButton'
 
 export default function TestHistory() {
   const [history, setHistory] = useState([])
@@ -180,6 +181,7 @@ export default function TestHistory() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="ab-testing-history" />
       <h1>A/B Testing - Test History</h1>
       <p className="subtitle">Browse and export past comparison test results.</p>
 

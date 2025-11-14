@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { automatedTrainingService } from '../../services/automatedTraining'
+import HelpButton from '../../components/HelpButton'
+import Tooltip from '../../components/Tooltip'
 
 export default function ReviewDeploy() {
   const navigate = useNavigate()
@@ -127,6 +129,7 @@ export default function ReviewDeploy() {
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
+      <HelpButton pageName="automated-review" />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Review & Deploy</h1>
         <p className="text-gray-600 mt-2">

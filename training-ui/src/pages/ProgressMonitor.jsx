@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { trainingService } from '../services/training'
 import { usePolling } from '../hooks/usePolling'
+import HelpButton from '../components/HelpButton'
 import '../styles/progress.css'
 
 export default function ProgressMonitor() {
@@ -51,6 +52,7 @@ export default function ProgressMonitor() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="progress" />
       <div className="page-header">
         <div>
           <h1>Training Progress</h1>

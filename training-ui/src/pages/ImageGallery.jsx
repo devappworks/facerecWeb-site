@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { usePolling } from '../hooks/usePolling'
 import { trainingService } from '../services/training'
+import HelpButton from '../components/HelpButton'
 import '../styles/gallery.css'
 
 export default function ImageGallery() {
@@ -78,6 +79,7 @@ export default function ImageGallery() {
 
   return (
     <div className="page-container">
+      <HelpButton pageName="gallery" />
       <h1>Image Gallery</h1>
       <p className="subtitle">
         Browse and manage training images by folder.
