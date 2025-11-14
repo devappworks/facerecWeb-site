@@ -28,11 +28,39 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle authentication errors
     if (error.response?.status === 401 || error.response?.status === 403) {
-      // Unauthorized - clear token and redirect to login
-      authService.clearToken()
-      window.location.href = '/training/login'
+      // Check if we still have a token (might be expired)
+      const hasToken = !!localStorage.getItem('photolytics_auth_token')
+
+      if (hasToken) {
+        // Token exists but is invalid - clear it
+        authService.clearToken()
+
+        // Show user-friendly message before redirect
+        const message = authService.isTokenExpired()
+          ? 'Your session has expired. Please log in again.'
+          : 'Authentication failed. Please log in again.'
+
+        // Store redirect message
+        sessionStorage.setItem('auth_redirect_message', message)
+      }
+
+      // Delay redirect slightly to allow the error to be caught by the calling code
+      setTimeout(() => {
+        window.location.href = '/training/login'
+      }, 100)
     }
+
+    // For other errors, add helpful context
+    if (error.response?.status === 404) {
+      console.warn('API endpoint not found:', error.config?.url)
+    } else if (error.response?.status >= 500) {
+      console.error('Server error:', error.response.status, error.config?.url)
+    } else if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout:', error.config?.url)
+    }
+
     return Promise.reject(error)
   }
 )

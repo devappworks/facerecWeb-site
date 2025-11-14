@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import '../styles/login.css'
@@ -7,9 +7,22 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [sessionMessage, setSessionMessage] = useState(null)
   const [domains, setDomains] = useState(null)
   const { login, selectDomain } = useAuth()
   const navigate = useNavigate()
+
+  // Check for session expiry message
+  useEffect(() => {
+    const message = sessionStorage.getItem('auth_redirect_message')
+    if (message) {
+      setSessionMessage(message)
+      sessionStorage.removeItem('auth_redirect_message')
+
+      // Clear the message after 10 seconds
+      setTimeout(() => setSessionMessage(null), 10000)
+    }
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -70,6 +83,12 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
+          {sessionMessage && (
+            <div className="alert" style={{ backgroundColor: '#fef3c7', color: '#92400e', border: '1px solid #fbbf24', marginBottom: '1rem' }}>
+              ⚠️ {sessionMessage}
+            </div>
+          )}
+
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <input
