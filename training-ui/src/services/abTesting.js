@@ -106,11 +106,16 @@ export const abTestingService = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 30000, // 30 seconds for both pipelines
+        timeout: 180000, // 180 seconds (3 minutes) - Facenet512 needs more time with 30k+ images
       })
       return response.data
     } catch (error) {
-      // Fallback to mock data if API not available
+      // Only fallback to mock data if API is truly unavailable, not for auth/other errors
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        // Re-throw auth errors so they're handled properly
+        throw error
+      }
+
       console.warn('API not available, using mock data:', error.message)
       return {
         ...mockComparisonResult,

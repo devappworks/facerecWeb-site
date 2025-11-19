@@ -1,17 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { trainingService } from '../services/training'
+import { automatedTrainingService } from '../services/automatedTraining'
 import { usePolling } from '../hooks/usePolling'
 import HelpButton from '../components/HelpButton'
 import '../styles/training-workflow.css'
 
 export default function TrainingWorkflow() {
-  // Generate Names State
-  const [country, setCountry] = useState('Serbia')
-  const [selectedCategories, setSelectedCategories] = useState(['Actor', 'Musician', 'Athlete'])
-  const [customCategory, setCustomCategory] = useState('')
+  // Generate Candidates State (Wikidata-based)
+  const [country, setCountry] = useState('serbia')
+  const [selectedOccupations, setSelectedOccupations] = useState(['actor'])
+  const [occupationDropdownOpen, setOccupationDropdownOpen] = useState(false)
+  const [countries, setCountries] = useState([])
+  const [occupations, setOccupations] = useState([])
   const [generating, setGenerating] = useState(false)
   const [generateError, setGenerateError] = useState(null)
   const [generateSuccess, setGenerateSuccess] = useState(null)
+  const [candidates, setCandidates] = useState([])
+  const [statistics, setStatistics] = useState(null)
+  const [showGeneratedNames, setShowGeneratedNames] = useState(false)
+  const [showFilter, setShowFilter] = useState('new') // 'all', 'new', 'existing'
 
   // Queue Manager State
   const [processing, setProcessing] = useState(false)
@@ -23,29 +30,37 @@ export default function TrainingWorkflow() {
   // Progress Monitor State
   const [pollingEnabled, setPollingEnabled] = useState(true)
 
-  const commonCountries = [
-    'Serbia', 'United States', 'United Kingdom', 'France', 'Germany',
-    'Italy', 'Spain', 'Canada', 'Australia', 'Japan',
-    'South Korea', 'India', 'Brazil', 'Argentina', 'Mexico'
-  ]
+  // Load countries and occupations on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [countriesRes, occupationsRes] = await Promise.all([
+          automatedTrainingService.getCountries(),
+          automatedTrainingService.getOccupations(),
+        ])
+        if (countriesRes.success) setCountries(countriesRes.countries)
+        if (occupationsRes.success) setOccupations(occupationsRes.occupations)
+      } catch (err) {
+        console.error('Failed to load data:', err)
+      }
+    }
+    loadData()
+  }, [])
 
-  const celebrityCategories = [
-    'Actor',
-    'Musician',
-    'Athlete',
-    'Politician',
-    'Director',
-    'Writer',
-    'Comedian',
-    'TV Host',
-    'Model',
-    'Chef',
-    'Scientist',
-    'Business Leader',
-    'Artist',
-    'Dancer',
-    'Singer',
-  ]
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (occupationDropdownOpen) {
+        // Check if click is outside both the button and the dropdown menu
+        const clickedInsideDropdown = event.target.closest('.occupation-dropdown-container')
+        if (!clickedInsideDropdown) {
+          setOccupationDropdownOpen(false)
+        }
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [occupationDropdownOpen])
 
   // Progress Monitor Data
   const fetchProgress = async () => {
@@ -66,56 +81,134 @@ export default function TrainingWorkflow() {
     stopPolling
   } = usePolling(fetchProgress, 15000, pollingEnabled)
 
-  // Category Selection Handlers
-  const toggleCategory = (category) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    )
+  // Occupation Selection Handlers
+  const toggleOccupation = (occupationCode) => {
+    console.log('Toggling occupation:', occupationCode)
+    setSelectedOccupations(prev => {
+      console.log('Previous selections:', prev)
+      const newSelections = prev.includes(occupationCode)
+        ? prev.filter(o => o !== occupationCode)
+        : [...prev, occupationCode]
+      console.log('New selections:', newSelections)
+      return newSelections
+    })
   }
 
-  const addCustomCategory = () => {
-    if (customCategory.trim() && !selectedCategories.includes(customCategory.trim())) {
-      setSelectedCategories(prev => [...prev, customCategory.trim()])
-      setCustomCategory('')
-    }
-  }
-
-  // Generate Names Handler
+  // Generate Candidates Handler (Wikidata) - supports multiple occupations
   const handleGenerate = async (e) => {
     e.preventDefault()
     setGenerateError(null)
     setGenerateSuccess(null)
+    setCandidates([])
+    setStatistics(null)
 
-    // Validation
-    if (selectedCategories.length === 0) {
-      setGenerateError('Please select at least one category')
+    if (selectedOccupations.length === 0) {
+      setGenerateError('Please select at least one occupation')
       return
     }
 
     setGenerating(true)
 
     try {
-      // Combine selected and custom categories
-      const categories = [...selectedCategories]
+      // Fetch candidates for each selected occupation
+      const allPromises = selectedOccupations.map(occupation =>
+        automatedTrainingService.generateCandidates(
+          country,
+          occupation,
+          country // domain = country
+        )
+      )
 
-      const response = await trainingService.generateNames(country, categories)
+      const responses = await Promise.all(allPromises)
 
-      if (response.success) {
-        const count = categories.length * 20 // ~20 names per category
-        setGenerateSuccess(`Successfully generated ~${count} names for ${country} (${categories.join(', ')})!`)
-        // Auto-refresh progress after 2 seconds
-        setTimeout(() => refetch(), 2000)
-      } else {
-        setGenerateError(response.message || 'Failed to generate names')
-      }
+      // Combine all candidates from all occupations
+      let allCandidates = []
+      let totalNew = 0
+      let totalExisting = 0
+
+      responses.forEach(response => {
+        if (response.success && response.candidates) {
+          // Add occupation info to each candidate for display
+          const candidatesWithOccupation = response.candidates.map(c => ({
+            ...c,
+            isSelected: !c.exists_in_db,
+          }))
+          allCandidates = [...allCandidates, ...candidatesWithOccupation]
+
+          totalNew += response.statistics?.new_people || response.candidates.filter(c => !c.exists_in_db).length
+          totalExisting += response.statistics?.existing_people || response.candidates.filter(c => c.exists_in_db).length
+        }
+      })
+
+      // Remove duplicates based on wikidata_id
+      const uniqueCandidates = allCandidates.filter((candidate, index, self) =>
+        index === self.findIndex(c => c.wikidata_id === candidate.wikidata_id)
+      )
+
+      setCandidates(uniqueCandidates)
+      setStatistics({
+        total: uniqueCandidates.length,
+        new_people: uniqueCandidates.filter(c => !c.exists_in_db).length,
+        existing_people: uniqueCandidates.filter(c => c.exists_in_db).length,
+      })
+      setShowGeneratedNames(true)
+      setShowFilter('new')
+
+      const occupationNames = selectedOccupations.map(id =>
+        occupations.find(o => o.id === id)?.name || id
+      ).join(', ')
+
+      setGenerateSuccess(`Found ${uniqueCandidates.length} people in ${selectedOccupations.length} occupation(s) from ${country}! (${statistics?.new_people || totalNew} new)`)
     } catch (err) {
-      setGenerateError(err.message || 'An error occurred while generating names')
+      const errorMessage =
+        err.response?.data?.error || err.message || 'Failed to generate candidates from Wikidata'
+      setGenerateError(errorMessage)
     } finally {
       setGenerating(false)
     }
   }
+
+  // Candidate Selection Handlers
+  const toggleCandidate = (wikidataId) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.wikidata_id === wikidataId ? { ...c, isSelected: !c.isSelected } : c
+      )
+    )
+  }
+
+  const selectAll = () => {
+    setCandidates((prev) => prev.map((c) => ({ ...c, isSelected: true })))
+  }
+
+  const selectOnlyNew = () => {
+    setCandidates((prev) =>
+      prev.map((c) => ({ ...c, isSelected: !c.exists_in_db }))
+    )
+  }
+
+  const deselectAll = () => {
+    setCandidates((prev) => prev.map((c) => ({ ...c, isSelected: false })))
+  }
+
+  const getSelectedCount = () => {
+    return candidates.filter((c) => c.isSelected).length
+  }
+
+  const clearCandidates = () => {
+    setCandidates([])
+    setStatistics(null)
+    setGenerateError(null)
+    setGenerateSuccess(null)
+    setShowGeneratedNames(false)
+  }
+
+  // Filter candidates based on showFilter
+  const filteredCandidates = candidates.filter((c) => {
+    if (showFilter === 'new') return !c.exists_in_db
+    if (showFilter === 'existing') return c.exists_in_db
+    return true // 'all'
+  })
 
   // Process Next Handler
   const handleProcessNext = async () => {
@@ -127,7 +220,6 @@ export default function TrainingWorkflow() {
       const response = await trainingService.processNext()
 
       if (response.success && response.data) {
-        // Check if we actually got person data
         const personName = response.data.name && response.data.last_name
           ? `${response.data.name} ${response.data.last_name}`
           : response.data.person
@@ -140,18 +232,15 @@ export default function TrainingWorkflow() {
 
         setCurrentPerson(response.data)
         setQueueSuccess(`Processed: ${personName} (${response.images?.count || 0} images downloaded)`)
-        // Refresh progress
         refetch()
       } else {
-        // Handle empty queue or failure
         const errorMsg = response.message || 'Queue is empty. Generate names first.'
         setQueueError(errorMsg)
         setCurrentPerson(null)
       }
     } catch (err) {
-      // Check if it's a "no data" error
       if (err.message?.toLowerCase().includes('no data') || err.message?.toLowerCase().includes('not found')) {
-        setQueueError('Queue is empty. Click "Generate Names" to add people to the queue.')
+        setQueueError('Queue is empty. Click "Generate from Wikidata" to add people to the queue.')
       } else {
         setQueueError(err.message || 'An error occurred while processing')
       }
@@ -161,20 +250,35 @@ export default function TrainingWorkflow() {
     }
   }
 
-  // Process All Handler
-  const handleProcessAll = async () => {
+  // Start Batch Training Handler
+  const handleStartTraining = async () => {
+    const selectedCandidates = candidates.filter((c) => c.isSelected)
+    if (selectedCandidates.length === 0) {
+      setGenerateError('Please select at least one candidate to train')
+      return
+    }
+
     setQueueError(null)
     setQueueSuccess(null)
     setProcessingAll(true)
-    setCurrentPerson(null)
 
     try {
-      setQueueSuccess('Batch processing started. Check progress monitor for updates.')
-      // Refresh progress every few seconds
-      const interval = setInterval(() => refetch(), 5000)
-      setTimeout(() => clearInterval(interval), 60000) // Stop after 1 minute
+      const response = await automatedTrainingService.startBatch(
+        selectedCandidates,
+        country
+      )
+
+      if (response.success) {
+        setQueueSuccess(`Started training ${selectedCandidates.length} people! Monitor progress below.`)
+        // Clear candidates after starting batch
+        clearCandidates()
+        // Refresh progress
+        setTimeout(() => refetch(), 2000)
+      } else {
+        setQueueError(response.message || 'Failed to start batch training')
+      }
     } catch (err) {
-      setQueueError(err.message || 'An error occurred')
+      setQueueError(err.message || 'Failed to start batch training')
     } finally {
       setProcessingAll(false)
     }
@@ -206,7 +310,7 @@ export default function TrainingWorkflow() {
       <div className="workflow-header">
         <div>
           <h1>Training Workflow</h1>
-          <p className="subtitle">Complete pipeline: Generate → Process → Monitor</p>
+          <p className="subtitle">Complete pipeline: Generate → Select → Train → Monitor</p>
         </div>
       </div>
 
@@ -214,37 +318,37 @@ export default function TrainingWorkflow() {
       <div className="step-indicator">
         <div className="step">
           <div className="step-number">1</div>
-          <div className="step-label">Generate Names</div>
+          <div className="step-label">Generate from Wikidata</div>
         </div>
         <div className="step-divider"></div>
         <div className="step">
           <div className="step-number">2</div>
-          <div className="step-label">Process Queue</div>
+          <div className="step-label">Select Candidates</div>
         </div>
         <div className="step-divider"></div>
         <div className="step">
           <div className="step-number">3</div>
-          <div className="step-label">Monitor Progress</div>
+          <div className="step-label">Train & Monitor</div>
         </div>
       </div>
 
       {/* Main Workflow Grid */}
       <div className="workflow-grid">
-        {/* Left Column: Generate + Queue */}
+        {/* Left Column: Generate + Select */}
         <div className="workflow-actions">
-          {/* Step 1: Generate Names */}
+          {/* Step 1: Generate from Wikidata */}
           <div className="workflow-card">
             <div className="card-header">
               <h2>
                 <span className="step-badge">1</span>
-                Generate Names
+                Generate from Wikidata
               </h2>
-              <span className="card-subtitle">AI-powered name generation (~30-60s)</span>
+              <span className="card-subtitle">Query Wikidata for celebrities (~5-10s)</span>
             </div>
 
             <form onSubmit={handleGenerate} style={{ marginTop: '1.5rem' }}>
               <div className="form-group">
-                <label htmlFor="country">Select Country</label>
+                <label htmlFor="country">Country</label>
                 <select
                   id="country"
                   className="form-input"
@@ -252,58 +356,109 @@ export default function TrainingWorkflow() {
                   onChange={(e) => setCountry(e.target.value)}
                   disabled={generating}
                 >
-                  {commonCountries.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                  {countries.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className="form-group">
-                <label>
-                  Select Categories ({selectedCategories.length} selected)
-                  <small style={{ marginLeft: '0.5rem', color: '#6b7280', fontWeight: 'normal' }}>
-                    ~20 names per category
-                  </small>
+                <label htmlFor="occupation-dropdown">
+                  Select Occupations
                 </label>
-                <div className="category-grid">
-                  {celebrityCategories.map((category) => (
-                    <label
-                      key={category}
-                      className={`category-checkbox ${selectedCategories.includes(category) ? 'checked' : ''}`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => toggleCategory(category)}
-                        disabled={generating}
-                      />
-                      <span>{category}</span>
-                    </label>
-                  ))}
-                </div>
-
-                {/* Custom Category Input */}
-                <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Add custom category (e.g., 'Basketball Players')"
-                    value={customCategory}
-                    onChange={(e) => setCustomCategory(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomCategory())}
-                    disabled={generating}
-                    style={{ flex: 1 }}
-                  />
+                <div className="occupation-dropdown-container" style={{ position: 'relative' }}>
                   <button
                     type="button"
-                    className="btn btn-secondary"
-                    onClick={addCustomCategory}
-                    disabled={generating || !customCategory.trim()}
-                    style={{ whiteSpace: 'nowrap' }}
+                    id="occupation-dropdown"
+                    className="form-input"
+                    onClick={() => setOccupationDropdownOpen(!occupationDropdownOpen)}
+                    disabled={generating}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '0.75rem',
+                      background: 'white',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                    }}
                   >
-                    + Add
+                    <span style={{ color: selectedOccupations.length > 0 ? '#111827' : '#6b7280' }}>
+                      {selectedOccupations.length > 0
+                        ? `${selectedOccupations.length} occupation${selectedOccupations.length > 1 ? 's' : ''} selected`
+                        : 'Select occupations...'}
+                    </span>
+                    <span style={{ fontSize: '0.875rem' }}>
+                      {occupationDropdownOpen ? '▲' : '▼'}
+                    </span>
                   </button>
+
+                  {occupationDropdownOpen && (
+                    <div
+                      className="occupation-dropdown-menu"
+                      style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 0.25rem)',
+                        left: 0,
+                        right: 0,
+                        background: 'white',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.375rem',
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                        maxHeight: '300px',
+                        overflowY: 'auto',
+                        zIndex: 1000,
+                      }}
+                    >
+                      {occupations.map((occ) => {
+                        const isChecked = selectedOccupations.includes(occ.id)
+                        return (
+                          <div
+                            key={occ.id}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.75rem',
+                              padding: '0.75rem 1rem',
+                              cursor: 'pointer',
+                              background: isChecked ? '#eff6ff' : 'white',
+                              borderBottom: '1px solid #f3f4f6',
+                              transition: 'background 0.15s',
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleOccupation(occ.id)
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isChecked) e.currentTarget.style.background = '#f9fafb'
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!isChecked) e.currentTarget.style.background = 'white'
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => {}}
+                              style={{ width: '16px', height: '16px', cursor: 'pointer', pointerEvents: 'none', margin: 0 }}
+                            />
+                            <span style={{ fontSize: '0.875rem', fontWeight: isChecked ? 600 : 400, userSelect: 'none' }}>
+                              {occ.name}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
+                <small style={{ display: 'block', marginTop: '0.25rem', color: '#6b7280' }}>
+                  Click to select multiple occupations
+                </small>
               </div>
 
               {generateError && <div className="alert alert-error">{generateError}</div>}
@@ -312,88 +467,255 @@ export default function TrainingWorkflow() {
               <button
                 type="submit"
                 className="btn btn-primary btn-block"
-                disabled={generating || !country.trim() || selectedCategories.length === 0}
+                disabled={generating}
               >
                 {generating ? (
                   <>
                     <span className="spinner"></span>
-                    Generating... (30-60s)
+                    Querying Wikidata...
                   </>
                 ) : (
-                  <>✨ Generate ~{selectedCategories.length * 20} Names</>
+                  <>✨ Generate from Wikidata</>
                 )}
               </button>
             </form>
           </div>
 
-          {/* Step 2: Process Queue */}
-          <div className="workflow-card">
-            <div className="card-header">
-              <h2>
-                <span className="step-badge">2</span>
-                Process Queue
-              </h2>
-              <span className="card-subtitle">Download training images (~5-15s per person)</span>
-            </div>
+          {/* Step 2: Select Candidates */}
+          {candidates.length > 0 && (
+            <div className="workflow-card">
+              <div className="card-header">
+                <h2>
+                  <span className="step-badge">2</span>
+                  Select Candidates
+                </h2>
+                <span className="card-subtitle">
+                  {statistics?.total || candidates.length} found ({statistics?.new_people || candidates.filter(c => !c.exists_in_db).length} new)
+                </span>
+              </div>
 
-            <div className="button-group" style={{ marginTop: '1.5rem' }}>
-              <button
-                className="btn btn-primary"
-                onClick={handleProcessNext}
-                disabled={processing || processingAll || generating}
-                style={{ flex: 1 }}
-              >
-                {processing ? (
-                  <>
-                    <span className="spinner"></span>
-                    Processing...
-                  </>
+              {/* Statistics */}
+              {statistics && (
+                <div className="stats-summary-compact" style={{ marginTop: '1rem' }}>
+                  <div className="summary-item-compact">
+                    <strong>{statistics.total}</strong>
+                    <span>Total</span>
+                  </div>
+                  <div className="summary-item-compact">
+                    <strong>{statistics.new_people}</strong>
+                    <span>New</span>
+                  </div>
+                  <div className="summary-item-compact">
+                    <strong>{statistics.existing_people}</strong>
+                    <span>Existing</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Filter Buttons */}
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                <button
+                  onClick={() => setShowFilter('new')}
+                  className="btn btn-sm"
+                  style={{
+                    flex: 1,
+                    fontSize: '0.75rem',
+                    padding: '0.4rem',
+                    background: showFilter === 'new' ? '#10b981' : '#e5e7eb',
+                    color: showFilter === 'new' ? 'white' : '#374151',
+                    border: 'none',
+                  }}
+                >
+                  New ({statistics?.new_people || 0})
+                </button>
+                <button
+                  onClick={() => setShowFilter('existing')}
+                  className="btn btn-sm"
+                  style={{
+                    flex: 1,
+                    fontSize: '0.75rem',
+                    padding: '0.4rem',
+                    background: showFilter === 'existing' ? '#6b7280' : '#e5e7eb',
+                    color: showFilter === 'existing' ? 'white' : '#374151',
+                    border: 'none',
+                  }}
+                >
+                  Existing ({statistics?.existing_people || 0})
+                </button>
+                <button
+                  onClick={() => setShowFilter('all')}
+                  className="btn btn-sm"
+                  style={{
+                    flex: 1,
+                    fontSize: '0.75rem',
+                    padding: '0.4rem',
+                    background: showFilter === 'all' ? '#3b82f6' : '#e5e7eb',
+                    color: showFilter === 'all' ? 'white' : '#374151',
+                    border: 'none',
+                  }}
+                >
+                  All ({statistics?.total || 0})
+                </button>
+              </div>
+
+              {/* Selection Controls */}
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                <button
+                  onClick={selectOnlyNew}
+                  className="btn btn-sm"
+                  style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: '#10b981', color: 'white', border: 'none' }}
+                >
+                  ✓ New Only
+                </button>
+                <button
+                  onClick={selectAll}
+                  className="btn btn-sm"
+                  style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: '#3b82f6', color: 'white', border: 'none' }}
+                >
+                  ✓ All
+                </button>
+                <button
+                  onClick={deselectAll}
+                  className="btn btn-sm"
+                  style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: '#6b7280', color: 'white', border: 'none' }}
+                >
+                  ✗ None
+                </button>
+                <button
+                  onClick={clearCandidates}
+                  className="btn btn-sm"
+                  style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: '#ef4444', color: 'white', border: 'none', marginLeft: 'auto' }}
+                >
+                  Clear
+                </button>
+              </div>
+
+              {/* Candidates List */}
+              <div className="folders-list" style={{ marginTop: '1rem', maxHeight: '300px', overflowY: 'auto' }}>
+                {filteredCandidates.length === 0 ? (
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
+                    No candidates match the current filter
+                  </div>
                 ) : (
-                  <>▶️ Process Next</>
+                  filteredCandidates.slice(0, 50).map((candidate) => (
+                    <div
+                      key={candidate.wikidata_id}
+                      className="folder-item"
+                      style={{ padding: '0.75rem', cursor: 'pointer', borderBottom: '1px solid #e5e7eb' }}
+                      onClick={() => toggleCandidate(candidate.wikidata_id)}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <input
+                          type="checkbox"
+                          checked={candidate.isSelected}
+                          onChange={() => toggleCandidate(candidate.wikidata_id)}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ width: '16px', height: '16px' }}
+                        />
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontWeight: 500, color: '#111827' }}>
+                            {candidate.full_name}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                            {candidate.description}
+                          </div>
+                        </div>
+                        {candidate.exists_in_db ? (
+                          <span className="status-badge-sm" style={{ background: '#e5e7eb', color: '#6b7280' }}>
+                            ✓ EXISTS
+                          </span>
+                        ) : (
+                          <span className="status-badge-sm" style={{ background: '#d1fae5', color: '#065f46' }}>
+                            ✨ NEW
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))
                 )}
-              </button>
+                {filteredCandidates.length > 50 && (
+                  <div style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.875rem', color: '#6b7280' }}>
+                    ... and {filteredCandidates.length - 50} more
+                  </div>
+                )}
+              </div>
 
+              {/* Start Training Button */}
               <button
-                className="btn"
+                onClick={handleStartTraining}
+                disabled={getSelectedCount() === 0 || processingAll}
+                className="btn btn-block"
                 style={{
-                  flex: 1,
+                  marginTop: '1rem',
                   background: '#10b981',
                   color: 'white',
                   border: 'none',
+                  padding: '0.75rem',
+                  fontSize: '1rem',
+                  fontWeight: 600,
                 }}
-                onClick={handleProcessAll}
-                disabled={processing || processingAll || generating}
               >
                 {processingAll ? (
                   <>
                     <span className="spinner"></span>
-                    Processing...
+                    Starting Training...
                   </>
                 ) : (
-                  <>⏩ Process All</>
+                  <>🚀 Start Training ({getSelectedCount()} selected)</>
                 )}
               </button>
             </div>
+          )}
 
-            {queueError && <div className="alert alert-error">{queueError}</div>}
-            {queueSuccess && <div className="alert alert-success">{queueSuccess}</div>}
+          {/* Process Queue (Legacy) */}
+          {candidates.length === 0 && (
+            <div className="workflow-card">
+              <div className="card-header">
+                <h2>
+                  <span className="step-badge">2</span>
+                  Process Queue
+                </h2>
+                <span className="card-subtitle">Process Excel-based queue (legacy)</span>
+              </div>
 
-            {currentPerson && (
-              <div className="result-box">
-                <h4>Last Processed</h4>
-                <div className="result-details">
-                  <div className="result-row">
-                    <span>Person:</span>
-                    <strong>{currentPerson.person || 'N/A'}</strong>
-                  </div>
-                  <div className="result-row">
-                    <span>Images:</span>
-                    <strong>{currentPerson.images_downloaded || 0}</strong>
+              <div className="button-group" style={{ marginTop: '1.5rem' }}>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleProcessNext}
+                  disabled={processing || processingAll || generating}
+                  style={{ flex: 1 }}
+                >
+                  {processing ? (
+                    <>
+                      <span className="spinner"></span>
+                      Processing...
+                    </>
+                  ) : (
+                    <>▶️ Process Next</>
+                  )}
+                </button>
+              </div>
+
+              {queueError && <div className="alert alert-error">{queueError}</div>}
+              {queueSuccess && <div className="alert alert-success">{queueSuccess}</div>}
+
+              {currentPerson && (
+                <div className="result-box">
+                  <h4>Last Processed</h4>
+                  <div className="result-details">
+                    <div className="result-row">
+                      <span>Person:</span>
+                      <strong>{currentPerson.person || 'N/A'}</strong>
+                    </div>
+                    <div className="result-row">
+                      <span>Images:</span>
+                      <strong>{currentPerson.images_downloaded || 0}</strong>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Right Column: Progress Monitor */}
@@ -438,6 +760,7 @@ export default function TrainingWorkflow() {
             </div>
 
             {progressError && <div className="alert alert-error">{progressError}</div>}
+            {queueSuccess && <div className="alert alert-success">{queueSuccess}</div>}
 
             {progressLoading ? (
               <div className="loading-state-inline">
@@ -448,7 +771,7 @@ export default function TrainingWorkflow() {
               <div className="empty-state-inline">
                 <div className="empty-icon">📂</div>
                 <p>No training data yet</p>
-                <small>Generate names and process queue to start</small>
+                <small>Generate and train candidates to start</small>
               </div>
             ) : (
               <>
@@ -513,9 +836,9 @@ export default function TrainingWorkflow() {
       <div className="info-box" style={{ marginTop: '2rem' }}>
         <h4>ℹ️ Complete Workflow Guide</h4>
         <ul style={{ marginTop: '1rem', paddingLeft: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '0.5rem' }}>
-          <li><strong>Step 1:</strong> AI generates ~50 celebrity names</li>
-          <li><strong>Step 2:</strong> Download images (5-15s each)</li>
-          <li><strong>Step 3:</strong> Monitor progress (auto-updates every 15s)</li>
+          <li><strong>Step 1:</strong> Query Wikidata for celebrities by occupation</li>
+          <li><strong>Step 2:</strong> Select which candidates to train</li>
+          <li><strong>Step 3:</strong> Start batch training & monitor progress</li>
           <li><strong>Ready:</strong> 40+ images optimal for training</li>
         </ul>
       </div>
