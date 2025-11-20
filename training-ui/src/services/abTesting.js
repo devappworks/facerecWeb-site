@@ -106,7 +106,7 @@ export const abTestingService = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 60000, // 60 seconds - ArcFace is fast, similar to VGG-Face
+        timeout: 180000, // 180 seconds (3 minutes) - A/B testing runs 2 models, needs more time
       })
       return response.data
     } catch (error) {
