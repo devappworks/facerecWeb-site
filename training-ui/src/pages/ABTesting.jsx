@@ -309,7 +309,7 @@ export default function ABTesting() {
         <h4>ℹ️ About A/B Testing</h4>
         <ul style={{ marginTop: '1rem', paddingLeft: '1.5rem' }}>
           <li><strong>Current System:</strong> VGG-Face model with threshold 0.35</li>
-          <li><strong>Improved System:</strong> Facenet512 model with threshold 0.40</li>
+          <li><strong>Improved System:</strong> ArcFace model with threshold 0.50</li>
           <li>Both systems run in parallel for direct comparison</li>
           <li>Ground truth helps validate accuracy improvements</li>
           <li>Confidence scores indicate recognition certainty</li>

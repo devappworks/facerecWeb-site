@@ -1,6 +1,6 @@
 # Face Recognition Training & Testing UI
 
-A comprehensive React-based web application for managing face recognition model training and A/B testing between different recognition systems (VGG-Face vs Facenet512).
+A comprehensive React-based web application for managing face recognition model training and A/B testing between different recognition systems (VGG-Face vs ArcFace).
 
 ## Overview
 
@@ -67,7 +67,7 @@ This application provides a complete interface for:
 ### ⚖️ A/B Testing Dashboard (4 Pages)
 
 #### 1. **Live Comparison** (`/ab-testing/live`)
-**Purpose**: Compare VGG-Face (Pipeline A) vs Facenet512 (Pipeline B) in real-time
+**Purpose**: Compare VGG-Face (Pipeline A) vs ArcFace (Pipeline B) in real-time
 
 **Features**:
 - Drag-and-drop image upload (max 10MB)

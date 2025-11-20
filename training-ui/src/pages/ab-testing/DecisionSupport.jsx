@@ -86,7 +86,7 @@ export default function DecisionSupport() {
         color: '#10b981',
         icon: '✓✓',
         description:
-          'Pipeline B (Facenet512) demonstrates significant improvements across all key metrics. Migration is strongly recommended.',
+          'Pipeline B (ArcFace) demonstrates significant improvements across all key metrics. Migration is strongly recommended.',
         confidence: 'High',
       }
     } else if (scores.total >= 60) {

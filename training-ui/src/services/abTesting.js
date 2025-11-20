@@ -25,8 +25,8 @@ const mockComparisonResult = {
     processing_time: 2.45,
     profile_used: {
       name: 'Improved System',
-      model: 'Facenet512',
-      threshold: 0.40,
+      model: 'ArcFace',
+      threshold: 0.50,
       detection_confidence: 0.98,
     },
   },
@@ -106,7 +106,7 @@ export const abTestingService = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 180000, // 180 seconds (3 minutes) - Facenet512 needs more time with 30k+ images
+        timeout: 60000, // 60 seconds - ArcFace is fast, similar to VGG-Face
       })
       return response.data
     } catch (error) {
