@@ -1,0 +1,58 @@
+# Environment variables (secrets)
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.sublime-project
+.sublime-workspace
+
+# Node/npm
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm
+.yarn
+dist/
+build/
+
+# Training UI specific
+training-ui/node_modules/
+training-ui/.vite/
+training-ui/dist/
+training-ui/coverage/
+
+# OS specific
+Thumbs.db
+.AppleDouble
+.LSOverride
+._*
+
+# Logs
+logs/
+*.log
+lerna-debug.log*
+pnpm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# SSH keys (keep secure)
+ssh_key
+ssh_key.pub
+
+# Testing
+.coverage
+coverage/
+.nyc_output/
+
+# Local development
+.claude/

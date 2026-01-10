@@ -1,0 +1,1059 @@
+.upload-container {
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.upload-zone {
+    border: 2px dashed #6c757d;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    background-color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-zone:hover {
+    border-color: #0d6efd;
+    background-color: #f8f9fa;
+}
+
+.upload-zone.drag-over {
+    border-color: #198754;
+    background-color: #d1e7dd;
+    transform: scale(1.02);
+}
+
+.result-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+.result-header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.result-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.result-content pre {
+    background-color: #f8f9fa !important;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.spinner-border {
+    color: #0d6efd;
+}
+
+#imagePreview {
+    border: 2px solid #dee2e6;
+    border-radius: 0.5rem;
+}
+
+/* Login Section Styles */
+#loginSection {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    transition: all 0.4s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100vh !important;
+    z-index: 10 !important;
+}
+
+#loginSection .card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#loginSection .card-body {
+    position: relative;
+}
+
+#loginSection .text-primary {
+    color: #667eea !important;
+}
+
+#loginSection .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#loginSection .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+#loginSection .btn-primary:active {
+    transform: translateY(0);
+}
+
+#loginSection .form-control-lg {
+    border-radius: 0 12px 12px 0;
+    border: 2px solid #e9ecef;
+    border-left: none;
+    padding: 15px 20px;
+    transition: all 0.3s ease;
+    height: auto;
+}
+
+#loginSection .form-control-lg:focus {
+    border-color: #667eea;
+    border-left: none;
+    box-shadow: none;
+    outline: none;
+}
+
+#loginSection .input-group-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 0 0 12px;
+    padding: 15px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+}
+
+#loginSection .input-group {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+#loginSection .input-group:focus-within {
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+    transform: translateY(-1px);
+}
+
+#loginSection .input-group-text .bi-envelope {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* Input group hover effect */
+#loginSection .input-group:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+/* Ensure consistent height */
+#loginSection .input-group-text,
+#loginSection .form-control-lg {
+    height: 58px;
+    border-width: 2px;
+}
+
+/* Remove default Bootstrap focus styles and ensure seamless connection */
+#loginSection .form-control:focus {
+    border-color: #667eea;
+    box-shadow: none;
+    border-left: none;
+}
+
+/* Placeholder styling */
+#loginSection .form-control-lg::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+/* Login alert animations */
+#loginAlert {
+    animation: fadeInDown 0.4s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header user info styles */
+#userEmail {
+    font-weight: 500;
+}
+
+/* Header responsive design */
+.d-flex.justify-content-between.align-items-center {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.d-flex.align-items-center {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* User email responsive */
+#userEmail {
+    font-weight: 500;
+    word-break: break-word;
+    white-space: normal;
+    line-height: 1.2;
+}
+
+.user-email-text {
+    font-weight: 500;
+    word-break: break-word;
+    white-space: normal;
+    line-height: 1.2;
+    display: inline-block;
+}
+
+.logout-text {
+    display: inline;
+}
+
+/* Responsive header adjustments */
+@media (max-width: 768px) {
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+    
+    .d-flex.align-items-center.flex-wrap {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    
+    #userEmail, .user-email-text {
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    #logoutButton {
+        font-size: 0.875rem;
+        padding: 0.375rem 0.75rem;
+        flex-shrink: 0;
+    }
+    
+    h1.mb-0 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+        gap: 0.75rem;
+    }
+    
+    .d-flex.align-items-center.flex-wrap {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 0.75rem;
+    }
+    
+    #userEmail, .user-email-text {
+        font-size: 0.85rem;
+        text-align: left;
+        width: 100%;
+    }
+    
+    #logoutButton {
+        font-size: 0.8rem;
+        padding: 0.375rem 0.75rem;
+        align-self: flex-end;
+        width: auto;
+    }
+    
+    #logoutButton .bi {
+        font-size: 0.9rem;
+    }
+    
+    h1.mb-0 {
+        font-size: 1.25rem;
+    }
+    
+    .text-muted.me-2 {
+        margin-right: 0 !important;
+        margin-bottom: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    #userEmail, .user-email-text {
+        font-size: 0.8rem;
+    }
+    
+    h1.mb-0 {
+        font-size: 1.1rem;
+    }
+    
+    #logoutButton {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    .logout-text::before {
+        content: "Out";
+    }
+    
+    .logout-text {
+        font-size: 0;
+    }
+}
+
+/* Logout button hover effect */
+#logoutButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* Logout button disabled state */
+#logoutButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#logoutButton:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Smooth transitions for section switching */
+#loginSection, #mainApplication {
+    transition: all 0.1s ease-in-out;
+}
+
+/* Main Application Styles */
+#mainApplication {
+    min-height: 100vh;
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    background: #f8f9fa;
+    pointer-events: auto !important;
+}
+
+/* Ensure all interactive elements are clickable */
+#mainApplication button,
+#mainApplication input,
+#mainApplication .upload-zone,
+#mainApplication .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Login section interactive elements */
+#loginSection button,
+#loginSection input,
+#loginSection .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 11 !important;
+}
+
+/* Loading button animation */
+#loginButton:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+#loginSpinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Transition Loader Styles */
+#transitionLoader {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+}
+
+#transitionLoader .spinner-border {
+    color: white !important;
+    border-width: 0.25em;
+}
+
+#transitionLoader h4 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+#transitionLoader .text-white-50 {
+    opacity: 0.8;
+}
+
+/* Base body styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Ensure sections don't stack */
+.section-hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+.section-visible {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Force proper layering and prevent blocking */
+#loginSection.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+#mainApplication.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+#transitionLoader.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+/* Ensure clickable elements remain clickable */
+#mainApplication button,
+#mainApplication input,
+#mainApplication .upload-zone,
+#mainApplication .form-control,
+#mainApplication .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+#loginSection button,
+#loginSection input,
+#loginSection .form-control,
+#loginSection .btn {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 11 !important;
+}
+
+/* Responsive design for login */
+@media (max-width: 768px) {
+    #loginSection .card-body {
+        padding: 2rem !important;
+    }
+    
+    #loginSection h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Domain Selection Modal Styles */
+#domainSelectionModal .modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+#domainSelectionModal .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+#domainSelectionModal .modal-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+#domainSelectionModal .modal-body {
+    padding: 2rem;
+}
+
+.domain-option {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    background: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+.domain-option:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+.domain-option:active {
+    transform: translateY(0);
+}
+
+.domain-option .domain-name {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.domain-option .domain-icon {
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+.domain-option:hover .domain-icon {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* Loading state for domain selection */
+.domain-loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.domain-loading .spinner-border {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+/* ===== BATCH TESTING STYLES ===== */
+
+/* Tab Navigation */
+#mainTabs {
+    border-bottom: 2px solid #dee2e6;
+}
+
+#mainTabs .nav-link {
+    color: #6c757d;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#mainTabs .nav-link:hover {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: transparent;
+}
+
+#mainTabs .nav-link.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: transparent;
+}
+
+#mainTabs .nav-link i {
+    margin-right: 0.5rem;
+}
+
+/* Batch Upload Container */
+.batch-upload-container {
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.batch-upload-zone {
+    border: 2px dashed #6c757d;
+    border-radius: 10px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background-color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.batch-upload-zone:hover {
+    border-color: #667eea;
+    background-color: #f8f9ff;
+}
+
+.batch-upload-zone.drag-over {
+    border-color: #198754;
+    background-color: #d1e7dd;
+    transform: scale(1.01);
+}
+
+/* Batch File Thumbnails */
+.batch-file-thumb {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 3px solid #dee2e6;
+    background: #f8f9fa;
+    transition: all 0.2s ease;
+}
+
+.batch-file-thumb img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.batch-file-thumb .remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.batch-file-thumb:hover .remove-btn {
+    opacity: 1;
+}
+
+.batch-file-thumb.pending {
+    border-color: #dee2e6;
+}
+
+.batch-file-thumb.processing {
+    border-color: #0d6efd;
+    animation: pulse-border 1.5s infinite;
+}
+
+.batch-file-thumb.success {
+    border-color: #198754;
+}
+
+.batch-file-thumb.error {
+    border-color: #dc3545;
+}
+
+@keyframes pulse-border {
+    0%, 100% { border-color: #0d6efd; }
+    50% { border-color: #6ea8fe; }
+}
+
+/* Results Table */
+#batchResultsTable {
+    font-size: 0.9rem;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#batchResultsTable th {
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+#batchResultsTable td {
+    vertical-align: top;
+    padding: 0.75rem 0.5rem;
+    word-wrap: break-word;
+}
+
+/* Image Preview Cell with Hover */
+.batch-image-cell {
+    position: relative;
+}
+
+.batch-image-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid #dee2e6;
+}
+
+.batch-image-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Image Preview Popover on Hover */
+.batch-image-preview {
+    position: absolute;
+    left: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1050;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    display: none;
+    pointer-events: none;
+}
+
+.batch-image-cell:hover .batch-image-preview {
+    display: block;
+}
+
+.batch-image-preview img {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 6px;
+    display: block;
+}
+
+.batch-image-preview .image-name {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 6px;
+    text-align: center;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Status Badges */
+.batch-status-cell {
+    text-align: center;
+}
+
+.batch-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.batch-status-badge.success {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.batch-status-badge.error {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.batch-status-badge.processing {
+    background: #cff4fc;
+    color: #055160;
+}
+
+/* Persons List in Table - removed display:flex to not break table layout */
+td.batch-persons-list {
+    vertical-align: middle;
+}
+
+.batch-persons-list .batch-person-pill {
+    margin: 2px;
+}
+
+.batch-persons-list li small {
+    opacity: 0.7;
+}
+
+/* Description Cell - shows 3 lines by default */
+.batch-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.batch-description:hover {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    position: relative;
+    z-index: 100;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    padding: 8px;
+    border-radius: 6px;
+    margin: -8px;
+}
+
+/* Person Pills (for batch results) */
+.batch-person-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    margin: 2px;
+    background: #e7f1ff;
+    color: #0d6efd;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid #b6d4fe;
+}
+
+.batch-person-pill.gemini {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+    color: #664d03;
+    border: 1px solid #ffdb7a;
+}
+
+/* Responsive Adjustments for Batch Testing */
+@media (max-width: 1200px) {
+    .batch-description {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    #batchResultsTable {
+        font-size: 0.8rem;
+    }
+
+    .batch-image-thumb {
+        width: 40px;
+        height: 40px;
+    }
+
+    .batch-description {
+        max-width: 150px;
+    }
+
+    .batch-image-preview img {
+        max-width: 200px;
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    #mainTabs .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .batch-upload-zone {
+        padding: 2rem 1rem;
+    }
+
+    .batch-upload-zone h4 {
+        font-size: 1.1rem;
+    }
+
+    #batchResultsTable th,
+    #batchResultsTable td {
+        padding: 0.5rem;
+    }
+
+    .batch-persons-list li {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    #mainTabs .nav-link span {
+        display: none;
+    }
+
+    #mainTabs .nav-link i {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+
+    .batch-image-preview {
+        left: 0;
+        top: 100%;
+        transform: none;
+    }
+}
+
+/* Batch History Section */
+.batch-history-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.batch-history-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.batch-history-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.batch-history-card:hover {
+    background: #e9ecef;
+    border-color: #667eea;
+}
+
+.batch-history-card.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.batch-history-info {
+    flex: 1;
+}
+
+.batch-history-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.batch-history-meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.batch-history-meta span {
+    margin-right: 1rem;
+}
+
+.batch-history-stats {
+    display: flex;
+    gap: 0.5rem;
+    margin-right: 1rem;
+}
+
+.batch-history-stat {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.batch-history-stat.success {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.batch-history-stat.error {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.batch-history-stat.total {
+    background: #e7f1ff;
+    color: #0d6efd;
+}
+
+.batch-history-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.batch-history-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Batch history scrollbar */
+.batch-history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.batch-history-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.batch-history-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.batch-history-list::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}

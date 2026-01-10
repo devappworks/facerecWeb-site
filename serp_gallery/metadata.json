@@ -1,0 +1,536 @@
+{
+  "Nenad_Jezdic_20251126_115639_1.jpg": {
+    "sequence": 1,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:07.931211"
+  },
+  "Nenad_Jezdic_20251126_115639_2.jpg": {
+    "sequence": 2,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:57:08.792450"
+  },
+  "Nenad_Jezdic_20251126_115639_5.jpg": {
+    "sequence": 5,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:09.981427"
+  },
+  "Nenad_Jezdic_20251126_115639_7.jpg": {
+    "sequence": 7,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:11.195655"
+  },
+  "Nenad_Jezdic_20251126_115639_10.jpg": {
+    "sequence": 10,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:21.323233"
+  },
+  "Nenad_Jezdic_20251126_115639_12.jpg": {
+    "sequence": 12,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:29.423691"
+  },
+  "Nenad_Jezdic_20251126_115639_13.webp": {
+    "sequence": 13,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:38.714448"
+  },
+  "Nenad_Jezdic_20251126_115639_14.png": {
+    "sequence": 14,
+    "status": "rejected",
+    "reason": "Does not match enough references (0/3, need 2)",
+    "details": {
+      "verification_attempts": [
+        {
+          "reference_seq": 1,
+          "distance": 0.920194,
+          "matched": false
+        },
+        {
+          "reference_seq": 5,
+          "distance": 0.852686,
+          "matched": false
+        },
+        {
+          "reference_seq": 7,
+          "distance": 0.834073,
+          "matched": false
+        }
+      ]
+    },
+    "archived_at": "2025-11-26T11:57:47.106725"
+  },
+  "Nenad_Jezdic_20251126_115639_17.jpg": {
+    "sequence": 17,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:57:48.090201"
+  },
+  "Nenad_Jezdic_20251126_115639_18.webp": {
+    "sequence": 18,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:57:49.252243"
+  },
+  "Nenad_Jezdic_20251126_115639_19.jpg": {
+    "sequence": 19,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:57:57.632444"
+  },
+  "Nenad_Jezdic_20251126_115639_20.jpg": {
+    "sequence": 20,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:06.344211"
+  },
+  "Nenad_Jezdic_20251126_115639_21.jpg": {
+    "sequence": 21,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:14.923376"
+  },
+  "Nenad_Jezdic_20251126_115639_23.jpg": {
+    "sequence": 23,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:23.204118"
+  },
+  "Nenad_Jezdic_20251126_115639_24.jpg": {
+    "sequence": 24,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:31.171620"
+  },
+  "Nenad_Jezdic_20251126_115639_27.jpg": {
+    "sequence": 27,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:58:32.555715"
+  },
+  "Nenad_Jezdic_20251126_115639_30.jpg": {
+    "sequence": 30,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:41.056315"
+  },
+  "Nenad_Jezdic_20251126_115639_31.jpg": {
+    "sequence": 31,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:49.164336"
+  },
+  "Nenad_Jezdic_20251126_115639_34.jpg": {
+    "sequence": 34,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:58:50.171535"
+  },
+  "Nenad_Jezdic_20251126_115639_35.jpg": {
+    "sequence": 35,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:58:58.553735"
+  },
+  "Nenad_Jezdic_20251126_115639_36.jpg": {
+    "sequence": 36,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:59:07.199563"
+  },
+  "Nenad_Jezdic_20251126_115639_37.jpg": {
+    "sequence": 37,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:59:08.375512"
+  },
+  "Nenad_Jezdic_20251126_115639_39.jpg": {
+    "sequence": 39,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:59:16.193397"
+  },
+  "Nenad_Jezdic_20251126_115639_40.jpg": {
+    "sequence": 40,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:59:17.594645"
+  },
+  "Nenad_Jezdic_20251126_115639_41.jpg": {
+    "sequence": 41,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T11:59:19.019836"
+  },
+  "Nenad_Jezdic_20251126_115639_42.jpg": {
+    "sequence": 42,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:59:27.477322"
+  },
+  "Nenad_Jezdic_20251126_115639_43.jpg": {
+    "sequence": 43,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:59:35.908914"
+  },
+  "Nenad_Jezdic_20251126_115639_44.jpg": {
+    "sequence": 44,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:59:44.388813"
+  },
+  "Nenad_Jezdic_20251126_115639_46.jpg": {
+    "sequence": 46,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T11:59:53.142198"
+  },
+  "Nenad_Jezdic_20251126_115639_47.jpg": {
+    "sequence": 47,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:01.514680"
+  },
+  "Nenad_Jezdic_20251126_115639_50.jpg": {
+    "sequence": 50,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:09.766113"
+  },
+  "Nenad_Jezdic_20251126_115639_53.jpg": {
+    "sequence": 53,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:00:11.170844"
+  },
+  "Nenad_Jezdic_20251126_115639_56.jpg": {
+    "sequence": 56,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:19.822048"
+  },
+  "Nenad_Jezdic_20251126_115639_57.jpg": {
+    "sequence": 57,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:27.876115"
+  },
+  "Nenad_Jezdic_20251126_115639_60.jpg": {
+    "sequence": 60,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:00:29.096019"
+  },
+  "Nenad_Jezdic_20251126_115639_62.png": {
+    "sequence": 62,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:37.699678"
+  },
+  "Nenad_Jezdic_20251126_115639_63.jpg": {
+    "sequence": 63,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:46.473373"
+  },
+  "Nenad_Jezdic_20251126_115639_65.jpg": {
+    "sequence": 65,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:00:47.781420"
+  },
+  "Nenad_Jezdic_20251126_115639_66.jpg": {
+    "sequence": 66,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:00:55.846849"
+  },
+  "Nenad_Jezdic_20251126_115639_67.jpg": {
+    "sequence": 67,
+    "status": "rejected",
+    "reason": "Does not match enough references (0/3, need 2)",
+    "details": {
+      "verification_attempts": [
+        {
+          "reference_seq": 1,
+          "distance": 0.87711,
+          "matched": false
+        },
+        {
+          "reference_seq": 5,
+          "distance": 0.97072,
+          "matched": false
+        },
+        {
+          "reference_seq": 7,
+          "distance": 0.943764,
+          "matched": false
+        }
+      ]
+    },
+    "archived_at": "2025-11-26T12:01:04.419380"
+  },
+  "Nenad_Jezdic_20251126_115639_68.jpg": {
+    "sequence": 68,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:01:12.487059"
+  },
+  "Nenad_Jezdic_20251126_115639_70.jpg": {
+    "sequence": 70,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:01:21.136798"
+  },
+  "Nenad_Jezdic_20251126_115639_71.jpg": {
+    "sequence": 71,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:01:21.961621"
+  },
+  "Nenad_Jezdic_20251126_115639_72.jpg": {
+    "sequence": 72,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:01:30.169727"
+  },
+  "Nenad_Jezdic_20251126_115639_73.jpg": {
+    "sequence": 73,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:01:39.087204"
+  },
+  "Nenad_Jezdic_20251126_115639_74.jpg": {
+    "sequence": 74,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:01:47.589107"
+  },
+  "Nenad_Jezdic_20251126_115639_75.jpg": {
+    "sequence": 75,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:01:48.730921"
+  },
+  "Nenad_Jezdic_20251126_115639_76.jpg": {
+    "sequence": 76,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:01:56.951993"
+  },
+  "Nenad_Jezdic_20251126_115639_78.jpg": {
+    "sequence": 78,
+    "status": "rejected",
+    "reason": "Does not match enough references (0/3, need 2)",
+    "details": {
+      "verification_attempts": [
+        {
+          "reference_seq": 1,
+          "distance": 0.795771,
+          "matched": false
+        },
+        {
+          "reference_seq": 5,
+          "distance": 0.928635,
+          "matched": false
+        },
+        {
+          "reference_seq": 7,
+          "distance": 0.947522,
+          "matched": false
+        }
+      ]
+    },
+    "archived_at": "2025-11-26T12:02:05.233922"
+  },
+  "Nenad_Jezdic_20251126_115639_79.jpg": {
+    "sequence": 79,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:02:06.654154"
+  },
+  "Nenad_Jezdic_20251126_115639_80.jpg": {
+    "sequence": 80,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:02:14.914948"
+  },
+  "Nenad_Jezdic_20251126_115639_81.jpg": {
+    "sequence": 81,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:02:16.320669"
+  },
+  "Nenad_Jezdic_20251126_115639_82.jpg": {
+    "sequence": 82,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:02:25.463255"
+  },
+  "Nenad_Jezdic_20251126_115639_83.jpg": {
+    "sequence": 83,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:02:33.676138"
+  },
+  "Nenad_Jezdic_20251126_115639_84.jpg": {
+    "sequence": 84,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:02:42.469719"
+  },
+  "Nenad_Jezdic_20251126_115639_86.jpg": {
+    "sequence": 86,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:02:50.939831"
+  },
+  "Nenad_Jezdic_20251126_115639_87.jpg": {
+    "sequence": 87,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:02:51.744225"
+  },
+  "Nenad_Jezdic_20251126_115639_88.jpg": {
+    "sequence": 88,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:02:53.218689"
+  },
+  "Nenad_Jezdic_20251126_115639_89.jpg": {
+    "sequence": 89,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:03:01.376845"
+  },
+  "Nenad_Jezdic_20251126_115639_90.jpg": {
+    "sequence": 90,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:03:02.805650"
+  },
+  "Nenad_Jezdic_20251126_115639_91.jpg": {
+    "sequence": 91,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:03:10.967529"
+  },
+  "Nenad_Jezdic_20251126_115639_92.jpg": {
+    "sequence": 92,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:03:18.998147"
+  },
+  "Nenad_Jezdic_20251126_115639_93.jpg": {
+    "sequence": 93,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:03:27.740552"
+  },
+  "Nenad_Jezdic_20251126_115639_94.jpg": {
+    "sequence": 94,
+    "status": "accepted",
+    "reason": null,
+    "details": {},
+    "archived_at": "2025-11-26T12:03:35.976727"
+  },
+  "Nenad_Jezdic_20251126_115639_95.jpg": {
+    "sequence": 95,
+    "status": "rejected",
+    "reason": "Does not match enough references (1/3, need 2)",
+    "details": {
+      "verification_attempts": [
+        {
+          "reference_seq": 1,
+          "distance": 0.313027,
+          "matched": true
+        },
+        {
+          "reference_seq": 5,
+          "distance": 0.912715,
+          "matched": false
+        },
+        {
+          "reference_seq": 7,
+          "distance": 0.816656,
+          "matched": false
+        }
+      ]
+    },
+    "archived_at": "2025-11-26T12:03:43.734409"
+  },
+  "Nenad_Jezdic_20251126_115639_96.jpg": {
+    "sequence": 96,
+    "status": "rejected",
+    "reason": "Face extraction failed or validation rejected",
+    "details": {},
+    "archived_at": "2025-11-26T12:03:45.129045"
+  }
+}

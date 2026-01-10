@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-01-10T19:41:30.683306",
+  "total_time_seconds": 513.210141658783,
+  "avg_time_per_person": 51.320252251625064,
+  "threshold": 0.5,
+  "region": "rs",
+  "results": [
+    {
+      "person_name": "Elon Musk",
+      "num_images": 10,
+      "recognized": 10,
+      "correct": 0,
+      "wrong": 10,
+      "not_found": 0,
+      "score": 0.0,
+      "time_seconds": 56.288928747177124
+    },
+    {
+      "person_name": "Emir Kusturica",
+      "num_images": 10,
+      "recognized": 10,
+      "correct": 9,
+      "wrong": 1,
+      "not_found": 0,
+      "score": 90.0,
+      "time_seconds": 63.34582281112671
+    },
+    {
+      "person_name": "Jelena Karleusa",
+      "num_images": 10,
+      "recognized": 10,
+      "correct": 10,
+      "wrong": 0,
+      "not_found": 0,
+      "score": 100.0,
+      "time_seconds": 51.199562549591064
+    },
+    {
+      "person_name": "Novak Djokovic",
+      "num_images": 10,
+      "recognized": 10,
+      "correct": 9,
+      "wrong": 1,
+      "not_found": 0,
+      "score": 90.0,
+      "time_seconds": 42.01976203918457
+    },
+    {
+      "person_name": "Seka Aleksic",
+      "num_images": 10,
+      "recognized": 7,
+      "correct": 6,
+      "wrong": 1,
+      "not_found": 3,
+      "score": 60.0,
+      "time_seconds": 50.12697672843933
+    },
+    {
+      "person_name": "Arina Sabalenka",
+      "num_images": 10,
+      "recognized": 10,
+      "correct": 10,
+      "wrong": 0,
+      "not_found": 0,
+      "score": 100.0,
+      "time_seconds": 55.38653540611267
+    },
+    {
+      "person_name": "Ansu Fati",
+      "num_images": 10,
+      "recognized": 10,
+      "correct": 5,
+      "wrong": 5,
+      "not_found": 0,
+      "score": 50.0,
+      "time_seconds": 44.67808675765991
+    },
+    {
+      "person_name": "Amanda Anisimova",
+      "num_images": 10,
+      "recognized": 7,
+      "correct": 6,
+      "wrong": 1,
+      "not_found": 3,
+      "score": 60.0,
+      "time_seconds": 48.045658111572266
+    },
+    {
+      "person_name": "Antonio Silva",
+      "num_images": 10,
+      "recognized": 9,
+      "correct": 9,
+      "wrong": 0,
+      "not_found": 1,
+      "score": 90.0,
+      "time_seconds": 39.797693967819214
+    },
+    {
+      "person_name": "Andrea Trinkijeri",
+      "num_images": 10,
+      "recognized": 9,
+      "correct": 7,
+      "wrong": 2,
+      "not_found": 1,
+      "score": 70.0,
+      "time_seconds": 62.31349539756775
+    }
+  ]
+}

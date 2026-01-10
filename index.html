@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photolytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="public/iconNew.png">
+    <link href="public/style/style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Initial Loading Screen (shown while checking auth) -->
+    <div id="initialLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 10000;">
+        <div class="text-center text-white">
+            <div class="spinner-border mb-3" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h4 class="mb-2">Photolytics</h4>
+            <p class="text-white-50">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Login Section (hidden by default until auth check) -->
+    <div id="loginSection" class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="display: none !important; opacity: 0;">
+        <div class="row w-100">
+            <div class="col-12 col-md-6 col-lg-4 mx-auto">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-camera-fill text-primary fs-1 mb-3"></i>
+                            <h2 class="card-title text-center mb-2">Photolytics</h2>
+                            <p class="text-muted">Please enter your email to continue</p>
+                        </div>
+                        
+                        <form id="loginForm">
+                            <div class="mb-4">
+                                <label for="emailInput" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+                                    <input type="email" class="form-control form-control-lg" id="emailInput" 
+                                           placeholder="Enter your email" required>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg w-100" id="loginButton">
+                                <span id="loginButtonText">Login</span>
+                                <span id="loginSpinner" class="spinner-border spinner-border-sm ms-2" role="status" style="display: none;">
+                                    <span class="visually-hidden">Loading...</span>
+                                </span>
+                            </button>
+                        </form>
+                        
+                        <!-- Login Alert Messages -->
+                        <div id="loginAlert" class="mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transition Loader (hidden by default) -->
+    <div id="transitionLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="display: none !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 9999; opacity: 0;">
+        <div class="text-center text-white">
+            <div class="spinner-border mb-3" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h4 class="mb-2">Welcome!</h4>
+            <p class="text-white-50">Preparing your workspace...</p>
+        </div>
+    </div>
+
+    <!-- Main Application (hidden by default) -->
+    <div id="mainApplication" class="container py-5" style="display: none !important; opacity: 0;">
+        <!-- Header with logout -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+            <h1 class="mb-0 mb-md-0">Document Upload</h1>
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <!-- Model Selector (Admin only - hidden by default) -->
+                <div class="me-2" id="modelSelectorContainer" style="display: none;">
+                    <select id="modelSelector" class="form-select form-select-sm" style="min-width: 220px;">
+                        <option value="gpt-4.1-mini">GPT-4.1 Mini (Default)</option>
+                        <optgroup label="OpenAI">
+                            <option value="gpt-4.1">GPT-4.1</option>
+                            <option value="gpt-4o">GPT-4o</option>
+                            <option value="gpt-5-mini">GPT-5 Mini</option>
+                            <option value="gpt-5">GPT-5</option>
+                        </optgroup>
+                        <optgroup label="Google Gemini">
+                            <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                            <option value="gemini-3-flash-preview">Gemini 3 Flash ⭐ (Person ID)</option>
+                            <option value="gemini-3-pro-preview">Gemini 3 Pro ⭐ (Person ID)</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <!-- Language Selector -->
+                <div class="me-2">
+                    <select id="languageSelector" class="form-select form-select-sm" style="min-width: 150px;">
+                        <option value="">English only</option>
+                        <option value="slovenian">Slovenian</option>
+                        <option value="serbian">Serbian</option>
+                        <option value="croatian">Croatian</option>
+                        <option value="bosnian">Bosnian</option>
+                        <option value="greek">Greek</option>
+                        <option value="italian">Italian</option>
+                    </select>
+                </div>
+                <span class="text-muted me-2 me-md-3 d-flex align-items-center">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <span id="userEmail" class="user-email-text"></span>
+                </span>
+                <a href="/training/" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-gear"></i>
+                    Training
+                </a>
+                <button type="button" class="btn btn-outline-danger btn-sm" id="logoutButton">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="logout-text">Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#single-photo" type="button" role="tab" aria-controls="single-photo" aria-selected="true">
+                    <i class="bi bi-image"></i> Single Photo
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="batch-tab" data-bs-toggle="tab" data-bs-target="#batch-testing" type="button" role="tab" aria-controls="batch-testing" aria-selected="false">
+                    <i class="bi bi-images"></i> Batch Testing
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="mainTabContent">
+            <!-- Single Photo Tab -->
+            <div class="tab-pane fade show active" id="single-photo" role="tabpanel" aria-labelledby="single-tab">
+                <!-- Upload section -->
+                <div class="upload-container">
+            <form id="uploadForm">
+                <div class="upload-zone">
+                    <div id="previewContainer" class="mb-3" style="display: none;">
+                        <img id="imagePreview" class="img-fluid rounded mb-2" style="max-height: 200px;" alt="Preview">
+                        <button type="button" class="btn btn-sm btn-danger d-block mx-auto" id="removePreview">Remove Image</button>
+                    </div>
+                    <div id="uploadPrompt">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-cloud-upload mb-3" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+                            <path fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                        </svg>
+                        <h4>Drag files here</h4>
+                        <p class="text-muted">or</p>
+                    </div>
+                    <input type="file" class="form-control" id="fileInput" multiple accept="image/*">
+                    <button type="submit" class="btn btn-primary mt-3">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Admin Usage Info (hidden by default, shown for admin users after analysis) -->
+        <div id="adminUsageSection" class="mt-4" style="display: none;">
+            <div class="alert alert-warning border-warning">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-speedometer2 me-3 fs-4"></i>
+                    <div class="flex-grow-1">
+                        <h5 class="alert-heading mb-2">
+                            <i class="bi bi-shield-lock me-1"></i> Admin: API Usage & Cost
+                        </h5>
+                        <div id="adminUsageContent">
+                            <!-- Content populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result sections -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="result-section">
+                    <div class="result-header">
+                        <h4>Face Recognition Result</h4>
+                    </div>
+                    <div id="result1" class="result-content">
+                        <p class="text-muted">Results will be displayed after upload...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="result-section">
+                    <div class="result-header">
+                        <h4>Object Detection Result</h4>
+                    </div>
+                    <div id="result2" class="result-content">
+                        <p class="text-muted">Results will be displayed after upload...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div><!-- End Single Photo Tab -->
+
+            <!-- Batch Testing Tab -->
+            <div class="tab-pane fade" id="batch-testing" role="tabpanel" aria-labelledby="batch-tab">
+                <!-- Previous Sessions (History) -->
+                <div class="batch-history-section mb-4" id="batchHistorySection">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="bi bi-clock-history"></i> Previous Test Sessions</h5>
+                        <button class="btn btn-sm btn-outline-primary" id="batchRefreshHistory">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="batchHistoryList" class="batch-history-list">
+                        <p class="text-muted text-center py-3" id="batchHistoryEmpty">
+                            <i class="bi bi-inbox"></i> No previous test sessions
+                        </p>
+                        <!-- Session cards will be added here -->
+                    </div>
+                </div>
+
+                <!-- Batch Upload Zone -->
+                <div class="batch-upload-container">
+                    <div class="batch-upload-zone" id="batchUploadZone">
+                        <i class="bi bi-cloud-arrow-up display-4 mb-3 text-muted"></i>
+                        <h4>Drop multiple images here</h4>
+                        <p class="text-muted">or click to select files (max 10MB each, up to 50 images)</p>
+                        <input type="file" id="batchFileInput" multiple accept="image/*" style="display: none;">
+                        <button type="button" class="btn btn-primary mt-2" id="batchSelectBtn">
+                            <i class="bi bi-folder2-open"></i> Select Images
+                        </button>
+                    </div>
+
+                    <!-- Selected Files List -->
+                    <div id="batchFileList" class="mt-4" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold"><span id="batchFileCount">0</span> images selected</span>
+                            <div>
+                                <button class="btn btn-sm btn-outline-danger" id="batchClearBtn">
+                                    <i class="bi bi-trash"></i> Clear All
+                                </button>
+                                <button class="btn btn-sm btn-success ms-2" id="batchProcessBtn">
+                                    <i class="bi bi-play-fill"></i> Process All
+                                </button>
+                            </div>
+                        </div>
+                        <div id="batchFilePreviewList" class="row g-2">
+                            <!-- Thumbnails will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Section -->
+                <div id="batchProgressSection" class="mt-4" style="display: none;">
+                    <div class="card border-primary">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold">Processing: <span id="batchProgressText">0/0</span></span>
+                                <button class="btn btn-sm btn-outline-danger" id="batchCancelBtn">
+                                    <i class="bi bi-x-circle"></i> Cancel
+                                </button>
+                            </div>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" id="batchProgressBar" role="progressbar" style="width: 0%;">0%</div>
+                            </div>
+                            <p class="text-muted mt-2 mb-0" id="batchCurrentFile">
+                                <i class="bi bi-hourglass-split"></i> Processing: <span>...</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Table Section -->
+                <div id="batchResultsSection" class="mt-4" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="bi bi-table"></i> Results (<span id="batchResultCount">0</span> images)</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-success" id="batchExportCsv">
+                                <i class="bi bi-download"></i> Export CSV
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary ms-2" id="batchClearResults">
+                                <i class="bi bi-x-lg"></i> Clear Results
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped" id="batchResultsTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th style="width: 70px;">Image</th>
+                                    <th style="width: 150px;">Model</th>
+                                    <th style="width: 180px;">Face Recognition</th>
+                                    <th style="width: 180px;">LLM Person ID</th>
+                                    <th>Description</th>
+                                    <th style="width: 80px; text-align: center;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batchResultsBody">
+                                <!-- Results rows will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- End Batch Testing Tab -->
+
+        </div><!-- End Tab Content -->
+    </div>
+
+    <!-- Domain Selection Modal -->
+    <div class="modal fade" id="domainSelectionModal" tabindex="-1" aria-labelledby="domainSelectionModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="domainSelectionModalLabel">
+                        <i class="bi bi-buildings me-2"></i>Select Domain
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-3">Multiple domains are available for your account. Please select the domain you want to access:</p>
+                    <div id="domainList" class="d-grid gap-2">
+                        <!-- Domain options will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Debug Script -->
+    <script>
+        console.log('Page loading...');
+        
+        // Immediate check on page load
+        window.addEventListener('load', () => {
+            console.log('Window loaded');
+            
+            // Hide initial loader
+            const initialLoader = document.getElementById('initialLoader');
+            if (initialLoader) {
+                initialLoader.style.display = 'none';
+            }
+            
+            // Force hide transition loader if it's visible
+            const loader = document.getElementById('transitionLoader');
+            if (loader) {
+                console.log('Loader found, hiding it');
+                loader.style.display = 'none';
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                loader.style.pointerEvents = 'none';
+                loader.style.zIndex = '-1';
+            }
+            
+            // Check token and show appropriate section
+            const token = localStorage.getItem('photolytics_auth_token');
+            const email = localStorage.getItem('photolytics_user_email');
+            console.log('Token exists:', !!token);
+            console.log('Email exists:', !!email);
+            
+            const loginSection = document.getElementById('loginSection');
+            const mainApp = document.getElementById('mainApplication');
+            
+            if (token && email) {
+                console.log('User authenticated, showing main app');
+                if (loginSection) {
+                    loginSection.style.display = 'none';
+                    loginSection.style.visibility = 'hidden';
+                    loginSection.style.pointerEvents = 'none';
+                    loginSection.style.zIndex = '-1';
+                }
+                if (mainApp) {
+                    mainApp.style.display = 'block';
+                    mainApp.style.opacity = '1';
+                    mainApp.style.visibility = 'visible';
+                    mainApp.style.pointerEvents = 'auto';
+                    mainApp.style.zIndex = '1';
+                    
+                    // Set user email
+                    const userEmailDisplay = document.getElementById('userEmail');
+                    if (userEmailDisplay) {
+                        userEmailDisplay.textContent = email;
+                    }
+                }
+            } else {
+                console.log('User not authenticated, showing login');
+                if (mainApp) {
+                    mainApp.style.display = 'none';
+                    mainApp.style.visibility = 'hidden';
+                    mainApp.style.pointerEvents = 'none';
+                    mainApp.style.zIndex = '-1';
+                }
+                if (loginSection) {
+                    loginSection.style.display = 'flex';
+                    loginSection.style.opacity = '1';
+                    loginSection.style.visibility = 'visible';
+                    loginSection.style.pointerEvents = 'auto';
+                    loginSection.style.zIndex = '10';
+                }
+            }
+        });
+        
+        // Even faster check on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded - quick auth check');
+            
+            const token = localStorage.getItem('photolytics_auth_token');
+            const email = localStorage.getItem('photolytics_user_email');
+            
+            if (token && email) {
+                // User is authenticated - hide initial loader faster
+                const initialLoader = document.getElementById('initialLoader');
+                if (initialLoader) {
+                    initialLoader.style.display = 'none';
+                }
+                
+                const mainApp = document.getElementById('mainApplication');
+                if (mainApp) {
+                    mainApp.style.display = 'block';
+                    mainApp.style.opacity = '1';
+                    mainApp.style.visibility = 'visible';
+                    mainApp.style.pointerEvents = 'auto';
+                    mainApp.style.zIndex = '1';
+                }
+            }
+        });
+    </script>
+    
+    <script src="public/javascript/auth.js"></script>
+    <script src="public/javascript/main.js"></script>
+    <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
+    <script src="public/javascript/pusher-handler.js"></script>
+</body>
+</html>
