@@ -4,11 +4,11 @@ class AuthManager {
         this.tokenKey = 'photolytics_auth_token';
         this.emailKey = 'photolytics_user_email';
         this.loginApiUrl = 'https://facerecognition.mpanel.app/api/auth/token-by-email';
-        
+
         // Debounce flags
         this.isLoggingOut = false;
         this.isLoggingIn = false;
-        
+
         // DOM elements
         this.loginSection = document.getElementById('loginSection');
         this.mainApplication = document.getElementById('mainApplication');
@@ -16,13 +16,16 @@ class AuthManager {
         this.initialLoader = document.getElementById('initialLoader');
         this.loginForm = document.getElementById('loginForm');
         this.emailInput = document.getElementById('emailInput');
+        this.passwordInput = document.getElementById('passwordInput');
+        this.togglePassword = document.getElementById('togglePassword');
+        this.togglePasswordIcon = document.getElementById('togglePasswordIcon');
         this.loginButton = document.getElementById('loginButton');
         this.loginButtonText = document.getElementById('loginButtonText');
         this.loginSpinner = document.getElementById('loginSpinner');
         this.loginAlert = document.getElementById('loginAlert');
         this.logoutButton = document.getElementById('logoutButton');
         this.userEmailDisplay = document.getElementById('userEmail');
-        
+
         this.init();
     }
     
@@ -49,8 +52,30 @@ class AuthManager {
         if (this.logoutButton) {
             this.logoutButton.addEventListener('click', () => this.handleLogout());
         }
-        
+
+        // Password visibility toggle
+        if (this.togglePassword && this.passwordInput) {
+            this.togglePassword.addEventListener('click', () => this.togglePasswordVisibility());
+        }
+
         console.log('AuthManager initialized successfully');
+    }
+
+    // Toggle password visibility
+    togglePasswordVisibility() {
+        if (this.passwordInput.type === 'password') {
+            this.passwordInput.type = 'text';
+            if (this.togglePasswordIcon) {
+                this.togglePasswordIcon.classList.remove('bi-eye');
+                this.togglePasswordIcon.classList.add('bi-eye-slash');
+            }
+        } else {
+            this.passwordInput.type = 'password';
+            if (this.togglePasswordIcon) {
+                this.togglePasswordIcon.classList.remove('bi-eye-slash');
+                this.togglePasswordIcon.classList.add('bi-eye');
+            }
+        }
     }
     
     // Check if user is authenticated
@@ -347,36 +372,43 @@ class AuthManager {
     // Handle login form submission
     async handleLogin(e) {
         e.preventDefault();
-        
+
         // Prevent multiple simultaneous login operations
         if (this.isLoggingIn) {
             console.log('Login already in progress, ignoring...');
             return;
         }
-        
+
         const email = this.emailInput.value.trim();
+        const password = this.passwordInput ? this.passwordInput.value : '';
+
         if (!email) {
             this.showLoginAlert('Please enter your email address', 'danger');
             return;
         }
-        
+
         // Validate email format
         if (!this.isValidEmail(email)) {
             this.showLoginAlert('Please enter a valid email address', 'danger');
             return;
         }
-        
+
+        if (!password) {
+            this.showLoginAlert('Please enter your password', 'danger');
+            return;
+        }
+
         try {
             this.isLoggingIn = true;
             this.setLoginLoading(true);
             this.hideLoginAlert();
-            
+
             const response = await fetch(this.loginApiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: email })
+                body: JSON.stringify({ email: email, password: password })
             });
             
             const data = await response.json();
@@ -583,7 +615,10 @@ class AuthManager {
     setLoginLoading(isLoading) {
         this.loginButton.disabled = isLoading;
         this.emailInput.disabled = isLoading;
-        
+        if (this.passwordInput) {
+            this.passwordInput.disabled = isLoading;
+        }
+
         if (isLoading) {
             this.loginButtonText.textContent = 'Logging in...';
             this.loginSpinner.style.display = 'inline-block';
@@ -624,6 +659,14 @@ class AuthManager {
     // Reset login form
     resetLoginForm() {
         this.emailInput.value = '';
+        if (this.passwordInput) {
+            this.passwordInput.value = '';
+            this.passwordInput.type = 'password'; // Reset to hidden
+        }
+        if (this.togglePasswordIcon) {
+            this.togglePasswordIcon.classList.remove('bi-eye-slash');
+            this.togglePasswordIcon.classList.add('bi-eye');
+        }
         this.hideLoginAlert();
         this.setLoginLoading(false);
     }
