@@ -43,7 +43,11 @@ export const authService = {
   // Check if token is expired
   isTokenExpired() {
     const timestamp = localStorage.getItem(TOKEN_TIMESTAMP_KEY)
-    if (!timestamp) return true
+    if (!timestamp) {
+      // No timestamp means token was set by main app (which doesn't track timestamps).
+      // Treat as valid - the backend will reject if truly expired.
+      return false
+    }
 
     const tokenAge = Date.now() - parseInt(timestamp, 10)
     const expiryTime = TOKEN_EXPIRY_HOURS * 60 * 60 * 1000 // Convert to milliseconds

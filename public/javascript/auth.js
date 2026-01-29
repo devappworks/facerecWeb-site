@@ -99,12 +99,14 @@ class AuthManager {
     saveAuthData(email, token) {
         localStorage.setItem(this.emailKey, email);
         localStorage.setItem(this.tokenKey, token);
+        localStorage.setItem('photolytics_token_timestamp', Date.now().toString());
     }
     
     // Clear authentication data
     clearAuthData() {
         localStorage.removeItem(this.emailKey);
         localStorage.removeItem(this.tokenKey);
+        localStorage.removeItem('photolytics_token_timestamp');
     }
     
     // Check authentication status and show appropriate UI
@@ -426,12 +428,31 @@ class AuthManager {
                     console.log('Single domain received:', data.data);
                     const { email: userEmail, token } = data.data;
                     this.saveAuthData(userEmail, token);
-                    this.showLoginAlert('Login successful! Redirecting...', 'success');
-                    
+                    this.showLoginAlert('Login successful! Redirecting...', 'info');
+
+                    // Notify browser's credential manager of successful login
+                    if (window.PasswordCredential && navigator.credentials) {
+                        try {
+                            const cred = new PasswordCredential({
+                                id: email,
+                                password: password,
+                                name: email
+                            });
+                            navigator.credentials.store(cred);
+                        } catch (credErr) {
+                            // Credential API not supported or failed - that's fine
+                            console.log('Credential store not available:', credErr);
+                        }
+                    }
+
                     // Small delay before showing main app for better UX
+                    // Delay form reset to give browser time to capture credentials
                     setTimeout(() => {
                         this.showMainApplication();
-                        this.resetLoginForm();
+                        // Reset form after transition so browser can save credentials
+                        setTimeout(() => {
+                            this.resetLoginForm();
+                        }, 500);
                         this.isLoggingIn = false;
                     }, 1000);
                 }
@@ -505,7 +526,7 @@ class AuthManager {
             this.saveAuthData(selectedDomainData.email, selectedDomainData.token);
             
             // Show success message
-            this.showLoginAlert('Domain selected! Logging in...', 'success');
+            this.showLoginAlert('Domain selected! Logging in...', 'info');
             
             // Close the modal
             if (this.domainModalInstance) {
