@@ -891,12 +891,55 @@ export default function ImageGallery() {
             </div>
           </div>
 
+          {/* Embedding stats summary bar */}
+          {galleryData.embedding_stats && (
+            <div style={{
+              display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap',
+              padding: '0.6rem 1rem', marginBottom: '1rem',
+              background: '#1a1a2e', borderRadius: '6px', border: '1px solid #333',
+              fontSize: '0.85rem', color: '#ccc'
+            }}>
+              <span>
+                <strong style={{ color: '#f5a623' }}>{galleryData.embedding_stats.total_files}</strong> files
+              </span>
+              <span style={{ color: '#555' }}>|</span>
+              <span>
+                <strong style={{ color: '#48bb78' }}>{galleryData.embedding_stats.total_db_embeddings}</strong> DB embeddings
+              </span>
+              <span style={{ color: '#555' }}>|</span>
+              <span>
+                <strong style={{ color: '#48bb78' }}>{galleryData.embedding_stats.files_with_embeddings}</strong> files have embeddings
+              </span>
+              {galleryData.embedding_stats.files_without_embeddings > 0 && (
+                <>
+                  <span style={{ color: '#555' }}>|</span>
+                  <span style={{ color: '#f87171' }}>
+                    <strong>{galleryData.embedding_stats.files_without_embeddings}</strong> files missing embeddings
+                  </span>
+                </>
+              )}
+              {galleryData.embedding_stats.orphan_embeddings > 0 && (
+                <>
+                  <span style={{ color: '#555' }}>|</span>
+                  <span style={{ color: '#e53e3e' }} title={
+                    galleryData.embedding_stats.orphan_filenames
+                      ? `Orphan files:\n${galleryData.embedding_stats.orphan_filenames.join('\n')}`
+                      : ''
+                  }>
+                    <strong>{galleryData.embedding_stats.orphan_embeddings}</strong> orphan embeddings (no file)
+                  </span>
+                </>
+              )}
+            </div>
+          )}
+
           {galleryData.images && galleryData.images.length > 0 ? (
             <>
               <div className="gallery-grid">
                 {galleryData.images.map((image, index) => {
                   const imageName = typeof image === 'string' ? image : image.name
                   const imagePath = typeof image === 'string' ? image : image.path
+                  const hasEmbedding = typeof image === 'object' ? image.has_embedding : true
                   const isSelected = selectedImages.has(imagePath)
 
                   // All images from database use flat structure
@@ -908,9 +951,10 @@ export default function ImageGallery() {
                       key={index}
                       className="gallery-item"
                       style={{
-                        border: isSelected ? '3px solid #e53e3e' : '1px solid #3a3a3a',
+                        border: isSelected ? '3px solid #e53e3e' : hasEmbedding === false ? '2px solid #e53e3e44' : '1px solid #3a3a3a',
                         boxShadow: isSelected ? '0 0 10px rgba(229, 62, 62, 0.5)' : 'none',
-                        position: 'relative'
+                        position: 'relative',
+                        opacity: hasEmbedding === false ? 0.5 : 1
                       }}
                     >
                       {/* Selection checkbox - always visible */}
@@ -958,6 +1002,14 @@ export default function ImageGallery() {
                       </div>
                       <div className="gallery-item-info">
                         <small>{imageName || `Image ${index + 1}`}</small>
+                        {hasEmbedding === false && (
+                          <span style={{
+                            display: 'inline-block', marginLeft: '4px',
+                            background: '#e53e3e33', color: '#f87171',
+                            fontSize: '0.65rem', padding: '1px 5px',
+                            borderRadius: '3px'
+                          }}>no embedding</span>
+                        )}
                       </div>
                     </div>
                   )
