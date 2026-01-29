@@ -29,7 +29,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 28px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #3a3a3a;
 }
 
 .help-modal-header h2 {
@@ -42,7 +42,7 @@
   background: none;
   border: none;
   font-size: 28px;
-  color: #6b7280;
+  color: #999;
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -55,7 +55,7 @@
 }
 
 .help-modal-close:hover {
-  background-color: #f3f4f6;
+  background-color: #333;
   color: #1f2937;
 }
 
@@ -89,7 +89,7 @@
 
 .help-modal-footer {
   padding: 20px 28px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #3a3a3a;
   display: flex;
   justify-content: flex-end;
 }
@@ -125,11 +125,11 @@
 }
 
 [data-theme='dark'] .help-modal-header {
-  border-bottom-color: #374151;
+  border-bottom-color: #999;
 }
 
 [data-theme='dark'] .help-modal-header h2 {
-  color: #f9fafb;
+  color: #242424;
 }
 
 [data-theme='dark'] .help-modal-close {
@@ -137,8 +137,8 @@
 }
 
 [data-theme='dark'] .help-modal-close:hover {
-  background-color: #374151;
-  color: #f9fafb;
+  background-color: #999;
+  color: #242424;
 }
 
 [data-theme='dark'] .help-section h3 {
@@ -150,5 +150,5 @@
 }
 
 [data-theme='dark'] .help-modal-footer {
-  border-top-color: #374151;
+  border-top-color: #999;
 }

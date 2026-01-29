@@ -98,7 +98,7 @@ function FailedQueue() {
         <div className="card">
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
+              <tr style={{ borderBottom: '2px solid #3a3a3a' }}>
                 <th style={{ textAlign: 'left', padding: '0.75rem', fontWeight: '600' }}>Person</th>
                 <th style={{ textAlign: 'left', padding: '0.75rem', fontWeight: '600' }}>Error</th>
                 <th style={{ textAlign: 'left', padding: '0.75rem', fontWeight: '600' }}>Priority</th>
@@ -112,7 +112,7 @@ function FailedQueue() {
                 <tr
                   key={entry.file_name || index}
                   style={{
-                    borderBottom: '1px solid #e2e8f0',
+                    borderBottom: '1px solid #3a3a3a',
                     backgroundColor: index % 2 === 0 ? '#f7fafc' : 'white'
                   }}
                 >
@@ -131,7 +131,7 @@ function FailedQueue() {
                         backgroundColor:
                           entry.priority === 'high' ? '#fed7d7' :
                           entry.priority === 'medium' ? '#feebc8' :
-                          '#e2e8f0',
+                          '#3a3a3a',
                         color:
                           entry.priority === 'high' ? '#c53030' :
                           entry.priority === 'medium' ? '#c05621' :

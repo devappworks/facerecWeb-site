@@ -3,15 +3,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #1a1a1a;
   padding: 1rem;
 }
 
 .login-card {
-  background: white;
+  background: #242424;
   padding: 3rem;
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid #3a3a3a;
   max-width: 450px;
   width: 100%;
   animation: slideUp 0.5s ease-out;
@@ -34,13 +35,13 @@
 }
 
 .login-header h1 {
-  color: #667eea;
+  color: #f5a623;
   margin-bottom: 0.5rem;
   font-size: 2rem;
 }
 
 .subtitle {
-  color: #6b7280;
+  color: #999;
   font-size: 0.95rem;
 }
 
@@ -51,7 +52,7 @@
 .login-footer {
   text-align: center;
   padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #3a3a3a;
 }
 
 .domain-list {
@@ -66,27 +67,28 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  background: #f9fafb;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  background: #333;
+  border: 1px solid #3a3a3a;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1rem;
+  color: #fafafa;
 }
 
 .domain-button:hover {
-  background: #f3f4f6;
-  border-color: #667eea;
+  background: rgba(245, 166, 35, 0.05);
+  border-color: #f5a623;
   transform: translateX(5px);
 }
 
 .domain-name {
   font-weight: 600;
-  color: #374151;
+  color: #fafafa;
 }
 
 .domain-icon {
-  color: #667eea;
+  color: #f5a623;
   font-size: 1.5rem;
   font-weight: bold;
 }

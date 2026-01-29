@@ -465,7 +465,7 @@ export default function ImageGallery() {
             onClick={() => handlePageChange(page)}
             style={{
               padding: '0.5rem 1rem',
-              background: page === currentPage ? '#667eea' : '#e2e8f0',
+              background: page === currentPage ? '#f5a623' : '#3a3a3a',
               color: page === currentPage ? 'white' : '#1a202c',
               fontWeight: page === currentPage ? 'bold' : 'normal'
             }}
@@ -624,7 +624,7 @@ export default function ImageGallery() {
               width: '18px',
               height: '18px',
               cursor: 'pointer',
-              accentColor: '#667eea'
+              accentColor: '#f5a623'
             }}
           />
           <label
@@ -817,7 +817,7 @@ export default function ImageGallery() {
               <button
                 className="btn"
                 onClick={() => loadFolderImages(selectedFolder, galleryData.pagination?.page || 1)}
-                style={{ background: '#667eea', color: 'white', border: 'none' }}
+                style={{ background: '#f5a623', color: 'white', border: 'none' }}
               >
                 Refresh
               </button>
@@ -841,7 +841,7 @@ export default function ImageGallery() {
                       key={index}
                       className="gallery-item"
                       style={{
-                        border: isSelected ? '3px solid #e53e3e' : '1px solid #e2e8f0',
+                        border: isSelected ? '3px solid #e53e3e' : '1px solid #3a3a3a',
                         boxShadow: isSelected ? '0 0 10px rgba(229, 62, 62, 0.5)' : 'none',
                         position: 'relative'
                       }}

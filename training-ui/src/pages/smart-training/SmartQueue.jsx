@@ -180,7 +180,7 @@ export default function SmartQueue() {
         <div style={{
           marginBottom: '1rem',
           padding: '0.75rem 1rem',
-          background: selectedPeople.size > 0 ? '#fef3c7' : '#f3f4f6',
+          background: selectedPeople.size > 0 ? '#fef3c7' : '#333',
           borderRadius: '8px',
           display: 'flex',
           alignItems: 'center',
@@ -230,7 +230,7 @@ export default function SmartQueue() {
             padding: '3rem',
             borderRadius: '12px',
             textAlign: 'center',
-            color: '#6b7280',
+            color: '#999',
           }}
         >
           <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📭</div>
@@ -270,7 +270,7 @@ export default function SmartQueue() {
                   <td>
                     <div style={{ fontWeight: 600 }}>{person.person_name}</div>
                     {person.wikidata_id && (
-                      <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                      <div style={{ fontSize: '0.875rem', color: '#999' }}>
                         {person.wikidata_id}
                       </div>
                     )}

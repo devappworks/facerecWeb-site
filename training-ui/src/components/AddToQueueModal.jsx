@@ -117,7 +117,7 @@ export default function AddToQueueModal({ isOpen, onClose, onSuccess }) {
                 required
               />
               {searching && (
-                <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
                   Searching Wikidata...
                 </div>
               )}
@@ -125,7 +125,7 @@ export default function AddToQueueModal({ isOpen, onClose, onSuccess }) {
                 <div
                   style={{
                     marginTop: '0.5rem',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid #3a3a3a',
                     borderRadius: '8px',
                     maxHeight: '200px',
                     overflowY: 'auto',
@@ -138,10 +138,10 @@ export default function AddToQueueModal({ isOpen, onClose, onSuccess }) {
                       style={{
                         padding: '0.75rem',
                         cursor: 'pointer',
-                        borderBottom: index < searchResults.length - 1 ? '1px solid #e5e7eb' : 'none',
+                        borderBottom: index < searchResults.length - 1 ? '1px solid #3a3a3a' : 'none',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#f9fafb'
+                        e.currentTarget.style.background = '#242424'
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent'
@@ -149,7 +149,7 @@ export default function AddToQueueModal({ isOpen, onClose, onSuccess }) {
                     >
                       <div style={{ fontWeight: 600 }}>{result.full_name || result.name}</div>
                       {result.description && (
-                        <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                        <div style={{ fontSize: '0.875rem', color: '#999' }}>
                           {result.description}
                         </div>
                       )}
@@ -187,7 +187,7 @@ export default function AddToQueueModal({ isOpen, onClose, onSuccess }) {
                 onChange={(e) => setWikidataId(e.target.value)}
                 placeholder="e.g., Q12345"
               />
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
                 Automatically filled if you select from search results
               </div>
             </div>

@@ -50,7 +50,7 @@ export default function Dashboard() {
             </div>
           )}
           {!isPolling && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#999', fontSize: '0.875rem' }}>
               <span>⏸️</span>
               <span>Auto-refresh: OFF</span>
             </div>
@@ -112,7 +112,7 @@ export default function Dashboard() {
               <div className="stat-value">
                 {stats.queue.failed_today}
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+              <div style={{ fontSize: '0.75rem', color: '#999', marginTop: '0.25rem' }}>
                 Click to view
               </div>
             </div>

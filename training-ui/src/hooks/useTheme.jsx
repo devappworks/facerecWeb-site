@@ -10,12 +10,8 @@ export function ThemeProvider({ children }) {
       return savedTheme
     }
 
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark'
-    }
-
-    return 'light'
+    // Default to dark mode (Pchela design)
+    return 'dark'
   })
 
   useEffect(() => {

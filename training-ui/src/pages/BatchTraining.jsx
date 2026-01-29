@@ -202,16 +202,16 @@ export default function BatchTraining() {
         </div>
 
         <div style={{
-          background: '#f3f4f6',
+          background: '#333',
           borderRadius: '8px',
           padding: '1rem',
           marginBottom: '1.5rem'
         }}>
-          <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+          <div style={{ fontSize: '0.875rem', color: '#999' }}>
             <strong>Estimated:</strong> Training {Math.min(maxTraining, queue.length)} persons
             {' '}with {imagesPerPerson} images each = ~{Math.min(maxTraining, queue.length) * imagesPerPerson} total images
           </div>
-          <div style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '0.25rem' }}>
+          <div style={{ fontSize: '0.875rem', color: '#999', marginTop: '0.25rem' }}>
             <strong>Time:</strong> ~{Math.ceil(Math.min(maxTraining, queue.length) * 0.5)} - {Math.ceil(Math.min(maxTraining, queue.length) * 1)} minutes
           </div>
         </div>
@@ -266,7 +266,7 @@ export default function BatchTraining() {
                 key={run.run_id || index}
                 style={{
                   padding: '0.75rem',
-                  background: '#f9fafb',
+                  background: '#242424',
                   borderRadius: '6px',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -277,7 +277,7 @@ export default function BatchTraining() {
               >
                 <div>
                   <span style={{ fontWeight: 500 }}>{run.run_id || 'Unknown'}</span>
-                  <span style={{ color: '#6b7280', marginLeft: '0.5rem', fontSize: '0.875rem' }}>
+                  <span style={{ color: '#999', marginLeft: '0.5rem', fontSize: '0.875rem' }}>
                     {run.started_at ? new Date(run.started_at).toLocaleString() : ''}
                   </span>
                 </div>
@@ -322,7 +322,7 @@ export default function BatchTraining() {
         {loading ? (
           <div className="text-muted">Loading queue...</div>
         ) : queue.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#999' }}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📭</div>
             <p>Training queue is empty</p>
             <p style={{ fontSize: '0.875rem' }}>Run a benchmark to add persons needing training</p>
@@ -338,7 +338,7 @@ export default function BatchTraining() {
                 key={item.person_name || index}
                 style={{
                   padding: '0.75rem',
-                  background: '#f9fafb',
+                  background: '#242424',
                   borderRadius: '6px',
                   borderLeft: `3px solid ${
                     item.priority === 'high' ? '#ef4444' :
@@ -349,7 +349,7 @@ export default function BatchTraining() {
                 <div style={{ fontWeight: 500, marginBottom: '0.25rem' }}>
                   {item.person_name}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                <div style={{ fontSize: '0.75rem', color: '#999' }}>
                   Score: {item.recognition_score?.toFixed(0) || 'N/A'}%
                   {' | '}
                   {item.priority} priority
@@ -363,7 +363,7 @@ export default function BatchTraining() {
           <div style={{
             textAlign: 'center',
             marginTop: '1rem',
-            color: '#6b7280',
+            color: '#999',
             fontSize: '0.875rem'
           }}>
             ... and {queue.length - 20} more

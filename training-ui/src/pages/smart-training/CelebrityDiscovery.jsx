@@ -162,7 +162,7 @@ export default function CelebrityDiscovery() {
             padding: '3rem',
             borderRadius: '12px',
             textAlign: 'center',
-            color: '#6b7280',
+            color: '#999',
           }}
         >
           <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✨</div>

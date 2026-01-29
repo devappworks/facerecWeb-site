@@ -12,7 +12,7 @@ function TypeBadge({ type }) {
     NICKNAME: { bg: '#f3e8ff', color: '#7c3aed', label: 'Nickname' }
   }
 
-  const style = colors[type] || { bg: '#f3f4f6', color: '#6b7280', label: type }
+  const style = colors[type] || { bg: '#333', color: '#999', label: type }
 
   return (
     <span style={{
@@ -34,7 +34,7 @@ function ActionButton({ action, onClick, disabled, loading, small }) {
     MERGE: { bg: '#10b981', hover: '#059669', icon: '🔗' },
     RENAME: { bg: '#3b82f6', hover: '#2563eb', icon: '✏️' },
     DELETE: { bg: '#ef4444', hover: '#dc2626', icon: '🗑️' },
-    SKIP: { bg: '#6b7280', hover: '#4b5563', icon: '⏭️' }
+    SKIP: { bg: '#999', hover: '#4b5563', icon: '⏭️' }
   }
 
   const style = styles[action] || styles.SKIP
@@ -339,7 +339,7 @@ export default function MergeCandidates() {
         <div style={{
           marginBottom: '1rem',
           padding: '0.75rem 1rem',
-          background: selectedIds.size > 0 ? '#fef3c7' : '#f3f4f6',
+          background: selectedIds.size > 0 ? '#fef3c7' : '#333',
           borderRadius: '8px',
           display: 'flex',
           alignItems: 'center',
@@ -405,7 +405,7 @@ export default function MergeCandidates() {
       {data?.scanned_at && (
         <div style={{
           fontSize: '0.875rem',
-          color: '#6b7280',
+          color: '#999',
           marginBottom: '1rem'
         }}>
           Last scan: {new Date(data.scanned_at).toLocaleString()}
@@ -421,7 +421,7 @@ export default function MergeCandidates() {
           padding: '3rem',
           borderRadius: '12px',
           textAlign: 'center',
-          color: '#6b7280'
+          color: '#999'
         }}>
           <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔍</div>
           <h3>No scan results yet</h3>
@@ -433,7 +433,7 @@ export default function MergeCandidates() {
           padding: '3rem',
           borderRadius: '12px',
           textAlign: 'center',
-          color: '#6b7280'
+          color: '#999'
         }}>
           <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎉</div>
           <h3>All candidates processed!</h3>
@@ -462,7 +462,7 @@ export default function MergeCandidates() {
                   background: isSelected ? '#fef9c3' : 'white',
                   borderRadius: '12px',
                   padding: '1rem',
-                  border: isSelected ? '2px solid #fbbf24' : '1px solid #e5e7eb'
+                  border: isSelected ? '2px solid #fbbf24' : '1px solid #3a3a3a'
                 }}
               >
                 <div style={{
@@ -490,7 +490,7 @@ export default function MergeCandidates() {
                         marginBottom: '0.25rem'
                       }}>
                         <TypeBadge type={candidate.type} />
-                        <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                        <span style={{ fontSize: '0.75rem', color: '#999' }}>
                           #{originalIndex + 1}
                         </span>
                       </div>
@@ -514,7 +514,7 @@ export default function MergeCandidates() {
 
                         {candidate.target_name && (
                           <>
-                            <span style={{ color: '#6b7280' }}>→</span>
+                            <span style={{ color: '#999' }}>→</span>
                             <span style={{
                               fontWeight: 600,
                               color: '#10b981'
@@ -528,7 +528,7 @@ export default function MergeCandidates() {
                         )}
                       </div>
 
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#999' }}>
                         {candidate.reason}
                       </div>
                     </div>

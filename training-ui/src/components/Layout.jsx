@@ -20,7 +20,10 @@ export default function Layout() {
     <div className="app-layout">
       <nav className="sidebar">
         <div className="sidebar-header">
-          <h2>Training UI</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <img src="/pchela-2.webp" alt="Pchela" style={{ height: '32px', width: 'auto' }} />
+            <h2 style={{ margin: 0 }}>Pchela Photolytics</h2>
+          </div>
           <p className="user-email">{user?.email}</p>
         </div>
 

@@ -113,7 +113,7 @@ export default function TrainingHistory() {
             padding: '4rem 2rem',
             borderRadius: '12px',
             textAlign: 'center',
-            color: '#6b7280',
+            color: '#999',
           }}
         >
           <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📜</div>
@@ -162,7 +162,7 @@ export default function TrainingHistory() {
                         {run.domain === 'serbia' ? '🇷🇸' : '🇸🇮'}
                       </span>
                       <span style={{ textTransform: 'capitalize' }}>{run.domain}</span>
-                      <span style={{ color: '#6b7280', fontWeight: 400 }}>#{run.run_id}</span>
+                      <span style={{ color: '#999', fontWeight: 400 }}>#{run.run_id}</span>
                     </h3>
                     <div className="history-item-time">
                       {run.started_at ? new Date(run.started_at).toLocaleString() : 'N/A'}
@@ -229,9 +229,9 @@ export default function TrainingHistory() {
               {expandedRunId === `${run.domain}-${run.run_id}` && (
                 <div
                   style={{
-                    borderTop: '1px solid #e5e7eb',
+                    borderTop: '1px solid #3a3a3a',
                     padding: '1.5rem',
-                    background: '#f9fafb',
+                    background: '#242424',
                   }}
                 >
                   {/* Training Details */}
@@ -245,12 +245,12 @@ export default function TrainingHistory() {
                           background: 'white',
                           borderRadius: '8px',
                           overflow: 'hidden',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid #3a3a3a',
                         }}
                       >
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                           <thead>
-                            <tr style={{ background: '#f3f4f6', borderBottom: '1px solid #e5e7eb' }}>
+                            <tr style={{ background: '#333', borderBottom: '1px solid #3a3a3a' }}>
                               <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: 600 }}>
                                 Person
                               </th>
@@ -270,8 +270,8 @@ export default function TrainingHistory() {
                               <tr
                                 key={idx}
                                 style={{
-                                  borderBottom: '1px solid #e5e7eb',
-                                  background: idx % 2 === 0 ? 'white' : '#f9fafb',
+                                  borderBottom: '1px solid #3a3a3a',
+                                  background: idx % 2 === 0 ? 'white' : '#242424',
                                 }}
                               >
                                 <td style={{ padding: '0.75rem' }}>{person.name}</td>
@@ -293,7 +293,7 @@ export default function TrainingHistory() {
                                     {person.success ? '✓ Success' : '✗ Failed'}
                                   </span>
                                 </td>
-                                <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#6b7280' }}>
+                                <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#999' }}>
                                   {person.error ? person.error : '-'}
                                 </td>
                               </tr>
@@ -315,12 +315,12 @@ export default function TrainingHistory() {
                           background: 'white',
                           borderRadius: '8px',
                           overflow: 'hidden',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid #3a3a3a',
                         }}
                       >
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                           <thead>
-                            <tr style={{ background: '#f3f4f6', borderBottom: '1px solid #e5e7eb' }}>
+                            <tr style={{ background: '#333', borderBottom: '1px solid #3a3a3a' }}>
                               <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: 600 }}>
                                 Person
                               </th>
@@ -337,8 +337,8 @@ export default function TrainingHistory() {
                               <tr
                                 key={idx}
                                 style={{
-                                  borderBottom: '1px solid #e5e7eb',
-                                  background: idx % 2 === 0 ? 'white' : '#f9fafb',
+                                  borderBottom: '1px solid #3a3a3a',
+                                  background: idx % 2 === 0 ? 'white' : '#242424',
                                 }}
                               >
                                 <td style={{ padding: '0.75rem' }}>{person.name}</td>
@@ -357,22 +357,22 @@ export default function TrainingHistory() {
                   )}
 
                   {/* Timing Info */}
-                  <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #e5e7eb' }}>
+                  <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #3a3a3a' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', fontSize: '0.875rem' }}>
                       <div>
-                        <div style={{ color: '#6b7280', marginBottom: '0.25rem' }}>Started</div>
+                        <div style={{ color: '#999', marginBottom: '0.25rem' }}>Started</div>
                         <div style={{ fontWeight: 600 }}>
                           {new Date(run.started_at).toLocaleString()}
                         </div>
                       </div>
                       <div>
-                        <div style={{ color: '#6b7280', marginBottom: '0.25rem' }}>Completed</div>
+                        <div style={{ color: '#999', marginBottom: '0.25rem' }}>Completed</div>
                         <div style={{ fontWeight: 600 }}>
                           {run.completed_at ? new Date(run.completed_at).toLocaleString() : 'N/A'}
                         </div>
                       </div>
                       <div>
-                        <div style={{ color: '#6b7280', marginBottom: '0.25rem' }}>Duration</div>
+                        <div style={{ color: '#999', marginBottom: '0.25rem' }}>Duration</div>
                         <div style={{ fontWeight: 600 }}>
                           {run.started_at && run.completed_at
                             ? `${Math.round(

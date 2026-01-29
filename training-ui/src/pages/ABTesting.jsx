@@ -94,7 +94,7 @@ export default function ABTesting() {
 
     return (
       <div className="card" style={{
-        border: `2px solid ${isCorrect ? '#10b981' : data.person ? '#667eea' : '#6b7280'}`
+        border: `2px solid ${isCorrect ? '#10b981' : data.person ? '#f5a623' : '#999'}`
       }}>
         <h3 style={{ marginTop: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           {system === 'current' ? '📊 Current System' : '✨ Improved System'}
@@ -117,20 +117,20 @@ export default function ABTesting() {
                     className="progress-fill"
                     style={{
                       width: `${data.confidence}%`,
-                      backgroundColor: isCorrect ? '#10b981' : '#667eea'
+                      backgroundColor: isCorrect ? '#10b981' : '#f5a623'
                     }}
                   ></div>
                 </div>
               </div>
             )}
             {data.processing_time && (
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
                 Processing time: {data.processing_time}
               </div>
             )}
           </>
         ) : (
-          <div style={{ color: '#6b7280', fontStyle: 'italic' }}>
+          <div style={{ color: '#999', fontStyle: 'italic' }}>
             {data.error || 'Unknown person'}
           </div>
         )}
@@ -156,13 +156,13 @@ export default function ABTesting() {
           onDragOver={handleDrag}
           onDrop={handleDrop}
           style={{
-            border: `2px dashed ${dragActive ? '#667eea' : '#d1d5db'}`,
+            border: `2px dashed ${dragActive ? '#f5a623' : '#d1d5db'}`,
             borderRadius: '12px',
             padding: '2rem',
             textAlign: 'center',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            background: dragActive ? '#f0f4ff' : '#f9fafb',
+            background: dragActive ? 'rgba(245, 166, 35, 0.05)' : '#242424',
             marginBottom: '1.5rem'
           }}
         >
@@ -178,7 +178,7 @@ export default function ABTesting() {
             <p style={{ margin: '0 0 0.5rem 0', fontWeight: 500 }}>
               Drop image here or click to browse
             </p>
-            <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ margin: 0, fontSize: '0.875rem', color: '#999' }}>
               Supports JPG, PNG, GIF (max 10MB)
             </p>
           </label>
@@ -210,7 +210,7 @@ export default function ABTesting() {
                 maxHeight: '200px',
                 objectFit: 'contain',
                 borderRadius: '8px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid #3a3a3a',
                 marginBottom: '1rem'
               }}
             />

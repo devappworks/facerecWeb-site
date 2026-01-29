@@ -66,7 +66,7 @@ function PersonPanel({ title, person, onSelect, persons, loading, domain, color 
       {person && (
         <div style={{ marginTop: '1rem' }}>
           {previewLoading ? (
-            <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
+            <div style={{ textAlign: 'center', padding: '2rem', color: '#999' }}>
               Loading preview...
             </div>
           ) : preview ? (
@@ -101,7 +101,7 @@ function PersonPanel({ title, person, onSelect, persons, loading, domain, color 
                       aspectRatio: '1',
                       borderRadius: '8px',
                       overflow: 'hidden',
-                      background: '#f3f4f6'
+                      background: '#333'
                     }}>
                       <img
                         src={`https://facerecognition.mpanel.app${img.url}`}
@@ -120,9 +120,9 @@ function PersonPanel({ title, person, onSelect, persons, loading, domain, color 
                 <div style={{
                   padding: '2rem',
                   textAlign: 'center',
-                  background: '#f9fafb',
+                  background: '#242424',
                   borderRadius: '8px',
-                  color: '#6b7280'
+                  color: '#999'
                 }}>
                   No preview images available
                 </div>
@@ -284,7 +284,7 @@ export default function ManualMerge() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           {searchQuery && (
-            <div style={{ marginTop: '0.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
+            <div style={{ marginTop: '0.5rem', color: '#999', fontSize: '0.875rem' }}>
               Found {filteredPersons.length} of {persons.length} persons
             </div>
           )}
@@ -319,7 +319,7 @@ export default function ManualMerge() {
             onClick={handleSwap}
             disabled={!sourcePerson && !targetPerson}
             style={{
-              background: '#6b7280',
+              background: '#999',
               color: 'white',
               border: 'none',
               borderRadius: '50%',

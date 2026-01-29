@@ -23,7 +23,7 @@ export default function MetricsDashboard() {
   const getImprovementColor = (value) => {
     if (value > 0) return '#10b981'
     if (value < 0) return '#ef4444'
-    return '#6b7280'
+    return '#999'
   }
 
   const getImprovementIcon = (value) => {
@@ -96,7 +96,7 @@ export default function MetricsDashboard() {
           }}
         >
           {isPolling && (
-            <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+            <span style={{ fontSize: '0.9rem', color: '#999' }}>
               🔄 Auto-updating every 30s
             </span>
           )}
@@ -148,17 +148,17 @@ export default function MetricsDashboard() {
               <div style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>
                 {metrics.total_tests}
               </div>
-              <div style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+              <div style={{ color: '#999', marginTop: '0.5rem' }}>
                 Total Tests
               </div>
             </div>
 
             {/* Agreement Rate */}
             <div className="card" style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#667eea' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#f5a623' }}>
                 {metrics.agreement_rate.toFixed(1)}%
               </div>
-              <div style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+              <div style={{ color: '#999', marginTop: '0.5rem' }}>
                 Agreement Rate
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function MetricsDashboard() {
               <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#10b981' }}>
                 {metrics.pipeline_b_accuracy.toFixed(1)}%
               </div>
-              <div style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+              <div style={{ color: '#999', marginTop: '0.5rem' }}>
                 Pipeline B Accuracy
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function MetricsDashboard() {
               <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#3b82f6' }}>
                 {metrics.pipeline_b_faster_percent.toFixed(1)}%
               </div>
-              <div style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+              <div style={{ color: '#999', marginTop: '0.5rem' }}>
                 Pipeline B Faster
               </div>
             </div>
@@ -195,7 +195,7 @@ export default function MetricsDashboard() {
                 {getImprovementIcon(metrics.avg_confidence_improvement)}{' '}
                 {Math.abs(metrics.avg_confidence_improvement).toFixed(1)}%
               </div>
-              <div style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+              <div style={{ color: '#999', marginTop: '0.5rem' }}>
                 Avg Confidence Change
               </div>
             </div>
@@ -333,7 +333,7 @@ export default function MetricsDashboard() {
           {/* Accuracy Comparison */}
           <div className="card" style={{ marginTop: '2rem' }}>
             <h2 style={{ marginTop: 0 }}>Accuracy Comparison</h2>
-            <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+            <p style={{ color: '#999', marginTop: '0.5rem' }}>
               Based on {metrics.accuracy_comparison.total_with_ground_truth} tests
               with ground truth labels
             </p>
@@ -371,7 +371,7 @@ export default function MetricsDashboard() {
                     }}
                   />
                 </div>
-                <div style={{ marginTop: '0.25rem', fontSize: '0.9rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.9rem', color: '#999' }}>
                   {(
                     (metrics.accuracy_comparison.pipeline_a_correct /
                       metrics.accuracy_comparison.total_with_ground_truth) *
@@ -406,7 +406,7 @@ export default function MetricsDashboard() {
                     }}
                   />
                 </div>
-                <div style={{ marginTop: '0.25rem', fontSize: '0.9rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.9rem', color: '#999' }}>
                   {(
                     (metrics.accuracy_comparison.pipeline_b_correct /
                       metrics.accuracy_comparison.total_with_ground_truth) *
@@ -460,7 +460,7 @@ export default function MetricsDashboard() {
                   padding: '1rem',
                   backgroundColor: 'rgba(107, 114, 128, 0.1)',
                   borderRadius: '8px',
-                  borderLeft: '4px solid #6b7280',
+                  borderLeft: '4px solid #999',
                 }}
               >
                 <strong>= Both pipelines are equally accurate</strong>
@@ -500,7 +500,7 @@ export default function MetricsDashboard() {
                     borderTop: '1px solid rgba(107, 114, 128, 0.2)',
                   }}
                 >
-                  <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#999' }}>
                     {metrics.avg_processing_time.pipeline_b <
                     metrics.avg_processing_time.pipeline_a ? (
                       <span style={{ color: '#10b981' }}>
@@ -573,7 +573,7 @@ export default function MetricsDashboard() {
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
               borderRadius: '8px',
               fontSize: '0.9rem',
-              color: '#6b7280',
+              color: '#999',
             }}
           >
             ℹ️ Showing {period === 'daily' ? 'daily' : 'weekly'} metrics

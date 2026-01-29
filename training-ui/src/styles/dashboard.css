@@ -3,7 +3,7 @@
 }
 
 .subtitle {
-  color: #6b7280;
+  color: #999;
   font-size: 1rem;
   margin-top: 0.5rem;
 }
@@ -42,7 +42,7 @@
 
 .stat-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #999;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -84,8 +84,8 @@
 
 .action-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
-  border-color: #667eea;
+  box-shadow: 0 6px 16px rgba(245, 166, 35, 0.3);
+  border-color: #f5a623;
 }
 
 .action-icon {
@@ -101,7 +101,7 @@
 
 .action-card p {
   margin: 0;
-  color: #6b7280;
+  color: #999;
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -155,8 +155,8 @@
 
 .action-card-compact:hover {
   transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.2);
+  border-color: #f5a623;
 }
 
 .action-card-compact .action-icon {
@@ -174,7 +174,7 @@
 
 .action-card-compact p {
   margin: 0;
-  color: #6b7280;
+  color: #999;
   font-size: 0.8125rem;
   line-height: 1.4;
 }

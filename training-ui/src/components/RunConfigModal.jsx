@@ -101,7 +101,7 @@ export default function RunConfigModal({ isOpen, onClose, onSuccess }) {
                 />
                 <span>Discover new celebrities</span>
               </label>
-              <div style={{ marginLeft: '1.75rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginLeft: '1.75rem', fontSize: '0.875rem', color: '#999' }}>
                 Search for trending/hot celebrities in the selected country
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function RunConfigModal({ isOpen, onClose, onSuccess }) {
                 />
                 <span>Benchmark existing people</span>
               </label>
-              <div style={{ marginLeft: '1.75rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginLeft: '1.75rem', fontSize: '0.875rem', color: '#999' }}>
                 Re-test already trained people to detect quality drift
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function RunConfigModal({ isOpen, onClose, onSuccess }) {
                   setConfig({ ...config, max_training_per_run: parseInt(e.target.value) })
                 }
               />
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
                 Prevents overwhelming the system with too many training jobs
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function RunConfigModal({ isOpen, onClose, onSuccess }) {
                   setConfig({ ...config, images_per_person: parseInt(e.target.value) })
                 }
               />
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
                 Number of images to collect and validate for training
               </div>
             </div>

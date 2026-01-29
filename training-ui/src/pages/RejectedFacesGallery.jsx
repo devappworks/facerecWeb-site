@@ -220,7 +220,7 @@ export default function RejectedFacesGallery() {
                         style={{
                           padding: '0.5rem 1rem',
                           borderRadius: '0.5rem',
-                          border: selectedPerson === person ? '2px solid #667eea' : '1px solid #e2e8f0',
+                          border: selectedPerson === person ? '2px solid #f5a623' : '1px solid #3a3a3a',
                           background: selectedPerson === person ? '#ebf4ff' : 'white',
                           cursor: 'pointer',
                           textAlign: 'left',

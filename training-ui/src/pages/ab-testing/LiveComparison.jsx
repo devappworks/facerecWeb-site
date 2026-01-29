@@ -108,13 +108,13 @@ export default function LiveComparison() {
           onDragOver={handleDrag}
           onDrop={handleDrop}
           style={{
-            border: `2px dashed ${dragActive ? '#667eea' : '#d1d5db'}`,
+            border: `2px dashed ${dragActive ? '#f5a623' : '#d1d5db'}`,
             borderRadius: '12px',
             padding: '2rem',
             textAlign: 'center',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            background: dragActive ? '#f0f4ff' : '#f9fafb'
+            background: dragActive ? 'rgba(245, 166, 35, 0.05)' : '#242424'
           }}
         >
           <input
@@ -129,7 +129,7 @@ export default function LiveComparison() {
             <p style={{ margin: '0 0 0.5rem 0', fontWeight: 500 }}>
               Drop image here or click to browse
             </p>
-            <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ margin: 0, fontSize: '0.875rem', color: '#999' }}>
               Supports JPG, PNG, GIF (max 10MB)
             </p>
           </label>
@@ -146,7 +146,7 @@ export default function LiveComparison() {
                 maxHeight: '300px',
                 objectFit: 'contain',
                 borderRadius: '8px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid #3a3a3a',
                 display: 'block',
                 margin: '0 auto'
               }}
@@ -165,7 +165,7 @@ export default function LiveComparison() {
               value={groundTruth}
               onChange={(e) => setGroundTruth(e.target.value)}
             />
-            <small style={{ color: '#6b7280', display: 'block', marginTop: '0.25rem' }}>
+            <small style={{ color: '#999', display: 'block', marginTop: '0.25rem' }}>
               Actual person name to check accuracy
             </small>
           </div>
@@ -180,7 +180,7 @@ export default function LiveComparison() {
               value={imageId}
               onChange={(e) => setImageId(e.target.value)}
             />
-            <small style={{ color: '#6b7280', display: 'block', marginTop: '0.25rem' }}>
+            <small style={{ color: '#999', display: 'block', marginTop: '0.25rem' }}>
               Custom identifier for this test
             </small>
           </div>
@@ -205,7 +205,7 @@ export default function LiveComparison() {
             className="btn"
             onClick={handleClear}
             disabled={testing}
-            style={{ background: '#6b7280', color: 'white', border: 'none' }}
+            style={{ background: '#999', color: 'white', border: 'none' }}
           >
             Clear
           </button>
@@ -224,8 +224,8 @@ export default function LiveComparison() {
             <div className="card" style={{ borderLeft: '4px solid #1976d2' }}>
               <h3 style={{ marginTop: 0, color: '#1976d2' }}>Pipeline A - Current System</h3>
 
-              <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#f3f4f6', borderRadius: '6px' }}>
-                <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#333', borderRadius: '6px' }}>
+                <div style={{ fontSize: '0.875rem', color: '#999' }}>
                   <div>Model: {result.pipeline_a_result.profile_used.model}</div>
                   <div>Threshold: {result.pipeline_a_result.profile_used.threshold}</div>
                   <div>Detection Confidence: {(result.pipeline_a_result.profile_used.detection_confidence * 100).toFixed(1)}%</div>
@@ -246,7 +246,7 @@ export default function LiveComparison() {
                   <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
                     {result.pipeline_a_result.person}
                   </div>
-                  <div style={{ fontSize: '1.25rem', color: '#667eea', marginBottom: '1rem' }}>
+                  <div style={{ fontSize: '1.25rem', color: '#f5a623', marginBottom: '1rem' }}>
                     Confidence: {result.pipeline_a_result.confidence}%
                   </div>
                   <div className="progress-bar" style={{ height: '8px', marginBottom: '1rem' }}>
@@ -258,14 +258,14 @@ export default function LiveComparison() {
                       }}
                     ></div>
                   </div>
-                  <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                  <div style={{ fontSize: '0.875rem', color: '#999' }}>
                     Processing Time: {result.pipeline_a_result.processing_time.toFixed(2)}s
                   </div>
                 </>
               )}
 
               {result.pipeline_a_result.status !== 'success' && (
-                <div style={{ color: '#6b7280', fontStyle: 'italic' }}>
+                <div style={{ color: '#999', fontStyle: 'italic' }}>
                   {result.pipeline_a_result.status === 'no_faces'
                     ? 'No face detected in image'
                     : result.pipeline_a_result.status === 'error'
@@ -284,8 +284,8 @@ export default function LiveComparison() {
             <div className="card" style={{ borderLeft: '4px solid #2e7d32' }}>
               <h3 style={{ marginTop: 0, color: '#2e7d32' }}>Pipeline B - Improved System</h3>
 
-              <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#f3f4f6', borderRadius: '6px' }}>
-                <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+              <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#333', borderRadius: '6px' }}>
+                <div style={{ fontSize: '0.875rem', color: '#999' }}>
                   <div>Model: {result.pipeline_b_result.profile_used.model}</div>
                   <div>Threshold: {result.pipeline_b_result.profile_used.threshold}</div>
                   <div>Detection Confidence: {(result.pipeline_b_result.profile_used.detection_confidence * 100).toFixed(1)}%</div>
@@ -318,14 +318,14 @@ export default function LiveComparison() {
                       }}
                     ></div>
                   </div>
-                  <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                  <div style={{ fontSize: '0.875rem', color: '#999' }}>
                     Processing Time: {result.pipeline_b_result.processing_time.toFixed(2)}s
                   </div>
                 </>
               )}
 
               {result.pipeline_b_result.status !== 'success' && (
-                <div style={{ color: '#6b7280', fontStyle: 'italic' }}>
+                <div style={{ color: '#999', fontStyle: 'italic' }}>
                   {result.pipeline_b_result.status === 'no_faces'
                     ? 'No face detected in image'
                     : result.pipeline_b_result.status === 'error'
@@ -342,8 +342,8 @@ export default function LiveComparison() {
           </div>
 
           {/* Analysis Panel */}
-          <div className="card" style={{ marginTop: '2rem', background: '#f0f4ff', border: '1px solid #667eea' }}>
-            <h3 style={{ marginTop: 0, color: '#667eea' }}>📊 Analysis</h3>
+          <div className="card" style={{ marginTop: '2rem', background: 'rgba(245, 166, 35, 0.05)', border: '1px solid #f5a623' }}>
+            <h3 style={{ marginTop: 0, color: '#f5a623' }}>📊 Analysis</h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {result.comparison.comparison_metrics.both_succeeded && (
@@ -396,7 +396,7 @@ export default function LiveComparison() {
                         </div>
                       </div>
                       <div style={{ marginTop: '0.5rem', fontWeight: 600 }}>
-                        Winner: <span style={{ color: '#667eea' }}>{result.comparison.comparison_metrics.accuracy.winner.toUpperCase()}</span>
+                        Winner: <span style={{ color: '#f5a623' }}>{result.comparison.comparison_metrics.accuracy.winner.toUpperCase()}</span>
                       </div>
                     </div>
                   )}
@@ -430,7 +430,7 @@ export default function LiveComparison() {
                 </div>
               )}
 
-              <div style={{ marginTop: '1rem', padding: '1rem', background: '#ffffff', borderRadius: '6px', borderLeft: '4px solid #667eea' }}>
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#ffffff', borderRadius: '6px', borderLeft: '4px solid #f5a623' }}>
                 <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Recommendation:</div>
                 <div>{result.recommendation}</div>
               </div>

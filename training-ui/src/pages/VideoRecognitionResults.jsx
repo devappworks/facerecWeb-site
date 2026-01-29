@@ -294,7 +294,7 @@ export default function VideoRecognitionResults() {
                   padding: '1.5rem',
                   backgroundColor: '#f7fafc',
                   borderRadius: '8px',
-                  border: '2px solid #e2e8f0'
+                  border: '2px solid #3a3a3a'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
@@ -339,7 +339,7 @@ export default function VideoRecognitionResults() {
                   padding: '1.5rem',
                   backgroundColor: '#f7fafc',
                   borderRadius: '8px',
-                  border: '2px solid #e2e8f0'
+                  border: '2px solid #3a3a3a'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
@@ -436,7 +436,7 @@ export default function VideoRecognitionResults() {
                       <span
                         style={{
                           padding: '0.25rem 0.5rem',
-                          backgroundColor: '#e2e8f0',
+                          backgroundColor: '#3a3a3a',
                           borderRadius: '4px',
                           fontSize: '0.85rem',
                           fontWeight: '500'

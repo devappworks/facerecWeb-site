@@ -74,7 +74,7 @@ export default function BatchProgress() {
     },
     batchId: {
       fontFamily: 'monospace',
-      backgroundColor: '#e2e8f0',
+      backgroundColor: '#3a3a3a',
       padding: '2px 8px',
       borderRadius: '4px',
     },
@@ -84,7 +84,7 @@ export default function BatchProgress() {
       padding: '24px',
       marginBottom: '24px',
       boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-      border: '1px solid #e2e8f0',
+      border: '1px solid #3a3a3a',
     },
     cardHeader: {
       display: 'flex',
@@ -105,7 +105,7 @@ export default function BatchProgress() {
       fontWeight: '600',
     },
     progressBarContainer: {
-      backgroundColor: '#e2e8f0',
+      backgroundColor: '#3a3a3a',
       borderRadius: '10px',
       height: '20px',
       overflow: 'hidden',
@@ -146,7 +146,7 @@ export default function BatchProgress() {
       margin: 0,
     },
     personCard: {
-      border: '2px solid #e2e8f0',
+      border: '2px solid #3a3a3a',
       borderRadius: '12px',
       padding: '20px',
       marginBottom: '16px',
@@ -186,7 +186,7 @@ export default function BatchProgress() {
       margin: 0,
     },
     miniProgressContainer: {
-      backgroundColor: '#e2e8f0',
+      backgroundColor: '#3a3a3a',
       borderRadius: '4px',
       height: '8px',
       overflow: 'hidden',
@@ -262,10 +262,10 @@ export default function BatchProgress() {
         }
       default:
         return {
-          badge: { backgroundColor: '#f3f4f6', color: '#374151' },
-          border: '#e5e7eb',
-          bg: '#f9fafb',
-          icon: { backgroundColor: '#f3f4f6' },
+          badge: { backgroundColor: '#333', color: '#999' },
+          border: '#3a3a3a',
+          bg: '#242424',
+          icon: { backgroundColor: '#333' },
         }
     }
   }
@@ -293,7 +293,7 @@ export default function BatchProgress() {
             <div style={{
               width: '48px',
               height: '48px',
-              border: '4px solid #e2e8f0',
+              border: '4px solid #3a3a3a',
               borderTopColor: '#3b82f6',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite',

@@ -95,7 +95,7 @@ export default function VideoDetailsModal({ video, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{ padding: '1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+        <div style={{ padding: '1.5rem', borderBottom: '1px solid #3a3a3a', display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
           <div>
             <h2 style={{ margin: 0 }}>Video Recognition Details</h2>
             <p style={{ color: '#718096', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
@@ -118,7 +118,7 @@ export default function VideoDetailsModal({ video, onClose }) {
         </div>
 
         {/* Tabs */}
-        <div style={{ padding: '0 1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', gap: '1rem' }}>
+        <div style={{ padding: '0 1.5rem', borderBottom: '1px solid #3a3a3a', display: 'flex', gap: '1rem' }}>
           <button
             onClick={() => setActiveTab('player')}
             style={{
@@ -603,7 +603,7 @@ export default function VideoDetailsModal({ video, onClose }) {
         </div>
 
         {/* Footer */}
-        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid #3a3a3a', display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={onClose} className="btn btn-primary">
             Close
           </button>

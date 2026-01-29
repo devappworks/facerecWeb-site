@@ -67,7 +67,7 @@
 }
 
 .view-btn {
-  background: rgba(102, 126, 234, 0.9);
+  background: rgba(245, 166, 35, 0.9);
   color: white;
 }
 
@@ -79,12 +79,12 @@
 .gallery-item-info {
   padding: 0.75rem;
   background: white;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #3a3a3a;
 }
 
 .gallery-item-info small {
   display: block;
-  color: #6b7280;
+  color: #999;
   font-size: 0.75rem;
   white-space: nowrap;
   overflow: hidden;
@@ -183,7 +183,7 @@
 }
 
 .lightbox-info small {
-  color: #6b7280;
+  color: #999;
   font-size: 0.875rem;
 }
 

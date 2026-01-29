@@ -166,13 +166,13 @@ export default function Testing() {
           onDragOver={handleDrag}
           onDrop={handleDrop}
           style={{
-            border: `2px dashed ${dragActive ? '#667eea' : '#d1d5db'}`,
+            border: `2px dashed ${dragActive ? '#f5a623' : '#d1d5db'}`,
             borderRadius: '12px',
             padding: '2rem',
             textAlign: 'center',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            background: dragActive ? '#f0f4ff' : '#f9fafb'
+            background: dragActive ? 'rgba(245, 166, 35, 0.05)' : '#242424'
           }}
         >
           <input
@@ -188,7 +188,7 @@ export default function Testing() {
             <p style={{ margin: '0 0 0.5rem 0', fontWeight: 500 }}>
               Drop images here or click to browse
             </p>
-            <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ margin: 0, fontSize: '0.875rem', color: '#999' }}>
               Supports JPG, PNG, GIF (max 10MB per file) - Multiple files supported
             </p>
           </label>
@@ -228,7 +228,7 @@ export default function Testing() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' }}>
               {files.map((fileObj, index) => (
-                <div key={index} style={{ position: 'relative', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+                <div key={index} style={{ position: 'relative', border: '1px solid #3a3a3a', borderRadius: '8px', overflow: 'hidden' }}>
                   {fileObj.preview && (
                     <img
                       src={fileObj.preview}
@@ -279,7 +279,7 @@ export default function Testing() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem', marginTop: '1rem' }}>
             {results.map((result, index) => (
               <div key={index} className="card">
-                <h4 style={{ marginTop: 0, fontSize: '0.875rem', color: '#6b7280', wordBreak: 'break-all' }}>
+                <h4 style={{ marginTop: 0, fontSize: '0.875rem', color: '#999', wordBreak: 'break-all' }}>
                   {result.fileName}
                 </h4>
                 {result.status === 'success' && result.person ? (
@@ -317,8 +317,8 @@ export default function Testing() {
                     </p>
                   </div>
                 ) : (
-                  <div className="result-box" style={{ border: '2px solid #6b7280' }}>
-                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#6b7280' }}>
+                  <div className="result-box" style={{ border: '2px solid #999' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#999' }}>
                       ❓ Unknown Person
                     </h4>
                     <p style={{ margin: 0, fontSize: '0.875rem' }}>

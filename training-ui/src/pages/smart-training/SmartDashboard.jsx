@@ -83,7 +83,7 @@ export default function SmartDashboard() {
             </div>
           )}
           {!isPolling && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#999', fontSize: '0.875rem' }}>
               <span>⏸️</span>
               <span>Auto-refresh: OFF</span>
             </div>
@@ -175,7 +175,7 @@ export default function SmartDashboard() {
                 padding: '2rem',
                 borderRadius: '12px',
                 textAlign: 'center',
-                color: '#6b7280',
+                color: '#999',
               }}
             >
               <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📭</div>
@@ -252,7 +252,7 @@ export default function SmartDashboard() {
               onClick={() => setShowRunModal(true)}
               className="action-card-compact"
               style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #f5a623 0%, #e09520 100%)',
                 color: 'white',
                 border: 'none',
                 cursor: 'pointer',

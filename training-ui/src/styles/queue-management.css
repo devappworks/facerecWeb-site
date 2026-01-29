@@ -45,7 +45,7 @@
 
 .stat-card-simple .stat-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #999;
   margin-top: 0.25rem;
 }
 
@@ -65,7 +65,7 @@
 
 .section-header {
   padding: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f5a623 0%, #e09520 100%);
   color: white;
 }
 
@@ -101,27 +101,27 @@
 }
 
 .queue-table thead {
-  background: #f9fafb;
-  border-bottom: 2px solid #e5e7eb;
+  background: #242424;
+  border-bottom: 2px solid #3a3a3a;
 }
 
 .queue-table th {
   padding: 1rem 1.5rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
+  color: #999;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .queue-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #3a3a3a;
   transition: background-color 0.15s;
 }
 
 .queue-table tbody tr:hover {
-  background: #f9fafb;
+  background: #242424;
 }
 
 .queue-table tbody tr:last-child {
@@ -198,7 +198,7 @@
 }
 
 .loading-state span:last-child {
-  color: #6b7280;
+  color: #999;
   font-size: 1rem;
 }
 
@@ -228,7 +228,7 @@
 
 .empty-state p {
   margin: 0 0 0.5rem 0;
-  color: #6b7280;
+  color: #999;
   font-size: 1rem;
 }
 

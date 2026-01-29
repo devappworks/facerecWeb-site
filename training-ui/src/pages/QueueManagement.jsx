@@ -116,7 +116,7 @@ export default function QueueManagement() {
             </div>
           )}
           {!isPolling && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#999', fontSize: '0.875rem' }}>
               <span>⏸️</span>
               <span>Auto-refresh: OFF</span>
             </div>

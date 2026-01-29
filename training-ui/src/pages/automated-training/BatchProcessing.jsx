@@ -18,7 +18,7 @@ const styles = {
   },
   subtitle: {
     fontSize: '14px',
-    color: '#6b7280',
+    color: '#999',
     margin: 0,
   },
   section: {
@@ -26,7 +26,7 @@ const styles = {
     borderRadius: '12px',
     padding: '24px',
     marginBottom: '24px',
-    border: '1px solid #e5e7eb',
+    border: '1px solid #3a3a3a',
   },
   sectionTitle: {
     fontSize: '18px',
@@ -45,8 +45,8 @@ const styles = {
     fontWeight: '500',
   },
   batchCard: {
-    backgroundColor: '#f9fafb',
-    border: '1px solid #e5e7eb',
+    backgroundColor: '#242424',
+    border: '1px solid #3a3a3a',
     borderRadius: '8px',
     padding: '16px',
     marginBottom: '12px',
@@ -65,7 +65,7 @@ const styles = {
   progressBar: {
     width: '100%',
     height: '6px',
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#3a3a3a',
     borderRadius: '3px',
     overflow: 'hidden',
     marginBottom: '8px',
@@ -89,7 +89,7 @@ const styles = {
   emptyState: {
     textAlign: 'center',
     padding: '48px 24px',
-    color: '#6b7280',
+    color: '#999',
   },
   emptyStateIcon: {
     fontSize: '48px',
@@ -108,7 +108,7 @@ const styles = {
     display: 'inline-block',
     width: '16px',
     height: '16px',
-    border: '2px solid #e5e7eb',
+    border: '2px solid #3a3a3a',
     borderTop: '2px solid #3b82f6',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
@@ -123,7 +123,7 @@ const styles = {
     backgroundColor: '#fff',
     borderRadius: '12px',
     padding: '20px',
-    border: '1px solid #e5e7eb',
+    border: '1px solid #3a3a3a',
     textAlign: 'center',
   },
   statValue: {
@@ -134,7 +134,7 @@ const styles = {
   },
   statLabel: {
     fontSize: '13px',
-    color: '#6b7280',
+    color: '#999',
     fontWeight: '500',
   },
   controlsBar: {
@@ -143,9 +143,9 @@ const styles = {
     alignItems: 'center',
     marginBottom: '24px',
     padding: '16px',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#242424',
     borderRadius: '8px',
-    border: '1px solid #e5e7eb',
+    border: '1px solid #3a3a3a',
   },
   pollingIndicator: {
     display: 'flex',
@@ -223,11 +223,11 @@ export default function BatchProcessing() {
       case 'processing':
         return { bg: '#dbeafe', color: '#1d4ed8' }
       case 'queued':
-        return { bg: '#f3f4f6', color: '#666' }
+        return { bg: '#333', color: '#666' }
       case 'failed':
         return { bg: '#fee2e2', color: '#991b1b' }
       default:
-        return { bg: '#f3f4f6', color: '#666' }
+        return { bg: '#333', color: '#666' }
     }
   }
 
@@ -326,7 +326,7 @@ export default function BatchProcessing() {
               </div>
             )}
             {!isPolling && (
-              <div style={{ ...styles.pollingIndicator, color: '#6b7280' }}>
+              <div style={{ ...styles.pollingIndicator, color: '#999' }}>
                 <span>Auto-update paused</span>
               </div>
             )}
@@ -501,7 +501,7 @@ export default function BatchProcessing() {
                       {batch.type === 'wikidata' ? 'WIKIDATA' : 'SERP'}
                     </span>
                   </div>
-                  <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                  <div style={{ fontSize: '12px', color: '#999' }}>
                     {batch.total || batch.total_people || batch.people?.length || 0} people processed
                   </div>
                 </div>
@@ -555,7 +555,7 @@ export default function BatchProcessing() {
           <div style={styles.emptyState}>
             <div style={styles.emptyStateIcon}>📭</div>
             <h3 style={{ margin: '0 0 8px 0', color: '#1f2937' }}>No batches yet</h3>
-            <p style={{ margin: 0, color: '#6b7280' }}>
+            <p style={{ margin: 0, color: '#999' }}>
               Start SERP training from the Review & Deploy page to see batch processing here.
             </p>
           </div>

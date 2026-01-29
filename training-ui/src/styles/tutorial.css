@@ -131,7 +131,7 @@
 .tutorial-progress-bar {
   width: 100%;
   height: 6px;
-  background-color: #e5e7eb;
+  background-color: #3a3a3a;
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 8px;
@@ -146,7 +146,7 @@
 
 .tutorial-progress-text {
   font-size: 13px;
-  color: #6b7280;
+  color: #999;
   font-weight: 500;
 }
 
@@ -215,23 +215,23 @@
 }
 
 .tutorial-btn-secondary {
-  background: #f3f4f6;
+  background: #333;
   color: #4b5563;
 }
 
 .tutorial-btn-secondary:hover {
-  background: #e5e7eb;
+  background: #3a3a3a;
 }
 
 .tutorial-btn-skip {
   background: transparent;
-  color: #6b7280;
+  color: #999;
   padding: 12px 16px;
   text-decoration: underline;
 }
 
 .tutorial-btn-skip:hover {
-  color: #374151;
+  color: #999;
 }
 
 @keyframes fadeIn {
@@ -270,7 +270,7 @@
 }
 
 [data-theme='dark'] .tutorial-progress-bar {
-  background-color: #374151;
+  background-color: #999;
 }
 
 [data-theme='dark'] .tutorial-progress-text {
@@ -278,7 +278,7 @@
 }
 
 [data-theme='dark'] .tutorial-title {
-  color: #f9fafb;
+  color: #242424;
 }
 
 [data-theme='dark'] .tutorial-text {
@@ -286,7 +286,7 @@
 }
 
 [data-theme='dark'] .tutorial-btn-secondary {
-  background: #374151;
+  background: #999;
   color: #d1d5db;
 }
 

@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
-  color: #6b7280;
+  color: #999;
 }
 
 .loading-state p {
@@ -40,7 +40,7 @@
 }
 
 .empty-state p {
-  color: #6b7280;
+  color: #999;
   margin: 0;
 }
 
@@ -50,7 +50,7 @@
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f5a623 0%, #e09520 100%);
   border-radius: 12px;
   color: white;
 }
@@ -92,7 +92,7 @@
 .folder-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  border-color: #667eea;
+  border-color: #f5a623;
 }
 
 .folder-header {
@@ -109,7 +109,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f3f4f6;
+  background: #333;
   border-radius: 50%;
 }
 
@@ -123,8 +123,8 @@
 }
 
 .status-empty {
-  background: #f3f4f6;
-  color: #6b7280;
+  background: #333;
+  color: #999;
 }
 
 .status-insufficient {
@@ -164,7 +164,7 @@
 }
 
 .stat-row span {
-  color: #6b7280;
+  color: #999;
 }
 
 .stat-row strong {
@@ -173,7 +173,7 @@
 
 .progress-bar {
   height: 6px;
-  background: #e5e7eb;
+  background: #3a3a3a;
   border-radius: 999px;
   overflow: hidden;
 }

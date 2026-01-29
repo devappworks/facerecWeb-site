@@ -682,7 +682,7 @@ export default function ReviewDeploy() {
                     padding: '8px 12px',
                     backgroundColor: person.status === 'completed' ? '#dcfce7' :
                       person.status === 'processing' ? '#dbeafe' :
-                        person.status === 'failed' ? '#fef2f2' : '#f3f4f6',
+                        person.status === 'failed' ? '#fef2f2' : '#333',
                     borderRadius: '6px',
                     fontSize: '14px',
                   }}
@@ -872,7 +872,7 @@ export default function ReviewDeploy() {
           </button>
           <button
             onClick={handleDeselectAll}
-            style={{ ...styles.btn, backgroundColor: '#f3f4f6', color: '#374151' }}
+            style={{ ...styles.btn, backgroundColor: '#333', color: '#999' }}
           >
             Deselect All
           </button>
@@ -1117,7 +1117,7 @@ export default function ReviewDeploy() {
                         <label
                           style={{
                             ...styles.actionCheckbox,
-                            backgroundColor: action === 'serp' ? '#dbeafe' : '#f3f4f6',
+                            backgroundColor: action === 'serp' ? '#dbeafe' : '#333',
                             borderColor: action === 'serp' ? '#3b82f6' : 'transparent',
                             color: action === 'serp' ? '#1d4ed8' : '#666',
                           }}
@@ -1133,7 +1133,7 @@ export default function ReviewDeploy() {
                         <label
                           style={{
                             ...styles.actionCheckbox,
-                            backgroundColor: action === 'remove' ? '#fef2f2' : '#f3f4f6',
+                            backgroundColor: action === 'remove' ? '#fef2f2' : '#333',
                             borderColor: action === 'remove' ? '#dc2626' : 'transparent',
                             color: action === 'remove' ? '#dc2626' : '#666',
                           }}
@@ -1280,8 +1280,8 @@ export default function ReviewDeploy() {
                   onClick={() => setShowBatches(false)}
                   style={{
                     ...styles.btn,
-                    backgroundColor: '#f3f4f6',
-                    color: '#374151',
+                    backgroundColor: '#333',
+                    color: '#999',
                     padding: '8px 16px',
                   }}
                 >
@@ -1339,7 +1339,7 @@ export default function ReviewDeploy() {
                             style={{
                               display: 'inline-block',
                               backgroundColor: p.status === 'completed' ? '#dcfce7' :
-                                p.status === 'processing' ? '#dbeafe' : '#f3f4f6',
+                                p.status === 'processing' ? '#dbeafe' : '#333',
                               color: p.status === 'completed' ? '#166534' :
                                 p.status === 'processing' ? '#1d4ed8' : '#666',
                               padding: '2px 8px',

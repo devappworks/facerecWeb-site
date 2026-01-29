@@ -153,7 +153,7 @@ export default function BenchmarkResults() {
             padding: '3rem',
             borderRadius: '12px',
             textAlign: 'center',
-            color: '#6b7280',
+            color: '#999',
           }}
         >
           <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎯</div>
@@ -220,7 +220,7 @@ export default function BenchmarkResults() {
             </div>
 
             <div className="modal-body">
-              <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+              <p style={{ marginBottom: '1rem', color: '#999' }}>
                 Test recognition quality for a specific person. Downloads test images from Google and runs them through face recognition.
               </p>
 
@@ -241,7 +241,7 @@ export default function BenchmarkResults() {
                 <div style={{ textAlign: 'center', padding: '2rem' }}>
                   <div className="spinner" style={{ margin: '0 auto 1rem' }}></div>
                   <p>Running benchmark... This may take 1-2 minutes</p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                  <p style={{ fontSize: '0.875rem', color: '#999' }}>
                     Downloading test images and running recognition
                   </p>
                 </div>
@@ -253,7 +253,7 @@ export default function BenchmarkResults() {
                   padding: '1.5rem',
                   background: '#f8fafc',
                   borderRadius: '8px',
-                  border: '1px solid #e2e8f0'
+                  border: '1px solid #3a3a3a'
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ margin: 0 }}>{benchmarkResult.person_name}</h3>
@@ -262,21 +262,21 @@ export default function BenchmarkResults() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                     <div>
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase' }}>Images Tested</div>
+                      <div style={{ fontSize: '0.75rem', color: '#999', textTransform: 'uppercase' }}>Images Tested</div>
                       <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{benchmarkResult.num_images_downloaded}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase' }}>Recognized Correctly</div>
+                      <div style={{ fontSize: '0.75rem', color: '#999', textTransform: 'uppercase' }}>Recognized Correctly</div>
                       <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{benchmarkResult.num_recognized_correctly}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase' }}>Recognition Score</div>
+                      <div style={{ fontSize: '0.75rem', color: '#999', textTransform: 'uppercase' }}>Recognition Score</div>
                       <div style={{ fontSize: '1.25rem', fontWeight: 600, color: benchmarkResult.recognition_score >= 80 ? '#10b981' : benchmarkResult.recognition_score >= 50 ? '#f59e0b' : '#ef4444' }}>
                         {benchmarkResult.recognition_score}%
                       </div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase' }}>Training Priority</div>
+                      <div style={{ fontSize: '0.75rem', color: '#999', textTransform: 'uppercase' }}>Training Priority</div>
                       <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{benchmarkResult.training_priority}</div>
                     </div>
                   </div>

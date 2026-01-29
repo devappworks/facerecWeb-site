@@ -292,7 +292,7 @@ export default function TestHistory() {
             borderTop: '1px solid rgba(107, 114, 128, 0.2)',
           }}
         >
-          <div style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+          <div style={{ fontSize: '0.9rem', color: '#999' }}>
             Showing {paginatedHistory.length} of {filteredHistory.length} tests
           </div>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -347,7 +347,7 @@ export default function TestHistory() {
       {/* Empty State */}
       {!loading && !error && filteredHistory.length === 0 && (
         <div className="card" style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <p style={{ color: '#6b7280' }}>
+          <p style={{ color: '#999' }}>
             {history.length === 0
               ? 'No test history available yet. Run some comparisons to see results here.'
               : 'No tests match the current filters.'}
@@ -452,12 +452,12 @@ export default function TestHistory() {
                             <div style={{ fontWeight: '500' }}>
                               {test.pipeline_a_result.person}
                             </div>
-                            <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                            <div style={{ fontSize: '0.85rem', color: '#999' }}>
                               {test.pipeline_a_result.confidence.toFixed(1)}% confidence
                             </div>
                           </div>
                         ) : (
-                          <span style={{ color: '#6b7280' }}>
+                          <span style={{ color: '#999' }}>
                             {test.pipeline_a_result?.status || 'N/A'}
                           </span>
                         )}
@@ -468,12 +468,12 @@ export default function TestHistory() {
                             <div style={{ fontWeight: '500' }}>
                               {test.pipeline_b_result.person}
                             </div>
-                            <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                            <div style={{ fontSize: '0.85rem', color: '#999' }}>
                               {test.pipeline_b_result.confidence.toFixed(1)}% confidence
                             </div>
                           </div>
                         ) : (
-                          <span style={{ color: '#6b7280' }}>
+                          <span style={{ color: '#999' }}>
                             {test.pipeline_b_result?.status || 'N/A'}
                           </span>
                         )}
@@ -486,7 +486,7 @@ export default function TestHistory() {
                             <span style={{ fontSize: '1.5rem', color: '#ef4444' }}>✗</span>
                           )
                         ) : (
-                          <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>-</span>
+                          <span style={{ fontSize: '0.9rem', color: '#999' }}>-</span>
                         )}
                       </td>
                       <td style={{ padding: '1rem', textAlign: 'center' }}>
@@ -551,7 +551,7 @@ export default function TestHistory() {
                           <span
                             style={{
                               padding: '0.5rem 0.75rem',
-                              color: '#6b7280',
+                              color: '#999',
                             }}
                           >
                             ...
@@ -591,7 +591,7 @@ export default function TestHistory() {
             backgroundColor: 'rgba(59, 130, 246, 0.1)',
             borderRadius: '8px',
             fontSize: '0.9rem',
-            color: '#6b7280',
+            color: '#999',
           }}
         >
           ℹ️ Test history is stored locally. Use export functions to save results for

@@ -388,7 +388,7 @@ export default function TrainingWorkflow() {
                       cursor: 'pointer',
                     }}
                   >
-                    <span style={{ color: selectedOccupations.length > 0 ? '#111827' : '#6b7280' }}>
+                    <span style={{ color: selectedOccupations.length > 0 ? '#111827' : '#999' }}>
                       {selectedOccupations.length > 0
                         ? `${selectedOccupations.length} occupation${selectedOccupations.length > 1 ? 's' : ''} selected`
                         : 'Select occupations...'}
@@ -427,7 +427,7 @@ export default function TrainingWorkflow() {
                               padding: '0.75rem 1rem',
                               cursor: 'pointer',
                               background: isChecked ? '#eff6ff' : 'white',
-                              borderBottom: '1px solid #f3f4f6',
+                              borderBottom: '1px solid #333',
                               transition: 'background 0.15s',
                             }}
                             onClick={(e) => {
@@ -435,7 +435,7 @@ export default function TrainingWorkflow() {
                               toggleOccupation(occ.id)
                             }}
                             onMouseEnter={(e) => {
-                              if (!isChecked) e.currentTarget.style.background = '#f9fafb'
+                              if (!isChecked) e.currentTarget.style.background = '#242424'
                             }}
                             onMouseLeave={(e) => {
                               if (!isChecked) e.currentTarget.style.background = 'white'
@@ -456,7 +456,7 @@ export default function TrainingWorkflow() {
                     </div>
                   )}
                 </div>
-                <small style={{ display: 'block', marginTop: '0.25rem', color: '#6b7280' }}>
+                <small style={{ display: 'block', marginTop: '0.25rem', color: '#999' }}>
                   Click to select multiple occupations
                 </small>
               </div>
@@ -521,8 +521,8 @@ export default function TrainingWorkflow() {
                     flex: 1,
                     fontSize: '0.75rem',
                     padding: '0.4rem',
-                    background: showFilter === 'new' ? '#10b981' : '#e5e7eb',
-                    color: showFilter === 'new' ? 'white' : '#374151',
+                    background: showFilter === 'new' ? '#10b981' : '#3a3a3a',
+                    color: showFilter === 'new' ? 'white' : '#999',
                     border: 'none',
                   }}
                 >
@@ -535,8 +535,8 @@ export default function TrainingWorkflow() {
                     flex: 1,
                     fontSize: '0.75rem',
                     padding: '0.4rem',
-                    background: showFilter === 'existing' ? '#6b7280' : '#e5e7eb',
-                    color: showFilter === 'existing' ? 'white' : '#374151',
+                    background: showFilter === 'existing' ? '#999' : '#3a3a3a',
+                    color: showFilter === 'existing' ? 'white' : '#999',
                     border: 'none',
                   }}
                 >
@@ -549,8 +549,8 @@ export default function TrainingWorkflow() {
                     flex: 1,
                     fontSize: '0.75rem',
                     padding: '0.4rem',
-                    background: showFilter === 'all' ? '#3b82f6' : '#e5e7eb',
-                    color: showFilter === 'all' ? 'white' : '#374151',
+                    background: showFilter === 'all' ? '#3b82f6' : '#3a3a3a',
+                    color: showFilter === 'all' ? 'white' : '#999',
                     border: 'none',
                   }}
                 >
@@ -577,7 +577,7 @@ export default function TrainingWorkflow() {
                 <button
                   onClick={deselectAll}
                   className="btn btn-sm"
-                  style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: '#6b7280', color: 'white', border: 'none' }}
+                  style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: '#999', color: 'white', border: 'none' }}
                 >
                   ✗ None
                 </button>
@@ -593,7 +593,7 @@ export default function TrainingWorkflow() {
               {/* Candidates List */}
               <div className="folders-list" style={{ marginTop: '1rem', maxHeight: '300px', overflowY: 'auto' }}>
                 {filteredCandidates.length === 0 ? (
-                  <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#999' }}>
                     No candidates match the current filter
                   </div>
                 ) : (
@@ -601,7 +601,7 @@ export default function TrainingWorkflow() {
                     <div
                       key={candidate.wikidata_id}
                       className="folder-item"
-                      style={{ padding: '0.75rem', cursor: 'pointer', borderBottom: '1px solid #e5e7eb' }}
+                      style={{ padding: '0.75rem', cursor: 'pointer', borderBottom: '1px solid #3a3a3a' }}
                       onClick={() => toggleCandidate(candidate.wikidata_id)}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -616,12 +616,12 @@ export default function TrainingWorkflow() {
                           <div style={{ fontWeight: 500, color: '#111827' }}>
                             {candidate.full_name}
                           </div>
-                          <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                          <div style={{ fontSize: '0.75rem', color: '#999' }}>
                             {candidate.description}
                           </div>
                         </div>
                         {candidate.exists_in_db ? (
-                          <span className="status-badge-sm" style={{ background: '#e5e7eb', color: '#6b7280' }}>
+                          <span className="status-badge-sm" style={{ background: '#3a3a3a', color: '#999' }}>
                             ✓ EXISTS
                           </span>
                         ) : (
@@ -634,7 +634,7 @@ export default function TrainingWorkflow() {
                   ))
                 )}
                 {filteredCandidates.length > 50 && (
-                  <div style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.875rem', color: '#6b7280' }}>
+                  <div style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.875rem', color: '#999' }}>
                     ... and {filteredCandidates.length - 50} more
                   </div>
                 )}

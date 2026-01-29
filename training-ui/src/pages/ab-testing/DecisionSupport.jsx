@@ -185,7 +185,7 @@ export default function DecisionSupport() {
                 <div
                   style={{
                     fontSize: '0.9rem',
-                    color: '#6b7280',
+                    color: '#999',
                     marginTop: '0.25rem',
                   }}
                 >
@@ -202,7 +202,7 @@ export default function DecisionSupport() {
           {/* Decision Matrix */}
           <div className="card" style={{ marginTop: '2rem' }}>
             <h2 style={{ marginTop: 0 }}>Decision Matrix</h2>
-            <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>
+            <p style={{ color: '#999', marginTop: '0.5rem' }}>
               Weighted scoring based on {metrics.total_tests} tests
             </p>
 
@@ -218,7 +218,7 @@ export default function DecisionSupport() {
                 >
                   <div>
                     <strong>Accuracy Improvement</strong>
-                    <span style={{ marginLeft: '0.5rem', color: '#6b7280' }}>
+                    <span style={{ marginLeft: '0.5rem', color: '#999' }}>
                       (Weight: {(criteria.accuracy.weight * 100).toFixed(0)}%)
                     </span>
                   </div>
@@ -251,7 +251,7 @@ export default function DecisionSupport() {
                     }}
                   />
                 </div>
-                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#999' }}>
                   {scores.accuracy.score === 100 && (
                     <span style={{ color: '#10b981' }}>
                       ✓ Exceeds threshold ({criteria.accuracy.threshold}%)
@@ -279,7 +279,7 @@ export default function DecisionSupport() {
                 >
                   <div>
                     <strong>Confidence Improvement</strong>
-                    <span style={{ marginLeft: '0.5rem', color: '#6b7280' }}>
+                    <span style={{ marginLeft: '0.5rem', color: '#999' }}>
                       (Weight: {(criteria.confidence.weight * 100).toFixed(0)}%)
                     </span>
                   </div>
@@ -312,7 +312,7 @@ export default function DecisionSupport() {
                     }}
                   />
                 </div>
-                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#999' }}>
                   {scores.confidence.score === 100 && (
                     <span style={{ color: '#10b981' }}>
                       ✓ Exceeds threshold ({criteria.confidence.threshold}%)
@@ -340,7 +340,7 @@ export default function DecisionSupport() {
                 >
                   <div>
                     <strong>Performance Improvement</strong>
-                    <span style={{ marginLeft: '0.5rem', color: '#6b7280' }}>
+                    <span style={{ marginLeft: '0.5rem', color: '#999' }}>
                       (Weight: {(criteria.performance.weight * 100).toFixed(0)}%)
                     </span>
                   </div>
@@ -373,7 +373,7 @@ export default function DecisionSupport() {
                     }}
                   />
                 </div>
-                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#999' }}>
                   {scores.performance.score === 100 && (
                     <span style={{ color: '#10b981' }}>
                       ✓ Exceeds threshold ({criteria.performance.threshold}%)
@@ -401,7 +401,7 @@ export default function DecisionSupport() {
                 >
                   <div>
                     <strong>Agreement Rate</strong>
-                    <span style={{ marginLeft: '0.5rem', color: '#6b7280' }}>
+                    <span style={{ marginLeft: '0.5rem', color: '#999' }}>
                       (Weight: {(criteria.agreement.weight * 100).toFixed(0)}%)
                     </span>
                   </div>
@@ -433,7 +433,7 @@ export default function DecisionSupport() {
                     }}
                   />
                 </div>
-                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#6b7280' }}>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#999' }}>
                   {scores.agreement.score === 100 && (
                     <span style={{ color: '#10b981' }}>
                       ✓ Exceeds threshold ({criteria.agreement.threshold}%)
@@ -513,7 +513,7 @@ export default function DecisionSupport() {
                 <div style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
                   Accuracy Analysis
                 </div>
-                <p style={{ margin: 0, fontSize: '0.95rem', color: '#6b7280' }}>
+                <p style={{ margin: 0, fontSize: '0.95rem', color: '#999' }}>
                   Based on {metrics.accuracy_comparison.total_with_ground_truth} ground
                   truth tests, Pipeline B achieved{' '}
                   {metrics.accuracy_comparison.pipeline_b_correct} correct predictions vs
@@ -538,7 +538,7 @@ export default function DecisionSupport() {
                 <div style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
                   Agreement Analysis
                 </div>
-                <p style={{ margin: 0, fontSize: '0.95rem', color: '#6b7280' }}>
+                <p style={{ margin: 0, fontSize: '0.95rem', color: '#999' }}>
                   The two pipelines agreed on {metrics.agreement_rate.toFixed(1)}% of all
                   tests.
                   {metrics.agreement_rate >= criteria.agreement.threshold
@@ -559,7 +559,7 @@ export default function DecisionSupport() {
                 <div style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
                   Performance Analysis
                 </div>
-                <p style={{ margin: 0, fontSize: '0.95rem', color: '#6b7280' }}>
+                <p style={{ margin: 0, fontSize: '0.95rem', color: '#999' }}>
                   Pipeline B's average processing time is{' '}
                   {metrics.avg_processing_time.pipeline_b.toFixed(0)}ms compared to
                   Pipeline A's {metrics.avg_processing_time.pipeline_a.toFixed(0)}ms.
@@ -667,7 +667,7 @@ export default function DecisionSupport() {
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
               borderRadius: '8px',
               fontSize: '0.9rem',
-              color: '#6b7280',
+              color: '#999',
             }}
           >
             ℹ️ Decision support based on weekly metrics from {metrics.total_tests} total
