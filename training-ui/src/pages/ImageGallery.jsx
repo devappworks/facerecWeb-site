@@ -1,8 +1,74 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { usePolling } from '../hooks/usePolling'
 import { trainingService } from '../services/training'
 import HelpButton from '../components/HelpButton'
 import '../styles/gallery.css'
+
+// Lazy-loading image component with retry on failure
+function LazyImage({ src, alt, onClick, style }) {
+  const imgRef = useRef(null)
+  const [loaded, setLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const retryCount = useRef(0)
+  const maxRetries = 2
+
+  useEffect(() => {
+    const img = imgRef.current
+    if (!img) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+    observer.observe(img)
+    return () => observer.disconnect()
+  }, [])
+
+  const handleError = useCallback(() => {
+    if (retryCount.current < maxRetries) {
+      retryCount.current += 1
+      // Stagger retries to avoid thundering herd
+      setTimeout(() => {
+        setHasError(false)
+      }, 1000 + retryCount.current * 1500)
+    } else {
+      setHasError(true)
+    }
+  }, [])
+
+  return (
+    <div ref={imgRef} style={{ minHeight: '120px', ...style }}>
+      {visible && !hasError ? (
+        <img
+          src={src}
+          alt={alt}
+          onClick={onClick}
+          onLoad={() => setLoaded(true)}
+          onError={handleError}
+          style={{ cursor: 'zoom-in', opacity: loaded ? 1 : 0.3, transition: 'opacity 0.3s' }}
+        />
+      ) : hasError ? (
+        <div
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            height: '120px', color: '#666', fontSize: '0.8rem', cursor: 'pointer'
+          }}
+          onClick={() => { retryCount.current = 0; setHasError(false) }}
+          title="Click to retry"
+        >
+          ⚠ Load failed — click to retry
+        </div>
+      ) : (
+        <div style={{ height: '120px', background: '#1a1a1a' }} />
+      )}
+    </div>
+  )
+}
 
 export default function ImageGallery() {
   const [domain, setDomain] = useState('serbia')
@@ -26,6 +92,7 @@ export default function ImageGallery() {
   const [hideApproved, setHideApproved] = useState(false)
 
   const itemsPerPage = 50
+  const imagesPerPage = 24
 
   // Load approvals from server when domain/view changes
   useEffect(() => {
@@ -102,7 +169,7 @@ export default function ImageGallery() {
     try {
       setLoading(true)
       setError(null)
-      const response = await trainingService.getFolderImages(folderName, domain, view, page, itemsPerPage)
+      const response = await trainingService.getFolderImages(folderName, domain, view, page, imagesPerPage)
       if (response.success) {
         setGalleryData(response.data)
         // Update actual image count for this folder (filesystem count is authoritative)
@@ -867,12 +934,10 @@ export default function ImageGallery() {
                           }}
                         />
                       </div>
-                      <img
+                      <LazyImage
                         src={imageUrl}
                         alt={`${galleryData.folder} - ${index + 1}`}
                         onClick={() => openLightbox({ name: imageName, path: imagePath, url: imageUrl })}
-                        loading="lazy"
-                        style={{ cursor: 'zoom-in' }}
                       />
                       <div className="gallery-item-overlay">
                         <button
