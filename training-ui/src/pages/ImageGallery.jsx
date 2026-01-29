@@ -22,6 +22,8 @@ export default function ImageGallery() {
   // Approved folders state (server-side storage)
   const [approvedFolders, setApprovedFolders] = useState({})
   const [approvalsLoading, setApprovalsLoading] = useState(false)
+  // Hide approved filter
+  const [hideApproved, setHideApproved] = useState(false)
 
   const itemsPerPage = 50
 
@@ -60,10 +62,18 @@ export default function ImageGallery() {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
+  // Clear selection when an approved folder becomes hidden
+  useEffect(() => {
+    if (hideApproved && selectedFolder && approvedFolders[selectedFolder]) {
+      setSelectedFolder('')
+      setGalleryData(null)
+    }
+  }, [hideApproved, selectedFolder, approvedFolders])
+
   // Fetch folders for dropdown with current domain and view (and search)
   const { data: foldersResponse } = usePolling(
     async () => {
-      const response = await trainingService.getTrainingProgress(domain, view, currentPage, itemsPerPage, debouncedSearch || null)
+      const response = await trainingService.getTrainingProgress(domain, view, currentPage, itemsPerPage, debouncedSearch || null, hideApproved)
       if (response.success) {
         return response
       }
@@ -71,14 +81,19 @@ export default function ImageGallery() {
     },
     30000, // Poll every 30 seconds
     true,
-    [domain, view, currentPage, debouncedSearch] // Re-fetch when these change
+    [domain, view, currentPage, debouncedSearch, hideApproved] // Re-fetch when these change
   )
 
   const foldersData = foldersResponse?.data?.folders || []
   const pagination = foldersResponse?.data?.pagination || {}
   const summary = foldersResponse?.data?.summary || {}
 
-  // No client-side filtering needed - server handles search
+  // Check if folder is approved (uses person name directly as key)
+  const isFolderApproved = (folderName) => {
+    return !!approvedFolders[folderName]
+  }
+
+  // Server-side filtering is now used - foldersData already excludes approved when hideApproved is true
   const filteredFolders = foldersData
 
   const loadFolderImages = async (folderName, page = 1) => {
@@ -337,11 +352,6 @@ export default function ImageGallery() {
     }
   }
 
-  // Check if folder is approved (now uses person name directly as key)
-  const isFolderApproved = (folderName) => {
-    return !!approvedFolders[folderName]
-  }
-
   // Approve and go to next
   const handleApproveAndNext = () => {
     handleApproveFolder()
@@ -598,6 +608,36 @@ export default function ImageGallery() {
               Found {filteredFolders.length} of {foldersData.length} people
             </div>
           )}
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginBottom: '1rem'
+        }}>
+          <input
+            id="hide-approved"
+            type="checkbox"
+            checked={hideApproved}
+            onChange={(e) => setHideApproved(e.target.checked)}
+            style={{
+              width: '18px',
+              height: '18px',
+              cursor: 'pointer',
+              accentColor: '#667eea'
+            }}
+          />
+          <label
+            htmlFor="hide-approved"
+            style={{
+              cursor: 'pointer',
+              fontSize: '0.95rem',
+              color: '#4a5568',
+              userSelect: 'none'
+            }}
+          >
+            Hide approved ({Object.keys(approvedFolders).length} approved)
+          </label>
         </div>
         <div className="form-group">
           <label htmlFor="folder-select">Select Training Folder</label>

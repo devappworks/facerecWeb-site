@@ -33,10 +33,13 @@ export const trainingService = {
   },
 
   // Get training progress
-  async getTrainingProgress(domain = 'serbia', view = 'production', page = 1, limit = 50, search = null) {
+  async getTrainingProgress(domain = 'serbia', view = 'production', page = 1, limit = 50, search = null, hideApproved = false) {
     const params = { domain, view, page, limit }
     if (search) {
       params.search = search
+    }
+    if (hideApproved) {
+      params.hide_approved = 'true'
     }
     const response = await api.get('/api/training/progress', { params })
     return response.data
