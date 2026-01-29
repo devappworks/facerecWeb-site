@@ -1060,8 +1060,11 @@ function handleDrop(e) {
 }
 
 function handleZoneClick(e) {
-    // Don't trigger if clicking on the file input or buttons
+    // Don't trigger if clicking on the file input, buttons, or form controls (e.g. language selector)
     if (e.target === fileInput || e.target.tagName === 'BUTTON') {
+        return;
+    }
+    if (e.target.closest('.language-selector-container')) {
         return;
     }
     fileInput.click();
@@ -1081,22 +1084,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
 });
 
-// Initialize language selector with saved preference
+// Initialize language selectors with saved preference
 function initializeLanguageSelector() {
     const languageSelector = document.getElementById('languageSelector');
-    if (!languageSelector) return;
-
-    // Load saved language preference
+    const batchLanguageSelector = document.getElementById('batchLanguageSelector');
     const savedLanguage = localStorage.getItem('photolytics_language') || '';
-    if (savedLanguage) {
-        languageSelector.value = savedLanguage;
-    }
 
-    // Save language preference when changed
-    languageSelector.addEventListener('change', function() {
-        localStorage.setItem('photolytics_language', this.value);
-        console.log('Language preference saved:', this.value || 'English only');
-    });
+    // Sync both selectors to saved preference
+    if (languageSelector) {
+        if (savedLanguage) languageSelector.value = savedLanguage;
+        languageSelector.addEventListener('change', function() {
+            localStorage.setItem('photolytics_language', this.value);
+            if (batchLanguageSelector) batchLanguageSelector.value = this.value;
+        });
+    }
+    if (batchLanguageSelector) {
+        if (savedLanguage) batchLanguageSelector.value = savedLanguage;
+        batchLanguageSelector.addEventListener('change', function() {
+            localStorage.setItem('photolytics_language', this.value);
+            if (languageSelector) languageSelector.value = this.value;
+        });
+    }
 }
 
 // Re-initialize when called from auth manager
@@ -1465,11 +1473,11 @@ const BatchProcessor = {
 
         this.updateControls();
 
-        // Get current model and language (use same selectors as single photo)
+        // Get current model and language
         const modelSelector = document.getElementById('modelSelector');
-        const languageSelector = document.getElementById('languageSelector');
+        const batchLangSelector = document.getElementById('batchLanguageSelector');
         const model = modelSelector ? modelSelector.value : 'gpt-4.1-mini';
-        const language = languageSelector ? languageSelector.value : '';
+        const language = batchLangSelector ? batchLangSelector.value : '';
 
         // Create a new session for persisting results
         try {
@@ -1798,9 +1806,7 @@ const BatchProcessor = {
                     <img src="${item.dataUrl}" alt="${item.name}">
                 </div>
             </td>
-            <td><span class="badge bg-secondary">${model}</span></td>
             <td class="batch-persons-list">${recognizedHtml}</td>
-            <td class="batch-persons-list">${identifiedHtml}</td>
             <td class="batch-description">${this.escapeHtml(description)}</td>
             <td class="batch-status-cell">${statusHtml}</td>
         `;
@@ -1860,13 +1866,11 @@ const BatchProcessor = {
         }
 
         // Fallback to client-side CSV generation
-        const headers = ['Filename', 'Model', 'Face Recognition', 'LLM Person ID', 'Description', 'Status'];
+        const headers = ['Filename', 'Face Recognition', 'Description', 'Status'];
         const rows = this.results.map(function(r) {
             return [
                 r.filename,
-                r.model,
                 r.recognized,
-                r.identified,
                 r.description.replace(/"/g, '""'), // Escape quotes
                 r.status
             ].map(function(cell) {
@@ -1985,7 +1989,6 @@ const BatchProcessor = {
                     <div class="batch-history-name">${self.escapeHtml(name)}</div>
                     <div class="batch-history-meta">
                         <span><i class="bi bi-calendar"></i> ${createdDate}</span>
-                        <span><i class="bi bi-cpu"></i> ${session.model_used || 'N/A'}</span>
                     </div>
                 </div>
                 <div class="batch-history-stats">
@@ -2128,9 +2131,7 @@ const BatchProcessor = {
                     <img src="${thumbnail}" alt="${result.filename}">
                 </div>
             </td>
-            <td><span class="badge bg-secondary">${model}</span></td>
             <td class="batch-persons-list">${recognizedHtml}</td>
-            <td class="batch-persons-list">${identifiedHtml}</td>
             <td class="batch-description">${this.escapeHtml(description)}</td>
             <td class="batch-status-cell">${statusHtml}</td>
         `;

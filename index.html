@@ -111,18 +111,6 @@
                         </optgroup>
                     </select>
                 </div>
-                <!-- Language Selector -->
-                <div class="me-2">
-                    <select id="languageSelector" class="form-select form-select-sm" style="min-width: 150px;">
-                        <option value="">English only</option>
-                        <option value="slovenian">Slovenian</option>
-                        <option value="serbian">Serbian</option>
-                        <option value="croatian">Croatian</option>
-                        <option value="bosnian">Bosnian</option>
-                        <option value="greek">Greek</option>
-                        <option value="italian">Italian</option>
-                    </select>
-                </div>
                 <span class="text-muted me-2 me-md-3 d-flex align-items-center">
                     <i class="bi bi-person-circle me-1"></i>
                     <span id="userEmail" class="user-email-text"></span>
@@ -160,6 +148,19 @@
                 <div class="upload-container">
             <form id="uploadForm">
                 <div class="upload-zone">
+                    <!-- Language Selector -->
+                    <div class="language-selector-container mb-3">
+                        <label for="languageSelector" class="form-label text-muted small">Produce picture metadata in:</label>
+                        <select id="languageSelector" class="form-select form-select-sm" style="max-width: 200px; margin: 0 auto;">
+                            <option value="">English only</option>
+                            <option value="slovenian">Slovenian</option>
+                            <option value="serbian">Serbian</option>
+                            <option value="croatian">Croatian</option>
+                            <option value="bosnian">Bosnian</option>
+                            <option value="greek">Greek</option>
+                            <option value="italian">Italian</option>
+                        </select>
+                    </div>
                     <div id="previewContainer" class="mb-3" style="display: none;">
                         <img id="imagePreview" class="img-fluid rounded mb-2" style="max-height: 200px;" alt="Preview">
                         <button type="button" class="btn btn-sm btn-danger d-block mx-auto" id="removePreview">Remove Image</button>
@@ -238,6 +239,20 @@
                     </div>
                 </div>
 
+                <!-- Batch Language Selector -->
+                <div class="language-selector-container mb-3" style="text-align: center;">
+                    <label for="batchLanguageSelector" class="form-label text-muted small">Produce picture metadata in:</label>
+                    <select id="batchLanguageSelector" class="form-select form-select-sm" style="max-width: 200px; margin: 0 auto;">
+                        <option value="">English only</option>
+                        <option value="slovenian">Slovenian</option>
+                        <option value="serbian">Serbian</option>
+                        <option value="croatian">Croatian</option>
+                        <option value="bosnian">Bosnian</option>
+                        <option value="greek">Greek</option>
+                        <option value="italian">Italian</option>
+                    </select>
+                </div>
+
                 <!-- Batch Upload Zone -->
                 <div class="batch-upload-container">
                     <div class="batch-upload-zone" id="batchUploadZone">
@@ -308,9 +323,7 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th style="width: 70px;">Image</th>
-                                    <th style="width: 150px;">Model</th>
-                                    <th style="width: 180px;">Face Recognition</th>
-                                    <th style="width: 180px;">LLM Person ID</th>
+                                    <th style="width: 200px;">Face Recognition</th>
                                     <th>Description</th>
                                     <th style="width: 80px; text-align: center;">Status</th>
                                 </tr>
