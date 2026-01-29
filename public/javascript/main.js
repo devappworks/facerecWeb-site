@@ -9,16 +9,20 @@ function isAdminUser() {
     return ADMIN_EMAILS.includes(userEmail.toLowerCase());
 }
 
-// Show/hide model selector based on admin status
+// Show/hide admin-only features based on admin status
 function updateAdminFeatures() {
     const modelSelectorContainer = document.getElementById('modelSelectorContainer');
-    if (modelSelectorContainer) {
-        if (isAdminUser()) {
-            modelSelectorContainer.style.display = 'block';
-            console.log('Admin features enabled for:', localStorage.getItem('photolytics_user_email'));
-        } else {
-            modelSelectorContainer.style.display = 'none';
-        }
+    const trainingLink = document.getElementById('trainingLink');
+
+    if (isAdminUser()) {
+        // Show admin features
+        if (modelSelectorContainer) modelSelectorContainer.style.display = 'block';
+        if (trainingLink) trainingLink.style.display = 'inline-block';
+        console.log('Admin features enabled for:', localStorage.getItem('photolytics_user_email'));
+    } else {
+        // Hide admin features
+        if (modelSelectorContainer) modelSelectorContainer.style.display = 'none';
+        if (trainingLink) trainingLink.style.display = 'none';
     }
 }
 
@@ -707,14 +711,8 @@ function displayVisionAnalysisResult(metadata, elapsedSeconds) {
         }
     }
 
-    // Provider info
-    if (metadata.provider || metadata.model) {
-        formattedHtml += `
-            <div class="mt-2 text-muted small">
-                <i class="bi bi-cpu"></i> ${metadata.provider || 'AI'}${metadata.model ? ` (${metadata.model})` : ''}
-            </div>
-        `;
-    }
+    // Provider info - hidden for cleaner UI
+    // (model info removed per user request)
 
     // Raw data toggle
     formattedHtml += `
@@ -1158,18 +1156,10 @@ const BatchProcessor = {
     init: function() {
         this.initializeElements();
 
-        // Check if user is admin - hide batch tab for non-admins
-        if (!isAdminUser()) {
-            if (this.elements.batchTabItem) {
-                this.elements.batchTabItem.style.display = 'none';
-            }
-            console.log('Batch testing disabled for non-admin user');
-            return;
-        }
-
+        // Batch testing is available for all authenticated users
         this.attachEventListeners();
         this.loadHistory();
-        console.log('Batch processor initialized for admin user');
+        console.log('Batch processor initialized');
     },
 
     // Initialize DOM element references
