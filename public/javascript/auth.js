@@ -371,6 +371,18 @@ class AuthManager {
         console.log('Event listeners reattached successfully');
     }
     
+    // Trigger browser credential save by submitting to hidden iframe
+    triggerCredentialSave() {
+        // Submit the form natively to the hidden iframe.
+        // This makes the browser see a real form submission with email+password
+        // fields, which triggers the "Save password?" prompt.
+        try {
+            this.loginForm.submit();
+        } catch (err) {
+            console.log('Native form submit for credential save failed:', err);
+        }
+    }
+
     // Handle login form submission
     async handleLogin(e) {
         e.preventDefault();
@@ -412,9 +424,9 @@ class AuthManager {
                 },
                 body: JSON.stringify({ email: email, password: password })
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success && data.data) {
                 // Check if data is an array (multiple domains) or object (single domain)
                 if (Array.isArray(data.data)) {
@@ -430,26 +442,13 @@ class AuthManager {
                     this.saveAuthData(userEmail, token);
                     this.showLoginAlert('Login successful! Redirecting...', 'info');
 
-                    // Notify browser's credential manager of successful login
-                    if (window.PasswordCredential && navigator.credentials) {
-                        try {
-                            const cred = new PasswordCredential({
-                                id: email,
-                                password: password,
-                                name: email
-                            });
-                            navigator.credentials.store(cred);
-                        } catch (credErr) {
-                            // Credential API not supported or failed - that's fine
-                            console.log('Credential store not available:', credErr);
-                        }
-                    }
+                    // Trigger browser's "Save password?" prompt by submitting
+                    // the form to a hidden iframe while fields still have values
+                    this.triggerCredentialSave();
 
                     // Small delay before showing main app for better UX
-                    // Delay form reset to give browser time to capture credentials
                     setTimeout(() => {
                         this.showMainApplication();
-                        // Reset form after transition so browser can save credentials
                         setTimeout(() => {
                             this.resetLoginForm();
                         }, 500);
@@ -462,7 +461,7 @@ class AuthManager {
                 this.showLoginAlert(errorMessage, 'danger');
                 this.isLoggingIn = false;
             }
-            
+
         } catch (error) {
             console.error('Login error:', error);
             this.showLoginAlert('Connection error. Please check your internet connection and try again.', 'danger');
