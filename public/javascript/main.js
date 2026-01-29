@@ -565,7 +565,10 @@ function displayDiagnosticsPanel(faceData) {
                 const reason = fd.status.replace('rejected_', '').replace(/_/g, ' ');
                 statusHtml = `<span class="diag-badge rejected">${reason}</span>`;
             } else if (fd.status === 'no_db_match') {
-                statusHtml = `<span class="diag-badge warning">no match</span>`;
+                const hasCandidates = topMatches.length > 0;
+                statusHtml = hasCandidates
+                    ? `<span class="diag-badge warning">below threshold</span>`
+                    : `<span class="diag-badge warning">no candidates</span>`;
             } else {
                 statusHtml = `<span class="diag-badge passed">passed</span>`;
             }
@@ -586,19 +589,34 @@ function displayDiagnosticsPanel(faceData) {
             html += `<td>${qm.contrast !== undefined ? qm.contrast : '-'}</td>`;
             html += `<td>${fd.face_area_percent !== undefined && fd.face_area_percent !== null ? fd.face_area_percent + '%' : '-'}</td>`;
             html += `<td>${statusHtml}</td>`;
-            html += `<td>${top1 ? top1.person.replace(/_/g, ' ') : '-'}</td>`;
-            html += `<td>${top1 ? top1.distance.toFixed(4) : '-'}</td>`;
+            // Format candidate name - dim if not a real match
+            function candidateName(m) {
+                if (!m) return '-';
+                const name = m.person.replace(/_/g, ' ');
+                if (m.matched === false) return `<span class="text-muted" title="Below threshold">${name}</span>`;
+                return `<strong>${name}</strong>`;
+            }
+            function candidateDist(m) {
+                if (!m) return '-';
+                const style = m.matched === false ? ' class="text-muted"' : '';
+                return `<span${style}>${m.distance.toFixed(4)}</span>`;
+            }
+
+            html += `<td>${candidateName(top1)}</td>`;
+            html += `<td>${candidateDist(top1)}</td>`;
             html += `<td>${top1 ? confBar(top1.confidence_pct) : '-'}</td>`;
-            html += `<td>${top2 ? top2.person.replace(/_/g, ' ') : '-'}</td>`;
-            html += `<td>${top2 ? top2.distance.toFixed(4) : '-'}</td>`;
+            html += `<td>${candidateName(top2)}</td>`;
+            html += `<td>${candidateDist(top2)}</td>`;
             html += '</tr>';
 
-            // Show additional matches if available (3rd-5th)
+            // Show additional matches if available (3rd+)
             if (topMatches.length > 2) {
                 html += '<tr><td colspan="11" style="padding:0 0 0 2rem;"><details><summary class="small text-muted" style="cursor:pointer">+ ' + (topMatches.length - 2) + ' more candidates</summary>';
                 html += '<div style="padding:0.25rem 0">';
                 topMatches.slice(2).forEach(m => {
-                    html += `<span class="small">${m.person.replace(/_/g,' ')} - dist: ${m.distance.toFixed(4)} (${m.confidence_pct.toFixed(1)}%)</span><br>`;
+                    const matchIcon = m.matched ? '&#10003;' : '&#10007;';
+                    const style = m.matched ? 'color:#4ade80' : 'color:#888';
+                    html += `<span class="small" style="${style}">${matchIcon} ${m.person.replace(/_/g,' ')} - dist: ${m.distance.toFixed(4)} (${m.confidence_pct.toFixed(1)}%)</span><br>`;
                 });
                 html += '</div></details></td></tr>';
             }
