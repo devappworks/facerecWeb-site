@@ -550,7 +550,7 @@ function displayDiagnosticsPanel(faceData) {
     if (faceDetails.length > 0) {
         html += '<div class="diag-section-title"><i class="bi bi-people me-1"></i> Per-Face Match Details</div>';
         html += '<div class="table-responsive"><table class="diag-table"><thead><tr>';
-        html += '<th>Face</th><th>Det. Conf.</th><th>Blur</th><th>Contrast</th><th>Status</th><th>Top Match</th><th>Dist.</th><th>Conf.</th><th>Runner-up</th><th>Dist.</th>';
+        html += '<th>Face</th><th>Det. Conf.</th><th>Blur</th><th>Contrast</th><th>Area%</th><th>Status</th><th>Top Match</th><th>Dist.</th><th>Conf.</th><th>Runner-up</th><th>Dist.</th>';
         html += '</tr></thead><tbody>';
 
         faceDetails.forEach(fd => {
@@ -564,6 +564,8 @@ function displayDiagnosticsPanel(faceData) {
             if (fd.status && fd.status.startsWith('rejected')) {
                 const reason = fd.status.replace('rejected_', '').replace(/_/g, ' ');
                 statusHtml = `<span class="diag-badge rejected">${reason}</span>`;
+            } else if (fd.status === 'no_db_match') {
+                statusHtml = `<span class="diag-badge warning">no match</span>`;
             } else {
                 statusHtml = `<span class="diag-badge passed">passed</span>`;
             }
@@ -582,6 +584,7 @@ function displayDiagnosticsPanel(faceData) {
             html += `<td>${fd.detection_confidence !== undefined ? fd.detection_confidence.toFixed(3) : '-'}</td>`;
             html += `<td>${qm.blur_score !== undefined ? qm.blur_score : '-'}</td>`;
             html += `<td>${qm.contrast !== undefined ? qm.contrast : '-'}</td>`;
+            html += `<td>${fd.face_area_percent !== undefined && fd.face_area_percent !== null ? fd.face_area_percent + '%' : '-'}</td>`;
             html += `<td>${statusHtml}</td>`;
             html += `<td>${top1 ? top1.person.replace(/_/g, ' ') : '-'}</td>`;
             html += `<td>${top1 ? top1.distance.toFixed(4) : '-'}</td>`;
@@ -592,7 +595,7 @@ function displayDiagnosticsPanel(faceData) {
 
             // Show additional matches if available (3rd-5th)
             if (topMatches.length > 2) {
-                html += '<tr><td colspan="10" style="padding:0 0 0 2rem;"><details><summary class="small text-muted" style="cursor:pointer">+ ' + (topMatches.length - 2) + ' more candidates</summary>';
+                html += '<tr><td colspan="11" style="padding:0 0 0 2rem;"><details><summary class="small text-muted" style="cursor:pointer">+ ' + (topMatches.length - 2) + ' more candidates</summary>';
                 html += '<div style="padding:0.25rem 0">';
                 topMatches.slice(2).forEach(m => {
                     html += `<span class="small">${m.person.replace(/_/g,' ')} - dist: ${m.distance.toFixed(4)} (${m.confidence_pct.toFixed(1)}%)</span><br>`;
@@ -652,7 +655,11 @@ function displayDiagnosticsPanel(faceData) {
     if (diag.image_dimensions) {
         const orig = diag.image_dimensions.original || {};
         const resized = diag.image_dimensions.resized || {};
-        html += `<dt>Image Size</dt><dd>${orig.width}x${orig.height} &rarr; ${resized.width}x${resized.height}</dd>`;
+        let sizeStr = `${orig.width || '?'}x${orig.height || '?'}`;
+        if (resized.width && resized.height) {
+            sizeStr += ` &rarr; ${resized.width}x${resized.height}`;
+        }
+        html += `<dt>Image Size</dt><dd>${sizeStr}</dd>`;
     }
     if (diag.timing_ms) {
         const t = diag.timing_ms;
