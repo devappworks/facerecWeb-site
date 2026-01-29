@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 // Admin users who can access the training UI
@@ -12,18 +11,18 @@ function isAdminUser(email) {
 
 export default function AuthGuard({ children }) {
   const { isAuthenticated, loading, user } = useAuth()
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) {
-        navigate('/login', { replace: true })
+        // Redirect to main app login page
+        window.location.href = '/'
       } else if (!isAdminUser(user?.email)) {
         // Redirect non-admin users to main photolytics app
         window.location.href = '/'
       }
     }
-  }, [isAuthenticated, loading, navigate, user])
+  }, [isAuthenticated, loading, user])
 
   if (loading) {
     return (

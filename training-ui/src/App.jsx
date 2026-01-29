@@ -9,7 +9,6 @@ import Tutorial from './components/Tutorial'
 import TutorialTrigger from './components/TutorialTrigger'
 
 // Pages
-import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import TrainingWorkflow from './pages/TrainingWorkflow'
 import QueueManagement from './pages/QueueManagement'
@@ -65,9 +64,6 @@ function App() {
             <HelpModal />
             <Tutorial />
             <Routes>
-              {/* Public route */}
-              <Route path="/login" element={<Login />} />
-
               {/* Protected routes with layout */}
               <Route
                 element={

@@ -59,7 +59,7 @@ api.interceptors.response.use(
 
       // Delay redirect slightly to allow the error to be caught by the calling code
       setTimeout(() => {
-        window.location.href = '/training/login'
+        window.location.href = '/'
       }, 100)
     }
 
