@@ -258,8 +258,12 @@ async function handleAnalyze(file) {
     const faceStartTime = performance.now();
 
     try {
-        // Call face recognition endpoint directly
-        const faceData = await makeApiCallDebug(API_CONFIG.faceRecognition.url, file);
+        // Call face recognition endpoint directly (with diagnostics for admin)
+        let faceRecUrl = API_CONFIG.faceRecognition.url;
+        if (isAdminUser()) {
+            faceRecUrl += '?diagnostics=true';
+        }
+        const faceData = await makeApiCallDebug(faceRecUrl, file);
         const faceEndTime = performance.now();
         const faceElapsedSeconds = ((faceEndTime - faceStartTime) / 1000).toFixed(2);
 
@@ -272,11 +276,15 @@ async function handleAnalyze(file) {
             displayFaceRecognitionFromAnalyze(faceData || {}, faceElapsedSeconds);
         }
 
+        // Show diagnostics panel for admin users
+        displayDiagnosticsPanel(faceData);
+
     } catch (error) {
         const faceEndTime = performance.now();
         const faceElapsedSeconds = ((faceEndTime - faceStartTime) / 1000).toFixed(2);
 
         console.error('Face recognition failed:', error);
+        hideDiagnosticsPanel();
         result1.innerHTML = `
             <div class="alert alert-danger">
                 <strong>Face Recognition Error:</strong><br>${error.message}
@@ -493,6 +501,183 @@ function displayFaceRecognitionFromAnalyze(metadata, elapsedSeconds) {
             </div>
         `;
     }
+}
+
+// Display admin diagnostics panel for face recognition
+function displayDiagnosticsPanel(faceData) {
+    const section = document.getElementById('adminDiagnosticsSection');
+    if (!section) return;
+
+    // Check for diagnostics at top level or nested under metadata
+    const diagData = faceData?.diagnostics || faceData?.metadata?.diagnostics;
+
+    if (!isAdminUser() || !faceData || !diagData) {
+        section.style.display = 'none';
+        console.log('[Diagnostics] Panel hidden:', { isAdmin: isAdminUser(), hasFaceData: !!faceData, hasDiag: !!diagData });
+        return;
+    }
+
+    const diag = diagData;
+    console.log('[Diagnostics] Rendering panel with data:', diag);
+    const content = document.getElementById('diagnosticsContent');
+    if (!content) return;
+
+    let html = '';
+
+    // Section A: Pipeline Summary
+    const ps = diag.pipeline_summary || {};
+    const steps = [
+        { label: 'Detected', count: ps.total_faces_detected || 0, prev: null },
+        { label: 'Confidence', count: ps.valid_after_confidence ?? ps.total_faces_detected ?? 0, prev: ps.total_faces_detected },
+        { label: 'Quality', count: ps.valid_after_quality ?? 0, prev: ps.valid_after_confidence },
+        { label: 'Size Filter', count: ps.valid_after_size_filter ?? 0, prev: ps.valid_after_quality },
+        { label: 'Matched', count: ps.faces_matched ?? 0, prev: ps.valid_after_size_filter }
+    ];
+
+    html += '<div class="diag-section-title"><i class="bi bi-funnel me-1"></i> Detection Pipeline</div>';
+    html += '<div class="diag-pipeline">';
+    steps.forEach((step, i) => {
+        if (i > 0) html += '<span class="diag-pipeline-arrow"><i class="bi bi-arrow-right"></i></span>';
+        let cls = 'full';
+        if (step.count === 0) cls = 'zero';
+        else if (step.prev !== null && step.count < step.prev) cls = 'partial';
+        html += `<span class="diag-pipeline-step ${cls}">${step.count} ${step.label}</span>`;
+    });
+    html += '</div>';
+
+    // Section B: Per-Face Match Table
+    const faceDetails = diag.per_face_details || [];
+    if (faceDetails.length > 0) {
+        html += '<div class="diag-section-title"><i class="bi bi-people me-1"></i> Per-Face Match Details</div>';
+        html += '<div class="table-responsive"><table class="diag-table"><thead><tr>';
+        html += '<th>Face</th><th>Det. Conf.</th><th>Blur</th><th>Contrast</th><th>Status</th><th>Top Match</th><th>Dist.</th><th>Conf.</th><th>Runner-up</th><th>Dist.</th>';
+        html += '</tr></thead><tbody>';
+
+        faceDetails.forEach(fd => {
+            const qm = fd.quality_metrics || {};
+            const topMatches = fd.top_matches || [];
+            const top1 = topMatches[0] || null;
+            const top2 = topMatches[1] || null;
+
+            // Status badge
+            let statusHtml = '';
+            if (fd.status && fd.status.startsWith('rejected')) {
+                const reason = fd.status.replace('rejected_', '').replace(/_/g, ' ');
+                statusHtml = `<span class="diag-badge rejected">${reason}</span>`;
+            } else {
+                statusHtml = `<span class="diag-badge passed">passed</span>`;
+            }
+
+            // Confidence bar helper
+            function confBar(pct) {
+                if (pct === null || pct === undefined) return '-';
+                let cls = 'low';
+                if (pct >= 75) cls = 'high';
+                else if (pct >= 60) cls = 'medium';
+                return `<span style="white-space:nowrap">${pct.toFixed(1)}%</span> <span class="diag-confidence-bar"><span class="diag-confidence-fill ${cls}" style="width:${Math.min(pct, 100)}%"></span></span>`;
+            }
+
+            html += '<tr>';
+            html += `<td>#${fd.face_index}</td>`;
+            html += `<td>${fd.detection_confidence !== undefined ? fd.detection_confidence.toFixed(3) : '-'}</td>`;
+            html += `<td>${qm.blur_score !== undefined ? qm.blur_score : '-'}</td>`;
+            html += `<td>${qm.contrast !== undefined ? qm.contrast : '-'}</td>`;
+            html += `<td>${statusHtml}</td>`;
+            html += `<td>${top1 ? top1.person.replace(/_/g, ' ') : '-'}</td>`;
+            html += `<td>${top1 ? top1.distance.toFixed(4) : '-'}</td>`;
+            html += `<td>${top1 ? confBar(top1.confidence_pct) : '-'}</td>`;
+            html += `<td>${top2 ? top2.person.replace(/_/g, ' ') : '-'}</td>`;
+            html += `<td>${top2 ? top2.distance.toFixed(4) : '-'}</td>`;
+            html += '</tr>';
+
+            // Show additional matches if available (3rd-5th)
+            if (topMatches.length > 2) {
+                html += '<tr><td colspan="10" style="padding:0 0 0 2rem;"><details><summary class="small text-muted" style="cursor:pointer">+ ' + (topMatches.length - 2) + ' more candidates</summary>';
+                html += '<div style="padding:0.25rem 0">';
+                topMatches.slice(2).forEach(m => {
+                    html += `<span class="small">${m.person.replace(/_/g,' ')} - dist: ${m.distance.toFixed(4)} (${m.confidence_pct.toFixed(1)}%)</span><br>`;
+                });
+                html += '</div></details></td></tr>';
+            }
+        });
+
+        html += '</tbody></table></div>';
+    }
+
+    // Section C: Near Misses
+    const nearMisses = diag.near_misses || [];
+    if (nearMisses.length > 0) {
+        html += '<div class="diag-section-title"><i class="bi bi-exclamation-triangle me-1"></i> Near Misses (close to threshold)</div>';
+        nearMisses.forEach(nm => {
+            html += `<div class="diag-near-miss">
+                <span class="diag-badge warning">near-miss</span>
+                <strong>${nm.person.replace(/_/g, ' ')}</strong>
+                <span>dist: ${nm.min_distance.toFixed(4)}</span>
+                <span>(${nm.confidence_pct.toFixed(1)}%)</span>
+                <span class="text-muted small">+${nm.distance_above_threshold.toFixed(4)} above threshold</span>
+            </div>`;
+        });
+    }
+
+    // Section D: Rejected Faces
+    const rejected = diag.rejected_faces || [];
+    if (rejected.length > 0) {
+        html += '<details class="mt-2"><summary class="diag-section-title" style="cursor:pointer; list-style:none; display:flex; align-items:center; gap:0.5rem">';
+        html += `<i class="bi bi-x-circle me-1"></i> Rejected Faces (${rejected.length}) <i class="bi bi-chevron-right small"></i></summary>`;
+        html += '<div class="table-responsive mt-1"><table class="diag-table"><thead><tr>';
+        html += '<th>Face</th><th>Reason</th><th>Det. Conf.</th><th>Details</th>';
+        html += '</tr></thead><tbody>';
+        rejected.forEach(r => {
+            const qm = r.quality_metrics || {};
+            let details = '';
+            if (qm.blur_score !== undefined) details = `blur:${qm.blur_score} contrast:${qm.contrast} brightness:${qm.brightness}`;
+            html += `<tr>
+                <td>#${r.face_index}</td>
+                <td><span class="diag-badge rejected">${(r.reason || '').replace(/_/g, ' ')}</span></td>
+                <td>${r.detection_confidence !== undefined ? r.detection_confidence.toFixed(3) : '-'}</td>
+                <td class="small text-muted">${details}</td>
+            </tr>`;
+        });
+        html += '</tbody></table></div></details>';
+    }
+
+    // Section E: Config & Timing
+    html += '<details class="mt-2"><summary class="diag-section-title" style="cursor:pointer; list-style:none; display:flex; align-items:center; gap:0.5rem">';
+    html += '<i class="bi bi-gear me-1"></i> Configuration & Timing <i class="bi bi-chevron-right small"></i></summary>';
+    html += '<dl class="diag-kv mt-1">';
+    html += `<dt>Threshold</dt><dd>${diag.threshold_used ?? '-'} (${diag.threshold_used ? Math.round((1-diag.threshold_used)*100) + '% min confidence' : '-'})</dd>`;
+    html += `<dt>Model</dt><dd>${diag.model || '-'}</dd>`;
+    html += `<dt>Detector</dt><dd>${diag.detector || '-'}</dd>`;
+    html += `<dt>Source Type</dt><dd>${diag.source_type || '-'}</dd>`;
+    if (diag.image_dimensions) {
+        const orig = diag.image_dimensions.original || {};
+        const resized = diag.image_dimensions.resized || {};
+        html += `<dt>Image Size</dt><dd>${orig.width}x${orig.height} &rarr; ${resized.width}x${resized.height}</dd>`;
+    }
+    if (diag.timing_ms) {
+        const t = diag.timing_ms;
+        html += `<dt>Detection</dt><dd>${t.face_detection ?? '-'}ms</dd>`;
+        html += `<dt>Recognition</dt><dd>${t.recognition_search ?? '-'}ms</dd>`;
+        html += `<dt>Total</dt><dd>${t.total ?? '-'}ms</dd>`;
+    }
+    html += '</dl></details>';
+
+    content.innerHTML = html;
+    section.style.display = 'block';
+
+    // Toggle chevron on collapse
+    const diagBody = document.getElementById('diagnosticsBody');
+    const chevron = document.getElementById('diagnosticsChevron');
+    if (diagBody && chevron) {
+        diagBody.addEventListener('shown.bs.collapse', () => { chevron.className = 'bi bi-chevron-up'; });
+        diagBody.addEventListener('hidden.bs.collapse', () => { chevron.className = 'bi bi-chevron-down'; });
+    }
+}
+
+// Hide diagnostics panel
+function hideDiagnosticsPanel() {
+    const section = document.getElementById('adminDiagnosticsSection');
+    if (section) section.style.display = 'none';
 }
 
 // Display enhanced vision analysis results
@@ -1013,6 +1198,7 @@ function handleRemovePreview() {
     // Clear any existing results
     document.getElementById('result1').innerHTML = '<p class="text-muted">Results will be displayed after upload...</p>';
     document.getElementById('result2').innerHTML = '<p class="text-muted">Results will be displayed after upload...</p>';
+    hideDiagnosticsPanel();
 }
 
 // Drag handlers

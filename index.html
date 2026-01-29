@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photolytics</title>
+    <title>Pchela Photolytics</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="public/iconNew.png">
     <link href="public/style/style.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
     <!-- Initial Loading Screen (shown while checking auth) -->
-    <div id="initialLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 10000;">
-        <div class="text-center text-white">
-            <div class="spinner-border mb-3" role="status" style="width: 3rem; height: 3rem;">
+    <div id="initialLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="background: #1a1a1a; z-index: 10000;">
+        <div class="text-center">
+            <img src="pchela-2.webp" alt="Pchela" style="height: 56px; width: auto; margin-bottom: 1rem;">
+            <div class="spinner-border mb-3" role="status" style="width: 2.5rem; height: 2.5rem; color: #f5a623;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <h4 class="mb-2">Photolytics</h4>
-            <p class="text-white-50">Loading...</p>
+            <p style="color: #999;">Loading...</p>
         </div>
     </div>
 
@@ -28,9 +31,9 @@
                 <div class="card shadow-lg border-0">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <i class="bi bi-camera-fill text-primary fs-1 mb-3"></i>
-                            <h2 class="card-title text-center mb-2">Photolytics</h2>
-                            <p class="text-muted">Please enter your email to continue</p>
+                            <img src="pchela-2.webp" alt="Pchela" style="height: 48px; width: auto; margin-bottom: 0.75rem;">
+                            <h2 class="card-title text-center mb-2" style="color: #f5a623;">Pchela Photolytics</h2>
+                            <p class="text-muted">Sign in to your account</p>
                         </div>
                         
                         <form id="loginForm">
@@ -76,13 +79,14 @@
     </div>
 
     <!-- Transition Loader (hidden by default) -->
-    <div id="transitionLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="display: none !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 9999; opacity: 0;">
-        <div class="text-center text-white">
-            <div class="spinner-border mb-3" role="status" style="width: 3rem; height: 3rem;">
+    <div id="transitionLoader" class="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center" style="display: none !important; background: #1a1a1a; z-index: 9999; opacity: 0;">
+        <div class="text-center">
+            <img src="pchela-2.webp" alt="Pchela" style="height: 56px; width: auto; margin-bottom: 1rem;">
+            <div class="spinner-border mb-3" role="status" style="width: 2.5rem; height: 2.5rem; color: #f5a623;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <h4 class="mb-2">Welcome!</h4>
-            <p class="text-white-50">Preparing your workspace...</p>
+            <h4 class="mb-2" style="color: #fafafa;">Welcome!</h4>
+            <p style="color: #999;">Preparing your workspace...</p>
         </div>
     </div>
 
@@ -90,7 +94,10 @@
     <div id="mainApplication" class="container py-5" style="display: none !important; opacity: 0;">
         <!-- Header with logout -->
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-            <h1 class="mb-0 mb-md-0">Document Upload</h1>
+            <div class="d-flex align-items-center gap-2">
+                <img src="pchela-2.webp" alt="Pchela" style="height: 36px; width: auto;">
+                <h1 class="mb-0 mb-md-0">Pchela Photolytics</h1>
+            </div>
             <div class="d-flex align-items-center flex-wrap gap-2">
                 <!-- Model Selector (Admin only - hidden by default) -->
                 <div class="me-2" id="modelSelectorContainer" style="display: none;">
@@ -191,6 +198,25 @@
                         <div id="adminUsageContent">
                             <!-- Content populated by JavaScript -->
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Face Recognition Diagnostics (hidden by default, shown for admin users) -->
+        <div id="adminDiagnosticsSection" class="mt-3" style="display: none;">
+            <div class="card border-info diagnostics-card">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center diagnostics-header"
+                     data-bs-toggle="collapse" data-bs-target="#diagnosticsBody"
+                     style="cursor: pointer;" aria-expanded="true">
+                    <h6 class="mb-0">
+                        <i class="bi bi-bug me-2"></i>Face Recognition Diagnostics
+                    </h6>
+                    <i class="bi bi-chevron-up" id="diagnosticsChevron"></i>
+                </div>
+                <div class="collapse show" id="diagnosticsBody">
+                    <div class="card-body" id="diagnosticsContent">
+                        <!-- Content populated by JavaScript -->
                     </div>
                 </div>
             </div>
